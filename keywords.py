@@ -1,0 +1,175 @@
+from __future__ import division
+import nltk, tfidf, math
+from nltk import wordnet
+import gensim, re, os
+
+files = ['txt1.txt','txt2.txt','txt3.txt','txt4.txt','txt5.txt','txt6.txt','txt7.txt','txt8.txt','txt9.txt']
+
+texts=[]
+
+def getText(text_file):
+    text = ""
+    with open(text_file) as f:
+        for line in f:
+            text += line.strip()+'\n'
+    #text = re.sub(r'.*(?:\n.*)*\n1','',text)   # strip all text before start of question 1 - might break!!!
+    text = re.sub(r'-\n','',text)   # resolve hyphentation
+    text = "".join(char for char in text if ord(char) < 128)   # remove non-ascii characters
+    return text
+
+def getCandidates(text):
+
+    lemmatizer = nltk.WordNetLemmatizer()
+    stemmer = nltk.stem.porter.PorterStemmer()
+
+    grammar = r'''
+        NP: {<JJ.*><NN.*><NN.*>?<NN.*>?}   # adjective-noun phrase
+            {<NN.*><NN.*>?<NN.*>?}   # sequence of nouns
+    '''
+        # CON: {<VBD|JJ.*><CC><NP>}   # ... and ... <noun> phrase - how to detect phrases like this
+
+    chunker = nltk.RegexpParser(grammar)
+
+    toks = nltk.word_tokenize(text)
+
+    postoks = nltk.tag.pos_tag(toks)
+
+    tree = chunker.parse(postoks)
+
+    def leaves(tree):   # return leaves of each noun phrase subtree of chunked tree
+        leaves = []
+        for subtree in tree.subtrees():
+            if subtree.label() == 'NP':
+                leaves.append(subtree.leaves())
+                #print subtree.leaves()
+        return leaves
+
+    from nltk.corpus import stopwords
+    stopwords = stopwords.words('english')
+
+    my_stopwords = ['state','define','show','describe','explain','find','compare','contrast','determine','answer','answers','part','parts','section','sections','following','continued','mark','marks']   # maybe chop off if at front of sentence?
+    stopwords.extend(my_stopwords)
+
+    #print stopwords
+
+    def normalise(word):
+        """Normalises words to lowercase and stems and lemmatizes it."""
+        word = word.lower()
+        #word = stemmer.stem_word(word)
+        word = lemmatizer.lemmatize(word)
+        return word
+
+    def acceptable_word(word):
+        """Checks conditions for acceptable word: length, stopword."""
+        accepted = bool(3 <= len(word) <= 40
+            and word.lower() not in stopwords
+            and not any(ch.isdigit() for ch in word) )   # deletes words containing digits!
+        return accepted
+
+    def get_terms(tree):
+        terms = []
+        for leaf in leaves(tree):   # traverse leaves in each subtree
+            term = ''
+            for word, tag in leaf:   # traverse words in leaf
+                if acceptable_word(word):
+                    term += normalise(word)+' '   # make term out of words
+            if (term != ''):
+                terms.append(term.strip())   # add term to list
+        return terms
+
+    candidates = get_terms(tree)
+
+    return candidates
+
+
+# count_terms = [[term,terms.count(term)] for term in set(terms)]
+
+# sort_terms = sorted(count_terms,key=lambda l:l[1], reverse=True)
+
+# for term, count in sort_terms:
+#     print term, count
+
+# for term in listKeywords(text):
+#     print term
+
+
+# my tf-idf implementation:
+
+#text1 = getText(files[0])
+#print getCandidates(text1)
+
+
+#print getCandidates(getText('texts/txt9.txt'))
+
+
+
+texts=[]
+
+for text_file in os.listdir('texts'):
+    texts.append(getCandidates(getText('texts/'+text_file)))
+
+
+
+
+def getKeywords(text, texts):
+
+    #candidates = getCandidates(text)
+
+    def tf(keyword, text):   # term frequency of keyword in text
+        #print keyword, text.count(keyword), len(text)
+        return text.count(keyword) / len(text)
+
+    def numContaining(keyword, texts):   # number of texts containing keyword
+        return sum(1 for text in texts if keyword in text)
+
+    def idf(keyword, texts):
+        return math.log(len(texts) / (1 + numContaining(keyword,texts)))
+
+    def tfidf(keyword, text, texts):
+        return tf(keyword,text) * idf(keyword,texts)
+
+    scores = {candidate: tfidf(candidate, text, texts) for candidate in text}
+    sorted_words = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+
+    keywords=''
+
+    for candidate in text:
+        if any(candidate in word_score for word_score in sorted_words[:30]) and (candidate not in keywords):
+            keywords += candidate+', '
+
+    #keywords.rstrip(', ')
+
+    g = open('keywords.txt', 'w')
+    g.write(keywords[:-2])
+    g.close()
+
+    return
+
+getKeywords(texts[17], texts)
+
+
+
+# imported tfidf implemtation - seems to work differently:
+
+# dictionary = gensim.corpora.Dictionary(keywords)
+
+# corpus = [dictionary.doc2bow(text) for text in keywords]
+
+# tfidf = gensim.models.TfidfModel(corpus)
+# corpus_tfidf = tfidf[corpus]
+
+# d = {}
+
+# tfidfss=[]
+
+# for doc in corpus_tfidf:
+#     for id, value in doc:
+#         word = dictionary.get(id)
+#         d[word] = value
+#         tfidfss.append((word, d[word]))
+#     break
+
+# tfidfss.sort(key=lambda x: x[1])
+
+# for word,tfidf in tfidfss:
+#     print word,tfidf
