@@ -106,12 +106,12 @@ def getCandidates(text):
 
 texts=[]
 
-for text_file in os.listdir('texts'):
-    texts.append(getCandidates(getText('texts/'+text_file)))   # list of lists of candidate keywords
+for text_file in os.listdir('../pastpapers/astext'):
+    texts.append(getCandidates(getText('../pastpapers/astext/'+text_file)))   # list of lists of candidate keywords
 
 
 
-
+# see branch 'try' for gensim implementation of tf-idf which might be better
 def getKeywords(text, texts):   # text as list of candidate keywords, texts as list of lists of candidate keywords
 
     #candidates = getCandidates(text)
@@ -143,11 +143,14 @@ def getKeywords(text, texts):   # text as list of candidate keywords, texts as l
 
     #keywords.rstrip(', ')
 
+
     g = open('../keywords/keywordsAI1.txt', 'w')
+
     g.write(keywords[:-2])
     g.close()
 
     return
+
 
 getKeywords(texts[12], texts)
 
@@ -177,3 +180,6 @@ getKeywords(texts[12], texts)
 
 # for word,tfidf in tfidfss:
 #     print word,tfidf
+=======
+getKeywords(texts[13], texts)
+>>>>>>> try2
