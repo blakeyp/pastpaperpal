@@ -143,13 +143,13 @@ def getKeywords(text, texts):   # text as list of candidate keywords, texts as l
 
     #keywords.rstrip(', ')
 
-    g = open('keywords.txt', 'w')
+    g = open('../keywords/keywordsAI1.txt', 'w')
     g.write(keywords[:-2])
     g.close()
 
     return
 
-getKeywords(texts[17], texts)
+getKeywords(texts[12], texts)
 
 
 
