@@ -14,6 +14,7 @@ def getText(text_file):
             text += line.strip()+'\n'
     #text = re.sub(r'.*(?:\n.*)*\n1','',text)   # strip all text before start of question 1 - might break!!!
     text = re.sub(r'-\n','',text)   # resolve hyphentation
+    text = re.sub(r'{(?:[^}{]|{(?:[^}{]|{[^}{]*})*})*}','',text)   # attempt to remove code snippets! - more clever method?
     text = "".join(char for char in text if ord(char) < 128)   # remove non-ascii characters
     return text
 
@@ -106,20 +107,20 @@ def getCandidates(text):
 texts=[]
 
 for text_file in os.listdir('texts'):
-    texts.append(getCandidates(getText('texts/'+text_file)))
+    texts.append(getCandidates(getText('texts/'+text_file)))   # list of lists of candidate keywords
 
 
 
 
-def getKeywords(text, texts):
+def getKeywords(text, texts):   # text as list of candidate keywords, texts as list of lists of candidate keywords
 
     #candidates = getCandidates(text)
 
-    def tf(keyword, text):   # term frequency of keyword in text
+    def tf(keyword, text):   # term frequency
         #print keyword, text.count(keyword), len(text)
         return text.count(keyword) / len(text)
 
-    def numContaining(keyword, texts):   # number of texts containing keyword
+    def numContaining(keyword, texts):   # number of lists containing keyword
         return sum(1 for text in texts if keyword in text)
 
     def idf(keyword, texts):
@@ -131,9 +132,12 @@ def getKeywords(text, texts):
     scores = {candidate: tfidf(candidate, text, texts) for candidate in text}
     sorted_words = sorted(scores.items(), key=lambda x: x[1], reverse=True)
 
+    # for word, score in sorted_words:
+    #     print word, score
+
     keywords=''
 
-    for candidate in text:
+    for candidate in text:   # gives top 30 keywords in order of appearance in paper
         if any(candidate in word_score for word_score in sorted_words[:30]) and (candidate not in keywords):
             keywords += candidate+', '
 
