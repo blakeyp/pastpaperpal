@@ -106,8 +106,8 @@ def getCandidates(text):
 
 texts=[]
 
-for text_file in os.listdir('texts'):
-    texts.append(getCandidates(getText('texts/'+text_file)))   # list of lists of candidate keywords
+for text_file in os.listdir('../pastpapers/astext'):
+    texts.append(getCandidates(getText('../pastpapers/astext/'+text_file)))   # list of lists of candidate keywords
 
 
 
@@ -143,10 +143,10 @@ def getKeywords(text, texts):   # text as list of candidate keywords, texts as l
 
     #keywords.rstrip(', ')
 
-    g = open('../keywords/keywords1261.txt', 'w')
+    g = open('../keywords/keywords1262.txt', 'w')
     g.write(keywords[:-2])
     g.close()
 
     return
 
-getKeywords(texts[8], texts)
+getKeywords(texts[1], texts)
