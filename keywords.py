@@ -111,7 +111,7 @@ for text_file in os.listdir('texts'):
 
 
 
-
+# see branch 'try' for gensim implementation of tf-idf which might be better
 def getKeywords(text, texts):   # text as list of candidate keywords, texts as list of lists of candidate keywords
 
     #candidates = getCandidates(text)
@@ -143,37 +143,10 @@ def getKeywords(text, texts):   # text as list of candidate keywords, texts as l
 
     #keywords.rstrip(', ')
 
-    g = open('keywords.txt', 'w')
+    g = open('../keywords/keywords1261.txt', 'w')
     g.write(keywords[:-2])
     g.close()
 
     return
 
-getKeywords(texts[17], texts)
-
-
-
-# imported tfidf implemtation - seems to work differently:
-
-# dictionary = gensim.corpora.Dictionary(keywords)
-
-# corpus = [dictionary.doc2bow(text) for text in keywords]
-
-# tfidf = gensim.models.TfidfModel(corpus)
-# corpus_tfidf = tfidf[corpus]
-
-# d = {}
-
-# tfidfss=[]
-
-# for doc in corpus_tfidf:
-#     for id, value in doc:
-#         word = dictionary.get(id)
-#         d[word] = value
-#         tfidfss.append((word, d[word]))
-#     break
-
-# tfidfss.sort(key=lambda x: x[1])
-
-# for word,tfidf in tfidfss:
-#     print word,tfidf
+getKeywords(texts[8], texts)
