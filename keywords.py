@@ -144,7 +144,7 @@ def getKeywords(text, texts):   # text as list of candidate keywords, texts as l
     #keywords.rstrip(', ')
 
 
-    g = open('../keywords/keywordsAI1.txt', 'w')
+    g = open('../keywords/keywords.txt', 'w')
 
     g.write(keywords[:-2])
     g.close()
@@ -153,7 +153,6 @@ def getKeywords(text, texts):   # text as list of candidate keywords, texts as l
 
 
 getKeywords(texts[12], texts)
-
 
 
 # imported tfidf implemtation - seems to work differently:
@@ -180,6 +179,3 @@ getKeywords(texts[12], texts)
 
 # for word,tfidf in tfidfss:
 #     print word,tfidf
-=======
-getKeywords(texts[13], texts)
->>>>>>> try2
