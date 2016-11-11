@@ -42,24 +42,8 @@ device = PDFPageAggregator(rsrcmgr, laparams=laparams)
 interpreter = PDFPageInterpreter(rsrcmgr, device)
 
 pages = list(PDFPage.create_pages(document))
-page_width = pages[0].mediabox[2]   # width of each page
-page_height = pages[0].mediabox[3]
-
-#print page_width
-
-
-def crop(page_num, start, end):
-    inputF = PdfFileReader(fp)
-    output = PdfFileWriter()
-    page = inputF.getPage(page_num-1)
-
-    page.cropBox.lowerLeft = (0, end)
-    page.cropBox.upperRight = (page_width, start)
-    output.addPage(page)
-
-    return output
-
-crop_count = 0
+page_width = pages[0].mediabox[2]   # gives width each page
+page_height = pages[0].mediabox[3]   # gives height for each page; note, starts at bottom
 
 
 # def parsePage(lt_objs, page_num):   # breaks if questions aren't enclosed in balanced lines
@@ -105,57 +89,67 @@ crop_count = 0
 #         outputStream.close()
 
 
+def crop(page_num, start, end):   # crop an area of a PDF page, defined by a start_y and end_y crop position
+    inputF = PdfFileReader(fp)   # file as above
+    output = PdfFileWriter()
+    page = inputF.getPage(page_num-1)
+
+    page.cropBox.lowerLeft = (0, end)
+    page.cropBox.upperRight = (page_width, start)
+    output.addPage(page)
+
+    return output
 
 
-def splitPage(lt_objs, page_num):
+def splitPage(lt_objs, page_num):   # split PDF file into 'chunks' of PDF files, split by the 
+                                    # horizontal solid lines in the file
+    
+    # note - the origin for PDF coords is BOTTOM left; pdfminer bboxes define x0, y0, x1, y1,
+    # where x0,y0 is the bottom left corner of the box and x1, y1 is the top right corner
 
     global crop_count
-    crop_start = page_height
+    crop_start = page_height   # first crop of page starts at top of page
 
     for lt in lt_objs:   # traverse layout page objects
 
         # check for line object, horizontal line, and line that pans sufficient width of page
         if (isinstance(lt, pdfminer.layout.LTLine)) and (lt.bbox[1] == lt.bbox[3]) and (lt.bbox[2]-lt.bbox[0] > 0.75*page_width):
             
-            y_coord = lt.bbox[1]   # 'y' position of this line
+            # doc_has_lines = True   # maybe implement something like this to throw an error if no lines are detected in any pages
+
+            y_coord = lt.bbox[1]   # y position of this line
             print 'found horizontal line at y-coord:', y_coord
 
-            if (crop_start-y_coord > 5): # i.e. not a double line
-                crop_end=y_coord
+            if (crop_start-y_coord > 5):   # i.e. not a double line
+                crop_end = y_coord   # crop to this line
                 crop_count+=1
                 print 'cropping'
                 outputStream = file("crop"+str(crop_count)+".pdf", "wb")
-                crop(page_num+1,crop_start,crop_end).write(outputStream)   # write cropped area to pdf file
+                crop(page_num,crop_start,crop_end).write(outputStream)   # write cropped area to pdf file
                 outputStream.close()
-                crop_start=crop_end
+                crop_start=crop_end   # next crop starts where this one finishes
     
+    # crop to end of page if no (more) lines detected
     crop_end=0
     crop_count+=1        
     print 'cropping'
     outputStream = file("crop"+str(crop_count)+".pdf", "wb")
-    crop(page_num+1,crop_start,crop_end).write(outputStream)   # write cropped area to pdf file
+    crop(page_num,crop_start,crop_end).write(outputStream)   # write cropped area to pdf file
     outputStream.close()
 
-    # if double line found
-        # mark start, get 'y' value
-        # match with closing double line
-        # mark as 'rubric'
-        # move on
+    # looking to extract these distinct chunks:
+        # rubric
+        # question 1
+        # question 2
+        # ...
+        # question n
 
-    # line is horizontal, pans page by certain amount end of line x - start of line x = some amount
-    # double line must consist of two lines, apart by up to some 1st line y - 2nd line y amount
+crop_count = 0
 
-    # rubric
-    # question 1
-    # question 2
-    # ...
-    # question n
-
-
-for i, page in enumerate(pages):
+for i, page in enumerate(pages):   # traverse pages
     interpreter.process_page(page)
     layout = device.get_result()
-    splitPage(layout._objs, i)
+    splitPage(layout._objs, i+1)
 
 
 
