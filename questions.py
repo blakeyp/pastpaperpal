@@ -12,7 +12,7 @@ import pdfminer
 from pyPdf import PdfFileWriter, PdfFileReader
 
 # Open a PDF file.
-fp = open('../pastpapers/cs1180.pdf', 'r')
+fp = open('../pastpapers/cs1310.pdf', 'r')
 
 # Create a PDF parser object associated with the file object.
 parser = PDFParser(fp)
@@ -94,8 +94,15 @@ def crop(page_num, start, end):   # crop an area of a PDF page, defined by a sta
     output = PdfFileWriter()
     page = inputF.getPage(page_num-1)
 
-    page.cropBox.lowerLeft = (0, end)
-    page.cropBox.upperRight = (page_width, start)
+    page.mediaBox.lowerLeft = (40, end+5)
+    page.mediaBox.upperRight = (page_width-40, start-5)
+
+    page.trimBox.lowerLeft = (40, end+5)
+    page.trimBox.upperRight = (page_width-40, start-5)
+
+    page.cropBox.lowerLeft = (40, end+5)   # might not be necessary?
+    page.cropBox.upperRight = (page_width-40, start-5)
+
     output.addPage(page)
 
     return output
@@ -108,9 +115,16 @@ def splitPage(lt_objs, page_num):   # split PDF file into 'chunks' of PDF files,
     # where x0,y0 is the bottom left corner of the box and x1, y1 is the top right corner
 
     global crop_count
-    crop_start = page_height   # first crop of page starts at top of page
+    global margin_bottom
+    crop_start = margin_top   # first crop of page starts at top of page
+
 
     for lt in lt_objs:   # traverse layout page objects
+
+        if (page_num == 1) and (isinstance(lt, pdfminer.layout.LTTextBoxHorizontal)):   # first page
+            margin_bottom = lt.bbox[3]   # keep overwriting until last text box on this page
+            print margin_bottom
+            continue
 
         # check for line object, horizontal line, and line that pans sufficient width of page
         if (isinstance(lt, pdfminer.layout.LTLine)) and (lt.bbox[1] == lt.bbox[3]) and (lt.bbox[2]-lt.bbox[0] > 0.75*page_width):
@@ -130,7 +144,7 @@ def splitPage(lt_objs, page_num):   # split PDF file into 'chunks' of PDF files,
                 crop_start=crop_end   # next crop starts where this one finishes
     
     # crop to end of page if no (more) lines detected
-    crop_end=0
+    crop_end=margin_bottom
     crop_count+=1        
     print 'cropping'
     outputStream = file("crop"+str(crop_count)+".pdf", "wb")
@@ -144,12 +158,18 @@ def splitPage(lt_objs, page_num):   # split PDF file into 'chunks' of PDF files,
         # ...
         # question n
 
+
 crop_count = 0
 
 for i, page in enumerate(pages):   # traverse pages
     interpreter.process_page(page)
     layout = device.get_result()
-    splitPage(layout._objs, i+1)
+    lt_objs = layout._objs
+    if i==0:   # first page
+        lt_top = lt_objs[0]
+        margin_top = lt_top.bbox[1]   # set margin top
+        print margin_top
+    splitPage(lt_objs, i+1)
 
 
 
