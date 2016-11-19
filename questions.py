@@ -1,3 +1,7 @@
+# extracts questions from PDF paper at file path, writes cropped output 
+# to PDF files and PNG files, each labelled with question number
+
+from __future__ import division
 from pdfminer.pdfparser import PDFParser
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfpage import PDFPage
@@ -7,194 +11,183 @@ from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfdevice import PDFDevice
 from pdfminer.layout import LAParams
 from pdfminer.converter import PDFPageAggregator
-import pdfminer
+import pdfminer, re
 
-from pyPdf import PdfFileWriter, PdfFileReader
+from wand.image import Image, Color
 
-# Open a PDF file.
-fp = open('../pastpapers/cs1310.pdf', 'r')
+from PyPDF2 import PdfFileWriter, PdfFileReader, pdf
 
-# Create a PDF parser object associated with the file object.
-parser = PDFParser(fp)
+def main():
 
-# Create a PDF document object that stores the document structure.
-# Password for initialization as 2nd parameter
-document = PDFDocument(parser)
+    file_path = '../pastpapers/cs2600.pdf'
 
-# Check if the document allows text extraction. If not, abort.
-if not document.is_extractable:
-    raise PDFTextExtractionNotAllowed
+    # Open a PDF file.
+    open_pdf = open(file_path, 'rb')
 
-# Create a PDF resource manager object that stores shared resources.
-rsrcmgr = PDFResourceManager()
+    # Create a PDF parser object associated with the file object.
+    parser = PDFParser(open_pdf)
 
-# Create a PDF device object.
-device = PDFDevice(rsrcmgr)
+    # Create a PDF document object that stores the document structure.
+    # Password for initialization as 2nd parameter
+    document = PDFDocument(parser)
 
-# BEGIN LAYOUT ANALYSIS
-# Set parameters for analysis.
-laparams = LAParams()
+    # Check if the document allows text extraction. If not, abort.
+    if not document.is_extractable:
+        raise PDFTextExtractionNotAllowed
 
-# Create a PDF page aggregator object.
-device = PDFPageAggregator(rsrcmgr, laparams=laparams)
+    # Create a PDF resource manager object that stores shared resources.
+    rsrcmgr = PDFResourceManager()
 
-# Create a PDF interpreter object.
-interpreter = PDFPageInterpreter(rsrcmgr, device)
+    # Create a PDF device object.
+    device = PDFDevice(rsrcmgr)
 
-pages = list(PDFPage.create_pages(document))
-page_width = pages[0].mediabox[2]   # gives width each page
-page_height = pages[0].mediabox[3]   # gives height for each page; note, starts at bottom
+    # BEGIN LAYOUT ANALYSIS
+    # Set parameters for analysis.
+    laparams = LAParams()
 
+    # Create a PDF page aggregator object.
+    device = PDFPageAggregator(rsrcmgr, laparams=laparams)
 
-# def parsePage(lt_objs, page_num):   # breaks if questions aren't enclosed in balanced lines
+    # Create a PDF interpreter object.
+    interpreter = PDFPageInterpreter(rsrcmgr, device)
 
-#     global crop_count, crop_start, crop_end
-#     begin_crop = True
-    
-
-#     for lt in lt_objs:   # traverse layout page objects
-
-#         # check for line object, horizontal line, and line that pans sufficient width of page
-#         if (isinstance(lt, pdfminer.layout.LTLine)) and (lt.bbox[1] == lt.bbox[3]) and (lt.bbox[2]-lt.bbox[0] > 0.75*page_width):
-            
-#             y_coord = lt.bbox[1]   # 'y' position of this line
-#             print 'found horizontal line at y-coord:', y_coord, 'on page:', page_num
-
-#             if begin_crop:   # first line found is crop start line
-#                 crop_start=y_coord   # set as crop start
-#                 crop_end=None
-#                 begin_crop=False
-#             else:   # had a crop start line, so presumably this is crop end line
-
-#                 if (crop_start-y_coord < 5):
-#                     continue   # double line detected, skip to next line
-                
-#                 crop_end=y_coord
-#                 crop_count+=1
-#                 print 'cropping'
-#                 outputStream = file("crop"+str(crop_count)+".pdf", "wb")
-#                 crop(page_num,crop_start,crop_end).write(outputStream)   # write cropped area to pdf file
-#                 outputStream.close()
-
-#                 begin_crop=True   # ready for next crop start
-
-#     print crop_end
-
-#     if crop_end == None:
-#         crop_end=0
-#         crop_count+=1
-#         print 'cropping'
-#         outputStream = file("crop"+str(crop_count)+".pdf", "wb")
-#         crop(page_num,crop_start,crop_end).write(outputStream)   # write cropped area to pdf file
-#         outputStream.close()
+    pages = list(PDFPage.create_pages(document))
+    page_width = pages[0].mediabox[2]   # gives width each page
+    page_height = pages[0].mediabox[3]   # gives height for each page; note, starts at bottom
 
 
-def crop(page_num, start, end):   # crop an area of a PDF page, defined by a start_y and end_y crop position
-    inputF = PdfFileReader(fp)   # file as above
+    # note PDF origin is at bottom left corner of page
+    # note bounding box is [lower_left_x, lower_left_y, upper_right_x, upper_right_y]
+
+    look_for_q = 1   # question number to search for
+
+    for i, page in enumerate(pages):   # traverse pages
+        interpreter.process_page(page)
+        layout = device.get_result()
+
+        lt_objs=[]
+
+        # populate list of layout objects, extracting child text line objects of text box objects
+        for lt_obj in layout._objs:
+            if isinstance(lt_obj, pdfminer.layout.LTTextBoxHorizontal):
+                for text_obj in lt_obj._objs:
+                    lt_objs.append(text_obj)   # want text lines within text box
+            else:
+                lt_objs.append(lt_obj)
+
+        # sort layout objects by average y position on page
+        lt_objs.sort(key=lambda x: (x.bbox[1]+((x.bbox[1]-x.bbox[3])/2)), reverse=True)
+
+        # identify position of 'top' of footer on this page
+        # used to identify question crop end point when there is no divider
+        # top of footer *99% of the time* consists of something along the lines of 'continued' or 'end'
+        # this implementation is verbose - could be rewritten!
+        in_footer = []
+        for lt_obj in reversed(lt_objs):   # find last 3 non-whitespace text items on the page 
+            if len(in_footer) == 3:
+                break
+            if isinstance(lt_obj, pdfminer.layout.LTTextLineHorizontal):
+                whitespace_re = re.compile(r'\s*$')
+                if not whitespace_re.match(lt_obj.get_text()):
+                    in_footer.append(lt_obj)
+        for lt_obj in in_footer:
+            footer_re = re.compile(r'.{0,20}(?:\bcont[^\s]*d\b|\bend\b).{0,20}$')
+            if footer_re.match(lt_obj.get_text().lower()):
+                footer_pos = lt_obj.bbox[3]
+                break
+
+        find_q = True   # whether looking for start of question or not
+
+        # traverse sorted layout objects to identify starts and ends of questions
+        for lt_obj in lt_objs:
+
+            if find_q:   # looking for start of a question
+                if isinstance(lt_obj, pdfminer.layout.LTTextLineHorizontal):
+                    # regex to match start of question e.g. '2.'
+                    q_re = re.compile(r''+str(look_for_q)+'\.')
+                    if q_re.match(lt_obj.get_text()):
+                        crop_top = lt_obj.bbox[3]   # top *y* position of crop
+                        crop_left = lt_obj.bbox[0]   # left *x* position of crop
+                        crop_right = lt_obj.bbox[2]   # to be updated if necessary
+                        find_q = False   # switch
+
+            else:   # looking for end of question
+                end_q_re = re.compile(r'\[[0-9]{0,3}(?:\s?marks?)?\]$')   # matches marks in a question e.g. '[5 marks]'
+                if is_divider(lt_obj, page_width, page_height):   # found question divider
+                    crop(file_path,i,look_for_q,crop_top,crop_left,crop_end,crop_right)
+                    look_for_q += 1   # moving on to look for next question
+                    find_q = True
+                    crop_right = 0   # reset
+                else:
+                    if isinstance(lt_obj, pdfminer.layout.LTTextLineHorizontal):
+                        # right *x* position of crop to be farthest right reaching text within question
+                        if (lt_obj.bbox[2] > crop_right):
+                            crop_right = lt_obj.bbox[2]
+                        # bottom *y* position of crop to be at last item before question divider
+                        if not whitespace_re.match(lt_obj.get_text()):   # ignore whitespace
+                            pos = lt_obj.bbox[1]
+                            if (not pos <= footer_pos):   # still above footer
+                                crop_end = pos
+                # what if the question ends on some other object i.e. not text ?!
+
+        if not find_q:   # got to end of page and found no divider
+            # assume end of page to be the divider, do the crop with the values found above
+            crop(file_path,i,look_for_q,crop_top,crop_left,crop_end,crop_right)
+            look_for_q+=1   # ready to look for next question
+            find_q = True
+            crop_right = 0   # reset
+
+    pass
+
+# match different types of horizontal lines that represent question dividers
+def is_divider(lt_obj, page_width, page_height):
+    if (isinstance(lt_obj, pdfminer.layout.LTLine)
+            and lt_obj.bbox[1] == lt_obj.bbox[3]    # is horizontal
+            and lt_obj.bbox[2]-lt_obj.bbox[0] > 0.65*page_width):   # sufficiently pans page width
+        return True
+
+    if (isinstance(lt_obj, pdfminer.layout.LTRect)   # is a rectangle object
+            and round(lt_obj.bbox[3])-round(lt_obj.bbox[1]) <= 3   # is sufficiently thin
+            and lt_obj.bbox[2]-lt_obj.bbox[0] > 0.65*page_width):   # sufficiently pans page width
+        return True
+
+    # regex to match at least 70 underscores (sometimes used to represent lines!!)
+    line_re = re.compile(r'_{70,}')
+    if (isinstance(lt_obj, pdfminer.layout.LTTextLineHorizontal)
+            and line_re.match(lt_obj.get_text())
+            and lt_obj.bbox[2]-lt_obj.bbox[0] > 0.65*page_width):   # sufficiently pans page width
+        return True
+
+    return False
+
+# crop an area of a PDF page, write to a PNG image file
+def crop(file_path, page_num, q_num, top, left, bottom, right):
+    pdf = PdfFileReader(file_path)
+    page = pdf.getPage(page_num)
+
+    page.mediaBox.lowerLeft = (left, bottom)
+    page.mediaBox.upperRight = (right, top)
+
+    # page.trimBox.lowerLeft = (left-5, bottom-5)
+    # page.trimBox.upperRight = (right+5, start+5)
+
+    # page.cropBox.lowerLeft = (left-20, bottom-20)
+    # page.cropBox.upperRight = (right+20, start+20)
+
     output = PdfFileWriter()
-    page = inputF.getPage(page_num-1)
-
-    page.mediaBox.lowerLeft = (40, end+5)
-    page.mediaBox.upperRight = (page_width-40, start-5)
-
-    page.trimBox.lowerLeft = (40, end+5)
-    page.trimBox.upperRight = (page_width-40, start-5)
-
-    page.cropBox.lowerLeft = (40, end+5)   # might not be necessary?
-    page.cropBox.upperRight = (page_width-40, start-5)
-
     output.addPage(page)
-
-    return output
-
-
-def splitPage(lt_objs, page_num):   # split PDF file into 'chunks' of PDF files, split by the 
-                                    # horizontal solid lines in the file
-    
-    # note - the origin for PDF coords is BOTTOM left; pdfminer bboxes define x0, y0, x1, y1,
-    # where x0,y0 is the bottom left corner of the box and x1, y1 is the top right corner
-
-    global crop_count
-    global margin_bottom
-    crop_start = margin_top   # first crop of page starts at top of page
-
-
-    for lt in lt_objs:   # traverse layout page objects
-
-        if (page_num == 1) and (isinstance(lt, pdfminer.layout.LTTextBoxHorizontal)):   # first page
-            margin_bottom = lt.bbox[3]   # keep overwriting until last text box on this page
-            print margin_bottom
-            continue
-
-        # check for line object, horizontal line, and line that pans sufficient width of page
-        if (isinstance(lt, pdfminer.layout.LTLine)) and (lt.bbox[1] == lt.bbox[3]) and (lt.bbox[2]-lt.bbox[0] > 0.75*page_width):
-            
-            # doc_has_lines = True   # maybe implement something like this to throw an error if no lines are detected in any pages
-
-            y_coord = lt.bbox[1]   # y position of this line
-            print 'found horizontal line at y-coord:', y_coord
-
-            if (crop_start-y_coord > 5):   # i.e. not a double line
-                crop_end = y_coord   # crop to this line
-                crop_count+=1
-                print 'cropping'
-                outputStream = file("crop"+str(crop_count)+".pdf", "wb")
-                crop(page_num,crop_start,crop_end).write(outputStream)   # write cropped area to pdf file
-                outputStream.close()
-                crop_start=crop_end   # next crop starts where this one finishes
-    
-    # crop to end of page if no (more) lines detected
-    crop_end=margin_bottom
-    crop_count+=1        
-    print 'cropping'
-    outputStream = file("crop"+str(crop_count)+".pdf", "wb")
-    crop(page_num,crop_start,crop_end).write(outputStream)   # write cropped area to pdf file
+    outputStream = file("../questions/q"+str(q_num)+".pdf", "wb")
+    output.write(outputStream)   # crop to end of page
     outputStream.close()
 
-    # looking to extract these distinct chunks:
-        # rubric
-        # question 1
-        # question 2
-        # ...
-        # question n
+    # write direct to image then crop image??
 
+    with Image(filename=('../questions/q'+str(q_num)+'.pdf'), resolution=300) as img:
+        img.background_color = Color('white')
+        img.alpha_channel = 'remove'
+        img.save(filename=('../questions/q'+str(q_num)+'.png'))
 
-crop_count = 0
+    return
 
-for i, page in enumerate(pages):   # traverse pages
-    interpreter.process_page(page)
-    layout = device.get_result()
-    lt_objs = layout._objs
-    if i==0:   # first page
-        lt_top = lt_objs[0]
-        margin_top = lt_top.bbox[1]   # set margin top
-        print margin_top
-    splitPage(lt_objs, i+1)
-
-
-
-# def parse_obj(lt_objs):
-
-#     # loop over the object list
-#     for obj in lt_objs:
-
-#         # if it's a textbox, print text and location
-#         if isinstance(obj, pdfminer.layout.LTTextBoxHorizontal):
-#             print "%6d, %6d, %s" % (obj.bbox[0], obj.bbox[1], obj.get_text().replace('\n', '_'))
-
-#         elif isinstance(obj, pdfminer.layout.LTLine):
-#             print "%s, %6d, %6d" % ("LINE", obj.bbox[0], obj.bbox[1])
-
-#         # if it's a container, recurse
-#         elif isinstance(obj, pdfminer.layout.LTFigure):
-#             parse_obj(obj._objs)
-
-# # loop over all pages in the document
-# for page in PDFPage.create_pages(document):
-
-#     # read the page into a layout object
-#     interpreter.process_page(page)
-#     layout = device.get_result()
-
-#     # extract text from this object
-#     parse_obj(layout._objs)
+if __name__=="__main__":   # entry point
+   main()
