@@ -1,7 +1,5 @@
 import sys, re
 
-from pyparsing import Word, alphas
-
 def main():
 
 	# regex to match line that hopefully contains time details e.g. 'Time allowed: 1.5 hours.'
@@ -16,7 +14,9 @@ def main():
 							r'.*calculators('   # match anything followed by word 'calculators'; open capture
 							r'[^.]*)')   # match remainder of line excluding dots; close capture
 
-	f = open(sys.argv[1]+".txt")   # open text file of past paper PDF
+	rubric_regex = re.compile(r'.*answer.*question.*\.')
+
+	f = open(sys.argv[1]+'.txt','rU')   # open text file of past paper PDF
 
 	for line in f:   # iterate over lines
 
@@ -30,6 +30,10 @@ def main():
 		if (calc_match):
 			parseCalc(calc_match.group(1))   # pass extracted details (e.g. 'are permitted') to function to interpret
 
+		rubric_match = rubric_regex.match(line)
+		if (rubric_match):
+			parseRubric(rubric_match.group())
+
 	f.close()
 
 	pass
@@ -41,6 +45,7 @@ def parseTime(line):   # function to interpret line containing time details, ret
 	hrWords = 'hours|hour|hrs|hr|hs|h'
 	minWords = 'minutes|minute|mins|min|ms|m'
 
+	# maybe want compiling outside of function?
 	hrmin_regex = re.compile(r'^(?:([0-9]{1,3}(?:\.[0-9]{0,2})?)'   # match numbers, optionally a decimal; capture in group 1 for hours
 							 r'\s{0,2}'   # match optional spaces in between
 							 r'(?:'+hrWords+'))?'   # match a word representing hours, whole hours part is optional
@@ -55,14 +60,17 @@ def parseTime(line):   # function to interpret line containing time details, ret
 	if (hrmin_match):
 		hrs = hrmin_match.group(1)
 		mins = hrmin_match.group(2)
+		if (mins != None):   # if mins are captured
+			if (int(mins) >= 60):   # convert to hours if mins more than 60
+				hrs = str(float(mins)/60)
 		if (hrs != None):   # if hours are captured
 			dec_match = re.match(r'([0-9]{1,2})\.([0-9]{1,2})',hrs)   # check against regex in case decimal number (e.g. '1.5' hours)
 			if (dec_match):
 				hrs = dec_match.group(1)   # convert into hours and minutes
-				mins = str(int((float('0.'+dec_match.group(2)))*60))
-		if (mins >= 60):
-			print 'need to convert to hours!'
-		print 'timeAllowed:', hrs, 'hours', mins, 'minutes'
+				mins = str(int(round((float('0.'+dec_match.group(2)))*60)))
+		if (mins == '0'):
+			mins = None
+		print 'timeAllowed: %s hours %s minutes' %(hrs,mins)
 	else:
 		print 'sorry, couldn\'t find a suitable time from line:', line
 
@@ -95,5 +103,23 @@ def parseCalc(line):   # function to interpret line containing calculator detail
 
 	return
 
+def parseRubric(line):
+	#print line
+
+	number = {'one':'1','two':'2','three':'3','four':'4','five':'5','six':'6','seven':'7','eight':'8','nine':'9','ten':'10'}
+
+	numqs_regex = re.compile(r'.*answer\s(?:any\s)?(one|two|three|four|five|six|seven|eight|nine|ten)(?:\squestion(?:s)?)'
+							 r'?(?:\sout\sof\s(two|three|four|five|six|seven|eight|nine|ten))?(?:\squestions)?\.$')
+
+	numqs_match = numqs_regex.match(line)
+
+	if (numqs_match):
+		choose = numqs_match.group(1)
+		out_of = numqs_match.group(2)
+		print 'rubric: any %s out of %s questions' %(choose,out_of)
+
+	return
+
 if __name__=="__main__":   # entry point
    main()
+
