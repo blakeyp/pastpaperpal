@@ -60,7 +60,7 @@ def getCandidates(text):
         word = lemmatizer.lemmatize(word)
         return word
 
-    def acceptable_word(word):
+    def acceptable_word(word):   # could do tf-idf stuff here? i.e. on individual words
         """Checks conditions for acceptable word: length, stopword."""
         accepted = bool(3 <= len(word) <= 40
             and word.lower() not in stopwords
@@ -151,31 +151,28 @@ def getKeywords(text, texts):   # text as list of candidate keywords, texts as l
 
     return
 
-
 getKeywords(texts[12], texts)
 
 
 # imported tfidf implemtation - seems to work differently:
 
-# dictionary = gensim.corpora.Dictionary(keywords)
+# dictionary = gensim.corpora.Dictionary(keywords)   # (keyword, id) pairs
 
-# corpus = [dictionary.doc2bow(text) for text in keywords]
+# corpus = [dictionary.doc2bow(text) for text in keywords]   # (id, count) pairs
 
 # tfidf = gensim.models.TfidfModel(corpus)
-# corpus_tfidf = tfidf[corpus]
+# corpus_tfidf = tfidf[corpus]   # returns lists of (id, tf-idf) pairs
 
-# d = {}
+# corpus_tfidf = list(corpus_tfidf)   # make list of lists
 
-# tfidfss=[]
+# d = {}; tfidfss=[]
 
-# for doc in corpus_tfidf:
-#     for id, value in doc:
-#         word = dictionary.get(id)
-#         d[word] = value
-#         tfidfss.append((word, d[word]))
-#     break
+# for id, value in corpus_tfidf[<specific list here>]:
+#   word = dictionary.get(id)
+#   d[word] = value
+#   tfidfss.append((word, d[word]))
 
-# tfidfss.sort(key=lambda x: x[1])
+# tfidfss.sort(key=lambda x: x[1], reverse=True)
 
 # for word,tfidf in tfidfss:
 #     print word,tfidf
