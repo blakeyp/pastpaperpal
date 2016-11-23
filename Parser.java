@@ -19,7 +19,7 @@ public class Parser {
 
 		try {
 
-			File file = new File(args[0]+".pdf");   // input PDF file
+			File file = new File(args[0]);   // input PDF file
 
 			//File output = new File(args[1]+".txt");   // output text file
 
@@ -27,9 +27,10 @@ public class Parser {
 
 			PDFTextStripper stripper = new PDFTextStripper();
 
-			stripper.setSortByPosition(true);   // performance implication!
+			stripper.setSortByPosition(true);
+
 			//stripper.setSpacingTolerance(0.9f);   // doesn't seem to make a difference?
-			stripper.setEndPage(1);
+			//stripper.setEndPage(1);
 
 			text = stripper.getText(doc).replaceAll("(?m)^[ \t]*\r?\n", "");   // remove empty lines/whitespace
 
@@ -39,31 +40,63 @@ public class Parser {
 			wr.close();*/
 
 		} catch (Exception e) {
-			
+			System.out.println(e.getMessage());
 		} finally {
    			if( doc != null) {
    				try {
     					doc.close();
+    					System.out.println("Don't worry - done closing now!");
    				} catch (Exception e) {
    					System.out.println(e.getMessage());
    				}
    			}
    		}
 
-   		System.out.println("----------------------------------------------------------------------------------");
 
-   		Scanner sc = new Scanner(text).useDelimiter("\n");   // iterate over text line by line
-   		while (sc.hasNext()) {
-   			String next = sc.next().toLowerCase();   // force case insensitivity
-   			if (next.matches(".*time.*:\\s*.*")) {   // check if line might contain time details
-   				parseTime(next);
-   			}
+   		// write text to file
+
+   		BufferedWriter writer = null;
+		try
+		{
+		    writer = new BufferedWriter(new FileWriter(args[1]));
+		    writer.write(text);
+
+		}
+		catch ( IOException e)
+		{
+		}
+		finally
+		{
+		    try
+		    {
+		        if ( writer != null)
+		        writer.close( );
+		    }
+		    catch ( IOException e)
+		    {
+		    }
+		}
+
+		// end
+
+		/* doing this in python now
+   		String[] lines = text.split("\n");
+   		String line;
+
+   		for (int i=0; i<lines.length;i++) {   // iterate over text line by line
+   			line = lines[i].toLowerCase().trim();   // force case insensitivity, remove leading/trailing whitespace
+   			//System.out.println(line);
+   			if (line.matches(".*time.*:\\s*.*"))   // check if line might contain time details
+   				parseTime(line);
+   		*/
+
+
    		}
-   		
-   		parseTime("time: <insert test case here>".toLowerCase());   // for testing
+
 
 	}
-
+	
+	/* doing this in python now
 	public static void parseTime(String next) {   // parses a line that is *suspected* to contain time details
 		Pattern pattern = Pattern.compile(".*time.*:\\s*(?:([0-9]{1,2}(?:\\.[0-9]{0,2})?)\\s*(?:hours|hour|hrs|hr|hs|h))?\\s*([0-9]{1,3})?.*");   // regex to match time details
 		Matcher matcher = pattern.matcher(next);
@@ -90,7 +123,10 @@ public class Parser {
 
 			System.out.println("Time found: " + h + " hours and " + m + " minutes");
 		}
+	
 
 	}
 
 }
+
+*/
