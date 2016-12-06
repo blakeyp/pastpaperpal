@@ -18,11 +18,11 @@ git commit -m "<description>" : commit changes with description
 
 -----
 
-git push origin <branch> : push changes of given branch to gitlab.com
+git commit -am "<description>" : add all untracked files and commit
 
 -----
 
-git hist : show log of changes
+git push (-u origin <branch>) : push changes of given branch to gitlab.com
 
 -----
 
@@ -38,4 +38,4 @@ git merge <branch> : merge current branch with given branch
 
 -----
 
-git pull origin <branch> : pull changes of given branch from gitlab.com
+git pull (origin <branch>) : pull changes of given branch from gitlab.com
