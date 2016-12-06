@@ -1,5 +1,6 @@
 # extracts questions from PDF paper at file path, writes cropped output 
 # to PDF files and PNG files, each labelled with question number
+# also calls java parser to extract text from the question
 
 from __future__ import division
 from pdfminer.pdfparser import PDFParser
@@ -17,9 +18,11 @@ from wand.image import Image, Color
 
 from PyPDF2 import PdfFileWriter, PdfFileReader, pdf
 
+import os, sys
+
 def main():
 
-    file_path = '../pastpapers/cs1180.pdf'
+    file_path = '../pastpapers/'+sys.argv[1]+'0.pdf'
 
     # Open a PDF file.
     open_pdf = open(file_path, 'rb')
@@ -54,7 +57,6 @@ def main():
     pages = list(PDFPage.create_pages(document))
     page_width = pages[0].mediabox[2]   # gives width each page
     page_height = pages[0].mediabox[3]   # gives height for each page; note, starts at bottom
-
 
     # note PDF origin is at bottom left corner of page
     # note bounding box is [lower_left_x, lower_left_y, upper_right_x, upper_right_y]
@@ -114,12 +116,13 @@ def main():
             else:   # looking for end of question
                 end_q_re = re.compile(r'\[[0-9]{0,3}(?:\s?marks?)?\]$')   # matches marks in a question e.g. '[5 marks]'
                 if is_divider(lt_obj, page_width, page_height):   # found question divider
-                    crop(file_path,i,look_for_q,crop_top,crop_left,crop_end,crop_right)
+                    crop(file_path,i,page_height,look_for_q,crop_top,crop_left,crop_end,crop_right)
                     look_for_q += 1   # moving on to look for next question
                     find_q = True
                     crop_right = 0   # reset
                 else:
                     if isinstance(lt_obj, pdfminer.layout.LTTextLineHorizontal):
+                        #print lt_obj, '\n'
                         # right *x* position of crop to be farthest right reaching text within question
                         if (lt_obj.bbox[2] > crop_right):
                             crop_right = lt_obj.bbox[2]
@@ -132,7 +135,7 @@ def main():
 
         if not find_q:   # got to end of page and found no divider
             # assume end of page to be the divider, do the crop with the values found above
-            crop(file_path,i,look_for_q,crop_top,crop_left,crop_end,crop_right)
+            crop(file_path,i,page_height,look_for_q,crop_top,crop_left,crop_end,crop_right)
             look_for_q+=1   # ready to look for next question
             find_q = True
             crop_right = 0   # reset
@@ -160,9 +163,13 @@ def is_divider(lt_obj, page_width, page_height):
     return False
 
 # crop an area of a PDF page, write to a PNG image file
-def crop(file_path, page_num, q_num, top, left, bottom, right):
+def crop(file_path, page_num, page_height, q_num, top, left, bottom, right):
     pdf = PdfFileReader(file_path)
     page = pdf.getPage(page_num)
+
+    #print '\nQUESTION %d' %q_num
+    #print 'lowerLeft: (%d,%d)' %(left,bottom)
+    #print 'upperRight: (%d,%d)' %(right,top)
 
     page.mediaBox.lowerLeft = (left, bottom)
     page.mediaBox.upperRight = (right, top)
@@ -186,6 +193,12 @@ def crop(file_path, page_num, q_num, top, left, bottom, right):
         img.alpha_channel = 'remove'
         img.save(filename=('../questions/q'+str(q_num)+'.png'))
 
+    # pass in as arguments: path_to_pdf, page_height, page_num, q_num, x0, y0, x1, y1
+    command = "java -cp '.:pdfbox.jar' ParserByArea %s %f %d %d %f %f %f %f" %(file_path,page_height,page_num,q_num,left,bottom,right,top)
+
+    #print command
+
+    os.system(command)
 
 if __name__=="__main__":   # entry point
    main()
