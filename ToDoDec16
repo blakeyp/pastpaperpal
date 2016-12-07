@@ -1,0 +1,7 @@
+- Tidy/refinement/testing of marks_extractor together with questions_extractor
+- Extend to capture (a few) common edge cases
+- Maybe write some scripts to do some testing?
+- Work out how marks info is going to be used at front-end
+    - e.g. to recommend time to spend on a question/part
+    - to emphasise number of marks allocated to a question/part
+    - also how is this info best stored?
