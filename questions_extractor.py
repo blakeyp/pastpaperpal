@@ -20,8 +20,10 @@ from PyPDF2 import PdfFileWriter, PdfFileReader, pdf
 
 import os, sys
 
-def main():
+import marks_extractor
 
+def main():
+    global file_path, page_height
     file_path = '../pastpapers/'+sys.argv[1]+'0.pdf'
 
     # Open a PDF file.
@@ -103,12 +105,26 @@ def main():
         # traverse sorted layout objects to identify starts and ends of questions
         for lt_obj in lt_objs:
 
+            print lt_obj
+
             if find_q:   # looking for start of a question
                 if isinstance(lt_obj, pdfminer.layout.LTTextLineHorizontal):
+
                     # regex to match start of question e.g. '2.'
                     q_re = re.compile(r''+str(look_for_q)+'\.')
                     if q_re.match(lt_obj.get_text()):
+
                         crop_top = lt_obj.bbox[3]   # top *y* position of crop
+                        
+                        # extract rubric as top of page to top of question 1
+                        # or take whole first page if Q1 starts on a later page
+                        # label rubric as q_num '0'
+                        if look_for_q==1:
+                            if i==0:
+                                crop(0,0,page_height,0,crop_top,page_width)
+                            else:
+                                crop(0,0,page_height,0,0,page_width)
+
                         crop_left = lt_obj.bbox[0]   # left *x* position of crop
                         crop_right = lt_obj.bbox[2]   # to be updated if necessary
                         find_q = False   # switch
@@ -116,7 +132,7 @@ def main():
             else:   # looking for end of question
                 end_q_re = re.compile(r'\[[0-9]{0,3}(?:\s?marks?)?\]$')   # matches marks in a question e.g. '[5 marks]'
                 if is_divider(lt_obj, page_width, page_height):   # found question divider
-                    crop(file_path,i,page_height,look_for_q,crop_top,crop_left,crop_end,crop_right)
+                    crop(i,look_for_q,crop_top,crop_left,crop_end,crop_right)
                     look_for_q += 1   # moving on to look for next question
                     find_q = True
                     crop_right = 0   # reset
@@ -135,10 +151,12 @@ def main():
 
         if not find_q:   # got to end of page and found no divider
             # assume end of page to be the divider, do the crop with the values found above
-            crop(file_path,i,page_height,look_for_q,crop_top,crop_left,crop_end,crop_right)
+            crop(i,look_for_q,crop_top,crop_left,crop_end,crop_right)
             look_for_q+=1   # ready to look for next question
             find_q = True
             crop_right = 0   # reset
+
+        marks_extractor.main(sys.argv[1])
 
 
 # match different types of horizontal lines that represent question dividers
@@ -163,7 +181,7 @@ def is_divider(lt_obj, page_width, page_height):
     return False
 
 # crop an area of a PDF page, write to a PNG image file
-def crop(file_path, page_num, page_height, q_num, top, left, bottom, right):
+def crop(page_num, q_num, top, left, bottom, right):
     pdf = PdfFileReader(file_path)
     page = pdf.getPage(page_num)
 

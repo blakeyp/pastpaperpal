@@ -54,7 +54,7 @@ public class ParserByArea {
 
 			area_strip.extractRegions(page);
 
-			System.out.println("QUESTION " + q_num + "\n" + area_strip.getTextForRegion("area") + "\n");
+			//System.out.println("QUESTION " + q_num + "\n" + area_strip.getTextForRegion("area") + "\n");
 
 			text = area_strip.getTextForRegion("area").replaceAll("(?m)^[ \t]*\r?\n", "");   // remove empty lines/whitespace
 
