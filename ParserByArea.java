@@ -16,7 +16,7 @@ public class ParserByArea {
 		//PDDocument doc = new PDDocument();
 		String text="";
 
-		int q_num = -1;
+		String name="";
 
 		PDDocument doc = null;
 
@@ -30,7 +30,7 @@ public class ParserByArea {
 
 			int page_num = Integer.parseInt(args[2]);
 
-			q_num = Integer.parseInt(args[3]);
+			name = args[3];
 
 			// lower-left of crop region as from Python program
 			double x0 = Double.parseDouble(args[4]);
@@ -77,7 +77,7 @@ public class ParserByArea {
    		BufferedWriter writer = null;
 		try
 		{
-		    writer = new BufferedWriter(new FileWriter("../questions/q"+q_num+".txt"));
+		    writer = new BufferedWriter(new FileWriter("../questions/"+name+".txt"));
 		    writer.write(text);
 
 		}
