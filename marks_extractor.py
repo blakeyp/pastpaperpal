@@ -7,6 +7,8 @@ def main(paper):
 	for file in os.listdir('../questions'):   # traverse text files of questions
 
 		if file.endswith('.txt'):
+			if file.endswith('0.txt'):
+				continue
 			f = open('../questions/'+file,'rU')
 			q_text = f.readlines()   # string containing question text
 
