@@ -1,4 +1,6 @@
 - Tidy/refinement/testing of marks_extractor together with questions_extractor
+- Extend questions_extractor to optionally reset find_q when new section found
+- Also, what about when question finishes on something other than text e.g. image?
 - Extend to capture (a few) common edge cases
 - Maybe write some scripts to do some testing?
 - Work out how marks info is going to be used at front-end
