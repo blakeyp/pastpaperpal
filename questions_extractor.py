@@ -4,7 +4,7 @@
 
 #from __future__ import division
 
-import sys, re, os
+import sys, re, os, shutil
 
 import pdfminer
 from pdfminer.pdfparser import PDFParser
@@ -20,6 +20,9 @@ from PyPDF2 import PdfFileWriter, PdfFileReader, pdf
 from wand.image import Image, Color
 
 def main():
+
+    shutil.rmtree('../questions')   # clear contents of questions dir
+    os.mkdir('../questions')
 
     file_path = '../pastpapers/'+sys.argv[1]+'0.pdf'   # takes one argument, a CS module code
     open_pdf = open(file_path, 'rb')
@@ -174,7 +177,8 @@ class Crop:
     def do_crop(self, file_path, page_num, page_height):
         save_as = '../questions/'+self.name
         # pass in as arguments: path_to_pdf, page_height, page_num, q_num, x0, y0, x1, y1
-        command = "java -cp '.:pdfbox.jar' ParserByArea %s %f %d %s %f %f %f %f" %(file_path,page_height,page_num,self.name,self.left,self.bottom,self.right,self.top)
+        command = "java -cp '.:pdfbox.jar' ParserByArea %s %f %d %s %f %f %f %f" \
+        %(file_path,page_height,page_num,self.name,self.left,self.bottom,self.right,self.top)
         os.system(command)
         # could write direct to an image and then crop with parameters? - depends if using image or PDF for web app
         if not self.name == 'rubric':
