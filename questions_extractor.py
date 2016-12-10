@@ -4,9 +4,7 @@
 
 #from __future__ import division
 
-import sys, re
-
-from cropping import Crop
+import sys, re, os
 
 import pdfminer
 from pdfminer.pdfparser import PDFParser
@@ -17,23 +15,29 @@ from pdfminer.pdfdevice import PDFDevice
 from pdfminer.layout import LAParams
 from pdfminer.converter import PDFPageAggregator
 
+from PyPDF2 import PdfFileWriter, PdfFileReader, pdf
+
+from wand.image import Image, Color
+
 def main():
 
-    file_path = '../pastpapers/'+sys.argv[1]+'0.pdf'
+    file_path = '../pastpapers/'+sys.argv[1]+'0.pdf'   # takes one argument, a CS module code
+    open_pdf = open(file_path, 'rb')
 
     # initialisation stuff for the pdfminer package
-    open_pdf = open(file_path, 'rb')
     parser = PDFParser(open_pdf)
     document = PDFDocument(parser)
+
     if not document.is_extractable:
         raise PDFTextExtractionNotAllowed
+
     rsrcmgr = PDFResourceManager()
     device = PDFDevice(rsrcmgr)
     laparams = LAParams()
     device = PDFPageAggregator(rsrcmgr, laparams=laparams)
     interpreter = PDFPageInterpreter(rsrcmgr, device)
-    pages = list(PDFPage.create_pages(document))
 
+    pages = list(PDFPage.create_pages(document))
     page_width = pages[0].mediabox[2]   # gives width each page
     page_height = pages[0].mediabox[3]   # gives height for each page; note, starts at bottom!
 
@@ -55,7 +59,7 @@ def main():
     for i, page in enumerate(pages):   # traverse pages
         
         interpreter.process_page(page)
-        layout = device.get_result()
+        layout = device.get_result()   # get page items and their positions
 
         # populate list of layout objects, extracting child text line objects of text box objects
         lt_objs=[]
@@ -70,7 +74,7 @@ def main():
         lt_objs.sort(key=lambda x: (x.bbox[1]+((x.bbox[1]-x.bbox[3])/2)), reverse=True)
 
         # identify position of 'top' of footer on this page
-        # used to identify question crop end point when there is no divider
+        # used to identify question crop bottom point when there is no divider
         # top of footer *99% of the time* consists of something along the lines of 'continued' or 'end'
         in_footer = []
         for lt_obj in reversed(lt_objs):   # find last 3 non-whitespace text items on the page 
@@ -122,7 +126,6 @@ def main():
                     crop.do_crop(file_path, i, page_height)
                     find = 'text'; find_q += 1   # now can look for next question
 
-
         if find == 'divider':   # got to end of page and found no divider
             # assume end of page to be the divider, do crop with the parameters as set above
             crop.do_crop(file_path, i, page_height)
@@ -134,7 +137,6 @@ def main():
         raise Exception("FATAL ERROR: no rubric found!")
     elif (find_q == 1):
         raise Exception("FATAL ERROR: no questions found!")
-
 
 # match different types of horizontal lines that represent question dividers
 def is_divider(lt_obj, page_width, page_height):
@@ -154,5 +156,42 @@ def is_divider(lt_obj, page_width, page_height):
         return True
     return False
 
+class Crop:
+
+    def __init__(self, name, top=None, left=None, bottom=None, right=None):
+        self.name = name
+        self.top = top
+        self.left = left
+        self.bottom = bottom
+        self.right = right
+
+    def set_bottom(self, val):
+        self.bottom = val
+
+    def set_right(self, val):
+        self.right = val
+
+    def do_crop(self, file_path, page_num, page_height):
+        save_as = '../questions/'+self.name
+        # pass in as arguments: path_to_pdf, page_height, page_num, q_num, x0, y0, x1, y1
+        command = "java -cp '.:pdfbox.jar' ParserByArea %s %f %d %s %f %f %f %f" %(file_path,page_height,page_num,self.name,self.left,self.bottom,self.right,self.top)
+        os.system(command)
+        # could write direct to an image and then crop with parameters? - depends if using image or PDF for web app
+        if not self.name == 'rubric':
+            pdf = PdfFileReader(file_path)
+            page = pdf.getPage(page_num)
+            page.mediaBox.lowerLeft = (self.left, self.bottom)
+            page.mediaBox.upperRight = (self.right, self.top)
+            output = PdfFileWriter()
+            output.addPage(page)
+            outputStream = file(save_as+'.pdf', 'wb')
+            output.write(outputStream)   # crop to end of page
+            outputStream.close()
+            with Image(filename=(save_as+'.pdf'), resolution=300) as img:
+                img.background_color = Color('white')
+                img.alpha_channel = 'remove'
+                img.save(filename=(save_as+'.png'))
+
 if __name__=="__main__":   # entry point
    main()
+
