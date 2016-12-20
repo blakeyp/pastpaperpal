@@ -105,10 +105,13 @@ def main():
                     else:   # looking for start of question
                         sect_re = re.compile(r'\s*section\s'+find_sect)
                         q_re = re.compile(r''+str(find_q)+'\.')
+                        ### qs_re = re.compile(r''+str(find_q-num_qs)+'\.')   # for if there are sections
                         if sect_re.match(text):   # first check for new section
                             print 'SECTION: '+find_sect.upper()+' FOUND BEFORE Q: '+str(find_q)
                             find_sect = chr(ord(find_sect)+1)   # increment
-                        elif q_re.match(text):
+                            ### num_qs = find_q-1   # number of questions so far
+                            ### sections = True   # need to optionally reset find_q if has sections!
+                        elif q_re.match(text): ### or (sections and qs_re.match(text)):
                             crop = Crop('q'+str(find_q),top=lt_obj.bbox[3], left=lt_obj.bbox[0], right=lt_obj.bbox[2])
                             find = 'divider'
             
@@ -120,14 +123,31 @@ def main():
                         if (this_right > crop.right):
                             crop.set_right(this_right)
                         # set crop_bottom to be at last bit of text before the position of the footer
-                        # what if the question ends on some other object i.e. not text ?!
+                        # what if the question ends on some other object i.e. not text ?!   ### see below!
                         this_bottom = lt_obj.bbox[1]
                         if (this_bottom > footer):
                             crop.set_bottom(this_bottom)
+                    ### also check here for parts! - just to find start of each part to use as crop cut point between parts!
+                    ### maybe store these 'cut points' between parts as a list or something in the crop class:
+                    
+                    ### if text matches '(next_part)'
+                    ###     if part_cut is None   # i.e. no marks thingy found
+                    ###         part_cut = text.top_pos   # have to default to top of this new part (yes a little dodgy)
+                    ###     crop.add_part_cut(part_cut)
+                    ### elif text matches '[marks]'   # find last marks declaration before start of next part
+                    ###     part_cut = text.bottom_pos
+                    
+                    ### need to add final part_cut in 'is_divider()'
+                    
+                    ### note, can't extract marks here since the text extraction is not good enough
+                    
                 elif is_divider(lt_obj, page_width, page_height):
                     # found divider so now can do crop with the parameters as set above
                     crop.do_crop(file_path, i, page_height)
                     find = 'text'; find_q += 1   # now can look for next question
+                ### elif ...
+                ### need to check for a few other things here in the case that a question does not end with text but with
+                ### e.g. a line (e.g. part of a table so that's not a divider), an image, etc. --> LTLine LTFigure LTImage LTRect
 
         if find == 'divider':   # got to end of page and found no divider
             # assume end of page to be the divider, do crop with the parameters as set above
