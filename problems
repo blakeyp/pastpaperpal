@@ -1,2 +1,4 @@
 Current problems that aren't going to be fixed now but could be fixed later down the line if necessary:
    - do not currently cater for papers with questions that go across/over pages (but this is rare as per the guidelines)
+   
+   - there is an inherent problem with the fact that two text items that appear on the same line (e.g. question text and marks thingy) are sometimes at *slightly* different y positions according to pdfminer - this is a particular problem for the parts cutter which is fooled into thinking a part starts later than it does - to overcome this it will be best to maybe implement my own sorting function that regards text items within a given y tolerance to be at the same y position, or alternatively to make my own class of layout objects (!) which might be necessary if bbox cannot be assigned to
