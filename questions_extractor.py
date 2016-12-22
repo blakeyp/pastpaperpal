@@ -54,6 +54,9 @@ def main():
     find_q = 0   # question to find (let question '0' be the rubric)
     find_sect = 'a'   # section to find
 
+    num_qs = 0   # to tally number of questions before a new section
+    has_sections = False   # whether this paper is formed of multiple 'Sections' or not
+
     # define regexs (well, at least the ones that I can define out here)
     rubr_re = re.compile(r'.*time.*:')   # matches line containing 'time...: ' to identify rubric
     whitespace_re = re.compile(r'\s*$')
@@ -105,13 +108,13 @@ def main():
                     else:   # looking for start of question
                         sect_re = re.compile(r'\s*section\s'+find_sect)
                         q_re = re.compile(r''+str(find_q)+'\.')
-                        ### qs_re = re.compile(r''+str(find_q-num_qs)+'\.')   # for if there are sections
+                        qs_re = re.compile(r''+str(find_q-num_qs)+'\.')   # for if there are sections (since numbering may be reset)
                         if sect_re.match(text):   # first check for new section
                             print 'SECTION: '+find_sect.upper()+' FOUND BEFORE Q: '+str(find_q)
                             find_sect = chr(ord(find_sect)+1)   # increment
-                            ### num_qs = find_q-1   # number of questions so far
-                            ### sections = True   # need to optionally reset find_q if has sections!
-                        elif q_re.match(text): ### or (sections and qs_re.match(text)):
+                            num_qs = find_q-1   # number of questions to this point
+                            has_sections = True
+                        elif q_re.match(text) or (has_sections and qs_re.match(text)):
                             crop = Crop('q'+str(find_q),top=lt_obj.bbox[3], left=lt_obj.bbox[0], right=lt_obj.bbox[2])
                             find = 'divider'
             
@@ -127,6 +130,7 @@ def main():
                         this_bottom = lt_obj.bbox[1]
                         if (this_bottom > footer):
                             crop.set_bottom(this_bottom)
+
                     ### also check here for parts! - just to find start of each part to use as crop cut point between parts!
                     ### maybe store these 'cut points' between parts as a list or something in the crop class:
                     
@@ -140,14 +144,14 @@ def main():
                     ### need to add final part_cut in 'is_divider()'
                     
                     ### note, can't extract marks here since the text extraction is not good enough
-                    
+
+                # assumes that questions finish on text (which appears always to be the case e.g. even images mostly have captions)
+
                 elif is_divider(lt_obj, page_width, page_height):
                     # found divider so now can do crop with the parameters as set above
                     crop.do_crop(file_path, i, page_height)
                     find = 'text'; find_q += 1   # now can look for next question
-                ### elif ...
-                ### need to check for a few other things here in the case that a question does not end with text but with
-                ### e.g. a line (e.g. part of a table so that's not a divider), an image, etc. --> LTLine LTFigure LTImage LTRect
+
 
         if find == 'divider':   # got to end of page and found no divider
             # assume end of page to be the divider, do crop with the parameters as set above
