@@ -59,6 +59,7 @@ def main():
 
     part = 'b'   # part of question to look for
     has_parts = False
+    part_cut = None   # might be None if no standard marks declaration is found
 
     last_text_poss = []
 
@@ -86,7 +87,8 @@ def main():
         # sort layout objects by avg y then avg x position on page
         #lt_objs.sort(key=lambda x: ((x.bbox[1]+x.bbox[3])/2)), reverse=True)
 
-        lt_objs.sort(key=lambda x: (((page_height-x.bbox[1])+(page_height-x.bbox[3]))/2,(x.bbox[0]+x.bbox[2])/2))
+        #lt_objs.sort(key=lambda x: (((page_height-x.bbox[1])+(page_height-x.bbox[3]))/2,(x.bbox[0]+x.bbox[2])/2))
+        lt_objs.sort(key=lambda x: (page_height-x.bbox[3],(x.bbox[0]+x.bbox[2])/2))
 
         # identify position of 'top' of footer on this page
         # used to identify question crop bottom point when there is no divider
@@ -105,14 +107,14 @@ def main():
 
         # traverse sorted layout objects to identify starts and ends of rubric/questions
         for lt_obj in lt_objs:
-
+            print lt_obj
             if find == 'text':   # looking for rubric/start of a question
                 if isinstance(lt_obj, pdfminer.layout.LTTextLineHorizontal):
                     text = lt_obj.get_text().lower()
                     if find_q == 0:   # i.e. looking for rubric
                         if rubr_re.match(text):
                             # set new Crop
-                            crop = Crop('rubric',top=page_height, left=0, right=page_width)
+                            crop = Crop('rubric',top=page_height, left=0, right=page_width, bottom=footer)
                             find = 'divider'   # now want to find where this ends
                     else:   # looking for start of question
                         sect_re = re.compile(r'\s*section\s'+find_sect)
@@ -125,19 +127,24 @@ def main():
                             has_sections = True
                         elif q_re.match(text) or (has_sections and qs_re.match(text)):
                             crop = Crop('q'+str(find_q),top=lt_obj.bbox[3], left=lt_obj.bbox[0], right=lt_obj.bbox[2])
+                            #print 'here:', lt_obj, crop.right
                             find = 'divider'
             
             elif find == 'divider':
                 if isinstance(lt_obj, pdfminer.layout.LTTextLineHorizontal):
                     text = lt_obj.get_text();
+                    #print text
                     if not whitespace_re.match(text):   # ignore whitespace
                         # reset crop_right if this text stretches further than current crop point
                         this_right = lt_obj.bbox[2];
+                       # print crop.right, lt_obj
                         if (this_right > crop.right):
                             crop.set_right(this_right)
                         # set crop_bottom to be at last bit of text before the position of the footer
                         # assumes that questions finish on text (which appears always to be the case e.g. even images mostly have captions)
                         this_bottom = lt_obj.bbox[1]
+                        print footer
+                        print this_bottom
                         if (this_bottom > footer):
                             crop.set_bottom(this_bottom)
 
@@ -148,6 +155,11 @@ def main():
                     # nice to instead itegrate this on the web front-end using whatever is available to do so, in
                     # which case all that will be required is the cut point for each part within each question
                     # i.e. in pt units which hopefully can be used on the web side
+
+                    # compare issues this poses i.e. crop to next part vs. crop to suspected end of part
+                    # see CS249 Q5 vs. CS130 SBQ1
+                    # currently crop to suspected end of part (*think* that's better)
+
                     if re.match(r'.{0,10}\('+part+'\)', text):   # find part looking for
                         has_parts = True
                         if part_cut is None:
@@ -209,8 +221,9 @@ def is_divider(lt_obj, page_width, page_height):
             and lt_obj.bbox[2]-lt_obj.bbox[0] > 0.65*page_width):   # sufficiently pans page width
         return True
     if (isinstance(lt_obj, pdfminer.layout.LTRect)   # is a rectangle object
-            and round(lt_obj.bbox[3])-round(lt_obj.bbox[1]) <= 3   # is sufficiently thin
+            and round(lt_obj.bbox[3])-round(lt_obj.bbox[1]) <= 1   # is sufficiently thin
             and lt_obj.bbox[2]-lt_obj.bbox[0] > 0.65*page_width):   # sufficiently pans page width
+        print 'here', round(lt_obj.bbox[3])-round(lt_obj.bbox[1])
         return True
     # regex to match at least 70 underscores (sometimes used to represent lines!!)
     line_re = re.compile(r'_{70,}')
