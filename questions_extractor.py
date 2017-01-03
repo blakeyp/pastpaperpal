@@ -113,8 +113,14 @@ def main():
                     text = lt_obj.get_text().lower()
                     if find_q == 0:   # i.e. looking for rubric
                         if rubr_re.match(text):
+
+                            # think I need a separate method for attempting to get the rubric because the problem is
+                            # that the end of it is not always found (c.f. CS257) and then this messes up finding
+                            # the questions - could just look for rubric in first page but it's sort of nice to get
+                            # it and encapsulate it where possible - but maybe I should just leave it?
+
                             # set new Crop
-                            crop = Crop('rubric',top=page_height, left=0, right=page_width, bottom=footer)
+                            crop = Crop('rubric',top=page_height, left=0, right=page_width)
                             find = 'divider'   # now want to find where this ends
                     else:   # looking for start of question
                         sect_re = re.compile(r'\s*section\s'+find_sect)
@@ -159,22 +165,22 @@ def main():
                     # compare issues this poses i.e. crop to next part vs. crop to suspected end of part
                     # see CS249 Q5 vs. CS130 SBQ1
                     # currently crop to suspected end of part (*think* that's better)
+                    if find_q is not 0:
+                        if re.match(r'.{0,10}\('+part+'\)', text):   # find part looking for
+                            has_parts = True
+                            if part_cut is None:
+                                part_cut = last_text_pos
+                            print 'Q' + str(find_q) + ' NEW PART CUT: '+str(part_cut)   # this needs storing somewhere - where?!
+                            crop2 = Crop('q'+str(find_q)+chr(ord(part)-1),top=crop.top, left=crop.left, right=crop.right)
+                            crop2.set_bottom(part_cut)
+                            crop2.do_crop(file_path, i, page_height)
+                            part_cut = None
+                            part = chr(ord(part)+1)   # increment part to look for
 
-                    if re.match(r'.{0,10}\('+part+'\)', text):   # find part looking for
-                        has_parts = True
-                        if part_cut is None:
-                            part_cut = last_text_pos
-                        print 'Q' + str(find_q) + ' NEW PART CUT: '+str(part_cut)   # this needs storing somewhere - where?!
-                        crop2 = Crop('q'+str(find_q)+chr(ord(part)-1),top=crop.top, left=crop.left, right=crop.right)
-                        crop2.set_bottom(part_cut)
-                        crop2.do_crop(file_path, i, page_height)
-                        part_cut = None
-                        part = chr(ord(part)+1)   # increment part to look for
-
-                    if re.match(r'.*\[([0-9]{1,2})\]\s*$', text):   # find last marks declaration before start of next part
-                        part_cut = lt_obj.bbox[1]   # keeps overwriting
-                    else:
-                        last_text_pos = lt_obj.bbox[1]   # position of last bit of text before new part; keeps overwriting
+                        if re.match(r'.*\[([0-9]{1,2})\]\s*$', text):   # find last marks declaration before start of next part
+                            part_cut = lt_obj.bbox[1]   # keeps overwriting
+                        else:
+                            last_text_pos = lt_obj.bbox[1]   # position of last bit of text before new part; keeps overwriting
 
                 elif is_divider(lt_obj, page_width, page_height):
                     # found divider so now can do crop with the parameters as set above
