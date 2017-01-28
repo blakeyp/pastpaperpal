@@ -1,0 +1,28 @@
+2. (a) Explain how the following heuristics operate in a backtracking search.
+• minimum remaining values,
+• degree heuristic, and
+• least constraining value. [6]
+(b) Suppose that you are given a CSP represented by the map shown below, containing
+variables {A,B,C,D,E, F} corresponding to regions in the map, such that regions
+should be coloured from the set {red, green, blue} with the constraint that adjacent
+regions must not be the same colour.
+C
+A
+B
+D F
+E
+i. Give the constraint graph for this problem. [3]
+ii. Use the backtracking algorithm with forward checking to solve this CSP, using
+appropriate heuristics. Show all the steps carried out and justify the choices
+made with regard to attribute selection and value assignment at each stage. [6]
+(c) With reference to the following constraint graph, explain how cutset conditioning can
+be used to make the search more efficient, and state numerically the upper bound on
+the number of nodes expanded with and without cutset conditioning. Assume each
+variable is to be assigned a value from the set {low,medium, high}. [6]
+D E F
+A J
+B M K
+C L
+G H I
+(d) Describe how properties of an environment, such as its observability, impact on the
+design for an intelligent agent. [4]

@@ -1,0 +1,1 @@
+10. Explain how digital signatures protect data integrity.       [4] 

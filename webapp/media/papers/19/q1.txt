@@ -1,0 +1,13 @@
+1. The HyperText Markup Language (HTML) is an example of a semantic markup.
+(a) Define the term semantic markup. [2]
+(b) Why is it important to write valid HTML? [3]
+(c) Write a short document that is valid HTML 5. [5]
+(d) Cascading Style Sheets (CSS) support the styling of HTML documents.
+i. Describe with the aid of an example the different ways in which styling can be
+applied to elements. [3]
+ii. Which of the methods in part 1(d)i promotes best reuse of styles? [2]
+(e) Online system typical communicate with other online systems using common data
+exchange formats.
+i. Describe with the aid of an example two common data exchange formats used
+on the Web. [8]
+ii. What are the advantages of using common data exchange formats? [2]

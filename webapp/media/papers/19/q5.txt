@@ -1,0 +1,16 @@
+5. Application architecture and intrastructure strategy can have serious implications on the
+performance of Web Applications.
+(a) The Domain Name System (DNS) is an essential component of the Internet.
+i. Explain how the domain www.wikipedia.com is resolved. [4]
+ii. To prevent overloading of the system, various DNS caches exist. Describe which
+caches may be used when looking up a domain. [4]
+iii. How does the time-to-live (TTL) affect caching of DNS entries? [2]
+(b) Define the terms response time and perceived response time. [2]
+(c) Asynchronous JavaScript and XML (AJAX) techniques can improve the perceived
+response time of an application. Explain how this works with the aid of an example.
+[4]
+(d) Sketch a graph of throughput against concurrent requests, and describe the distinct
+regions. [3]
+(e) Scaling out and scaling up are two strategies for increasing the service capacity of
+web applications. Define each of these terms, and give advantages and disadvantages
+of each. [6]

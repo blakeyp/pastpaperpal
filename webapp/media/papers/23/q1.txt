@@ -1,0 +1,5 @@
+1. (a) Use the GCD algorithm to compute the greatest common divisor of 546 and 416 [4]
+(b) Use your working for the previous part to express 416/(-546) as a rational m/n where [2]
+n ≥ 1 and gcd(m,n)=1
+(c) Express 131 in binary notation. [2]
+Express −131 in 2’s complement notation, using 10 bit representation.

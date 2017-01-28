@@ -1,0 +1,9 @@
+5. Consider the following relation schema:
+CAR SALE(Car#,Date Sold , SalesPerson#,Commission%,Discount Amt),
+where {Car#, SalesPerson#} is the primary key (we assume that a car may be sold by
+multiple salespeople). Assume the following additional dependencies:
+Date Sold → Discount Amt ,
+SalesPerson#→ Commission%.
+(a) Based on the primary key, determine whether this relation is in 1NF, 2NF, 3NF. [9]
+(b) Perform any normalisation steps required to bring it into 3NF. [16]
+Total mark for this question: 25

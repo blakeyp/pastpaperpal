@@ -1,0 +1,12 @@
+4. (a) Determine whether the following set of vectors are linearly independent in R3: [2]
+{(2, 3, 4), (2, 1,−1), (−6, 1, 13)}
+(b) Determine whether the following transformations are linear transformations: [3]
+T : R2 → R2 defined by T (x, y) = (2x− 3y, 3x− 2y)
+T : R2 → R3 defined by
+( )
+(x+ y)2 − (x− y)2 x2 − y2
+T (x, y) = , (x+ iy)(x− iy)− (y + ix)(y − ix),
+x x+ y
+(c) Find the dimension, and a basis, of the subspace spanned by the following set of [3]
+vectors:
+{(2, 0, 1,−4), (−1,−1, 0, 2), (1,−3, 2,−2), (0, 0,−2, 0), (0, 4,−2, 0)} ⊆ R3.

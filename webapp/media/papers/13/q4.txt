@@ -1,0 +1,17 @@
+4. (a) Explain, using examples, how forward and backward chaining control reasoning in
+rule-based systems. [3]
+(b) i. What is meant by conflict resolution in the context of rule-based systems? [2]
+ii. Describe how and why refractoriness and specificity are useful techniques for
+conflict resolution. [3]
+(c) Ian and Jen enter a weekly cross-country running race. Ian offers Jen a bet that
+whoever loses the race between them will buy the post-race drinks. They usually
+spend £30 on drinks, which they split equally (if there is no bet). Jen assesses her
+chances of winning, which depends on whether the course is muddy. If the course is
+muddy Jen estimates she has a 6/10 chance of winning and if it is not muddy she has
+a 3/10 chance. The probability of a muddy course is 7/10.
+i. Show a decision tree for the problem. [4]
+ii. Solve the decision tree to determine whether Jen should accept the bet. [6]
+iii. Represent the problem using an influence diagram. [3]
+iv. Extend the influence diagram to show how you would incorporate the availability
+of a pre-race course inspection. What additional information will be required to
+solve the new influence diagram? [4]

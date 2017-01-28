@@ -1,0 +1,11 @@
+1. (a) Explain why tasks are assumed to be independent in the Rate Monotonic 
+Scheduling Algorithm (RMA).       [3] 
+(b) Consider the following task set, where each task is represented as (execution 
+time; period): T1 = (10; 50); T2 = (20; 75); T3 = (10; 100) 
+(i) Calculate the utilization of the task set, assuming all tasks are released 
+at t = 0.        [5] 
+(ii) Derive the set of conditions to determine whether the task set is RMA-
+schedulable.        [7] 
+(c) Given the following task set: T1 = (10; 40); T2 = (20; 75); T3 = (35; 100); 
+T4 = (15,150), determine whether there is any task that misses its deadline. 
+Justify your answer and develop a schedule to illustrate this.            [10] 

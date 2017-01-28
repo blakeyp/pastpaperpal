@@ -1,0 +1,14 @@
+3. (a) Explain, using appropriate pseudo-code, how the bounded waiting property of 
+the critical section problem can be guaranteed.    [5] 
+(b) Using a two-process system, develop an example to illustrate the nature of the 
+problem that arises if the test and set primitive to ensure mutual exclusion is 
+not executed atomically.       [5] 
+(c) Explain when a page fault occurs in a virtual memory system and how such a 
+fault is handled.        [5] 
+(d) You are given the following reference string for referenced page numbers: 
+7, 1, 0, 2, 3, 4, 0, 1, 3, 2, 0, 2, 7, 4, 0, 1, 5, 4, 0, 3 
+Assume that a process can have up to 4 pages in memory at any time and that 
+memory is initially empty. By clearly showing your working, calculate the hit 
+ratio when the following page replacement policies are used: 
+(i) First In First Out (FIFO).       [5] 
+(ii) Least Recently Used (LRU).      [5] 

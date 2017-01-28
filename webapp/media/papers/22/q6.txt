@@ -1,0 +1,20 @@
+6. (a) (i) Explain the term protocol, and describe the purpose and operation of a 
+   ‘layered protocol’ structure.      [4] 
+  (ii) A system has an n-layer protocol hierarchy. Applications generate  
+   messages of length M bytes. At each of the layers, an h-byte header 
+   is added. What fraction of the network bandwidth is filled with  
+   headers?        [2] 
+ (b) (i) Describe the TCP/IP Reference Model and briefly mention the purpose 
+of each layer. [5] 
+  (ii) Explain the term jitter, and state one application for which it is  
+   important to minimise jitter.      [3] 
+(iii) Describe how TCP segment flow is controlled using a sliding window.
+         [4] 
+(iv) In TCP, why is efficiency reduced if an application is producing too 
+little data at a time for TCP transmission, or an application is 
+consuming too little of the data received. Suggest solutions that can be 
+employed to reduce these inefficiencies.     [4] 
+(v) The round-trip time between two hosts has been found to be 64ms. If 
+the bit rate of the link between the hosts is 480 kbps, what minimum 
+TCP window size (in bytes) is required such that, when data is 
+continually being sent, the buffers will not overflow?  [3] 

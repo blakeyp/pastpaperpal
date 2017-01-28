@@ -1,0 +1,10 @@
+2. Write the following queries in SQL for the COMPANY database of Figure 1.
+(a) Retrieve all locations of Department No. 1. [5]
+(b) List without any repetitions the first names of all departmental managers. [5]
+(c) Retrieve the name of the department that controls Project No. 10 along with the ad-
+dress of its manager. [5]
+(d) Retrieve the department numbers of all departments in which every employee is
+female. [5]
+(e) For all departments with both male and female employees, list the department number
+followed by the total number of employees. [5]
+Total mark for this question: 25

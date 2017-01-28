@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<style type="text/css">
+	#wrapper {
+	    width: 505px;
+	    margin: auto;   /* centred */
+	    overflow: hidden;   /* clipped */
+	}
+	iframe {
+	    margin-top: -5px;   /* crops top */
+	    margin-left: -7px;
+	    margin-bottom: -15px;
+	    width: 519px;   /* sets width + an amount to crop right-hand scroll bar */
+	    height: 348px;   /* sets height - how to get this from pdf? */
+	}
+	#cover {position: fixed; height: 100%; width: 100%; top:0; left:0; background: white; z-index:9999;}
+</style>
+
+<script>
+	$(document).ready(function(){
+		$('#cover').delay(600).hide(0);
+	});
+
+	console.log(document.documentElement.clientWidth);
+
+	$( window ).resize(function() {
+		console.log(document.defaultView.getComputedStyle(document.documentElement,null).width);
+	});
+
+</script>
+
+<div class="row">
+
+<div class="col-md-3"></div>
+
+<div class="col-md-6">
+
+	<h1>{{ paper.module_code }} 20{{ paper.year }} paper</h1>
+
+	<p>This paper has {{ rubric.total_qs }} questions.</p>
+
+
+	<div class="panel panel-default" style="width: 560px; margin:auto;">
+	  <div class="panel-heading">Example Question</div>
+	  <div class="panel-body">   <!-- could use padding here to set padding around pdf -->
+	  	<div id="cover">loading...</div>
+	  	<div id="wrapper">
+	  	<iframe src="/media/papers/3/q1.pdf#toolbar=0"></iframe></div> <!-- can control zoom! -->
+	  </div>
+	</div>
+
+
+
+	<br><br><br>
+	<iframe frameborder="0" src="http://docs.google.com/gview?url=media/papers/6/q1.pdf&amp;embedded=true" style="width:700px; height:700px;"></iframe>
+
+	<iframe src='/media/papers/6/q1.pdf#toolbar=0&navpanes=0&scrollbar=0' type='application/pdf' width="70%" height="100%"></iframe>
+
+	<img src='/media/papers/17/q1.png'>
+	<div id="pdf">
+	</div>
+
+
+
+
+
+
+	<div class="panel-group" id="accordion">
+
+		{% for i in q_range %}
+		<div class="panel panel-default">
+
+			<div class="panel-heading">
+				<h4 class="panel-title"><a data-toggle="collapse" href="#collapse{{i}}">Question {{i}} <a href="{% url 'app:similar_qs' paper.module_code paper.year i %}">See similar questions</a></h4>
+			</div>
+
+			<div id="collapse{{i}}" class="panel-collapse collapse">
+				<div class="panel-body">
+
+				<!-- <div class='embed-responsive' style='padding-bottom:55%'>
+				    <object data='/media/papers/{{paper.id}}/q{{i}}.pdf#toolbar=0&navpanes=0&scrollbar=0' type='application/pdf'></object>
+				</div> -->
+
+					<div class="aspect-ratio"><object data='/media/papers/{{paper.id}}/q{{i}}.pdf#toolbar=0&navpanes=0&scrollbar=0' type='application/pdf' width="100%"></object></div>
+
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+
+	</div>
+
+<div class="col-md-3"></div>
+
+</div>
+
+{% endblock %}

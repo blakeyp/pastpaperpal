@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Similar Questions</title>
+	<meta charset="utf-8"> 
+</head>
+
+{% load static %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+
+<div class="container">
+	
+	<h1>Found top {{get_top}} similar questions</h1>
+
+
+<div class="panel-group" id="accordion">
+
+{% for q in similar_qs %}
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse" href="#collapse{{forloop.counter}}"> {% if forloop.counter == 1 %} The question comparing to: {% else %} Similar question {{forloop.counter0}}: {% endif %} 20{{ q.0.year }} Q{{ q.1 }}</a></h4>
+</div>
+<div id="collapse{{forloop.counter}}" class="panel-collapse collapse in">
+<div class="panel-body"><img class='img-responsive' src='/media/papers/{{q.0.pk}}/q{{q.1}}.png' width="90%" style="margin:3%"></div>
+</div>
+</div>
+{% endfor %}
+
+</div>
+
+
+</div>
+
+</html>

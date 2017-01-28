@@ -1,0 +1,9 @@
+7. (a) Prove that there is no rational x for which x3 = 4. [5]
+(b) Which part of the argument does not work if we try to follow the same outline to prove [2]
+that there is no rational z for which z3 = 8?
+(c) Prove that there is no rational y for which 2y = 27. [4]
+(d) Where x and y are as defined in parts (a) and (c), determine whether the following [6]
+quantities are rational or irrational:
+i. x+ 227
+ii. 227y
+iii. xy

@@ -1,0 +1,34 @@
+4. (a) Consider the state space shown below, in which the arcs represent the legal successors
+of a node. Arcs are bi-directional and are labelled with the cost of performing the
+corresponding action. The start state is A and the goal is I. Suppose that you are
+given a heuristic, h1, defined by the following table.
+Node A B C D E F G H I
+h1 20 15 10 7 21 20 27 26 0
+13 A 8
+B 9 F
+6 14 5
+21 E
+H
+C
+20 G 9
+3
+D 7 I
+For each of the following search methods, show the resulting search tree, list the
+sequence in which nodes are removed from the queue, and state how many nodes are
+expanded. You should also state the route found and its associated cost. Assume that
+nodes are inserted into the queue in alphabetical order. When expanding a node, do
+not generate any of its ancestors.
+i. Uniform cost search [6]
+ii. Greedy best-first search [4]
+iii. A* search [5]
+(b) Consider the problem of starting in state I with A being the goal state, in the same
+state space as above. Suppose that you are given a heuristic, h2, defined by the
+following table.
+Node A B C D E F G H I
+h2 0 25 19 20 5 8 15 13 20
+i. Use A* to determine a route from I to A using h2 as the heuristic, showing your
+search tree and giving the sequence of nodes expanded. State the route found
+and its associated cost. [4]
+ii. Given that you might expect the same route between A-I and I-A, which is the
+better heuristic, h1 or h2, and why? [2]
+(c) Formally prove that A* is an optimal search strategy for locally finite graphs. [4]

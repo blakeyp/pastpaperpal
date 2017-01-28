@@ -1,0 +1,7 @@
+6. Write short descriptive and illustrated explanations on the following:
+(a) Environment and bump mapping. [8]
+(b) Bresenham’s mid-point algorithm for efficient scan conversion of circles,
+showing how the decision variables at each step are derived and what the
+initial conditions need to be. [8]
+(c) Scan-line fill algorithms for polygon, depth map generation and interpo-
+lated shading calculation. [9]

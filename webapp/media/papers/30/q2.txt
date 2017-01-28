@@ -1,0 +1,10 @@
+2. (a) Clip the following lines against the viewport shown using
+B
+A
+i. a brute-force method [4]
+ii. the Cohen-Sutherland technique [7]
+iii. the Liang-Barsky method. [7]
+In your answer you should number each step of the methods, stating any
+assumptions you make.
+(b) Show how the Sutherland-Hodgman polygon clipping algorithm can be
+made to fail. [7]

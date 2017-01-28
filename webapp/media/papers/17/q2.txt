@@ -1,0 +1,27 @@
+2. (a) Explain the following heuristics, and how they are used in a backtracking search.
+• minimum remaining values,
+• degree heuristic, and
+• least constraining value. [6]
+(b) Consider the CSP below in which {U, V,W,X, Y, Z} are variables that should be
+assigned a frequency f such that f ∈ {low,medium, high}, with the constraint that
+adjacent regions must not be assigned the same frequency.
+U
+V
+W
+Z X
+Y
+i. Draw a constraint graph for this problem. [3]
+ii. Use the backtracking algorithm with appropriate heuristics to find a solution to
+this problem. Show all the steps carried out by the algorithm. [6]
+(c) Explain how cutset conditioning could be used in the following constraint graph to
+make the search more efficient, and state the upper bound on the number of nodes
+expanded with and without cutset conditioning. Assume that each variable has the
+same domain, which is of size 5. [6]
+B C
+A D
+E I
+M
+F J
+G K
+H L
+(d) Describe the operation of a simulated annealing search. [4]

@@ -1,0 +1,9 @@
+5. Consider the following relation schema:
+SONG(Singer ,Genre,ReleaseDate,Title, ShortTitle,ReleaseYear ,ReleasePlace),
+where {Singer ,Title} is the primary key. Assume the following additional dependencies:
+Singer → Genre,
+ReleaseDate → ReleaseYear ,
+Title → ShortTitle.
+(a) Based on the primary key, determine whether this relation is in 1NF, 2NF, 3NF. [9]
+(b) Perform any normalisation steps required to bring it into 3NF. [16]
+Total mark for this question: 25

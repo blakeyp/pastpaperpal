@@ -1,0 +1,4 @@
+6. (a) Describe the operation of the PRS architecture. [10]
+(b) Using the PRS architecture, sketch a design for a robot vacuum cleaner in terms of
+the goals, intentions, plans or other architectural components that would be required.
+[15]

@@ -1,0 +1,49 @@
+
+{% load static %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script>
+
+	$(document).ready(function() {
+		$('#upload').click(function() {
+		    var input = $(this).next().find('input');
+		    input.click();
+		});
+		$('#id_file').change(function() {   // submit file upload once chosen
+			$('#upload_form').submit();
+			$('#form').hide();
+			$('#processing').show();
+		});
+
+	});
+
+</script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
+
+<div class="vertical-center text-center">
+<div class="container">
+
+	<div id="form">
+
+	<form method="post" enctype="multipart/form-data" id="upload_form">
+	{% csrf_token %}
+	
+	<button type="button" class="btn btn-default btn-lg" id="upload"><span class="glyphicon glyphicon-upload"></span> Upload a new paper</button>
+
+	<div style="height:0px; width:0px; overflow:hidden;">{{ form.file }}</div>
+
+	<h4><small>PDF only please</small></h4>
+
+	</form>
+		</div>
+	<div id="processing" style="display:none">
+	<img src="{% static 'ring-alt.svg' %}" id="loading_gif"/>
+	<h3><small>processing upload...</small></h3>
+	</div>
+
+	</div>
+
+</div>

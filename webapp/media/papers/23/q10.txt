@@ -1,0 +1,12 @@
+10. (a) If x is real show that the maximum value of [8]
+x2 − x+ 1
+y =
+x2 + x+ 1
+is 3, and the minimum is 13 . Draw the graph of y as a function of x.
+(b) i. Find the general solution to the 2nd order homogeneous linear recurrence [9]
+2un+1 + 3un − 2un−1 = 0.
+ii. Give a necessary and sufficient condition on u0 and u1 such that the sequence
+defined by the recurrence converges.
+iii. Find the general solution to the 2nd order linear recurrence:
+2vn+1 + 3vn − 2vn−1 = n− 3.
+iv. If u0 = u1 = 0, give a formula for un.

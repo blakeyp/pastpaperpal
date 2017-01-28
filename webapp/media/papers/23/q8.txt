@@ -1,0 +1,15 @@
+8. (a) i. Calculate (as a function of the variable x) the determinant of matrix [8]
+ 
+1 2 −3
+A =  2 (1 + x) −3 
+−3 2 (2− x)
+ii. Under what conditions on x is there an inverse for the matrix A?
+iii. Find the adjoint, adj(A).
+(b) An upper diagonal matrix is a square matrix of order n such that all entries below the [6]
+main diagonal are 0. That is, any matrix B for which Bij = 0 if i > j. Prove that
+|B| = B11B22 . . . Bnn.
+(c) Calculate the eigenvalues of the matrix [3]
+ √ 
+2 1 π 2
+0 0 3 e C =  0 0 1 1 
+0 0 0 −4

@@ -1,0 +1,18 @@
+2. Three tasks, labelled T1; T2; T3, exist in a computer system. They enter the system at 
+times t = 3ms; 2ms; 0ms respectively. The execution profile of each process is as 
+follows: 
+- Task T1 executes normal code for 1ms, followed by the execution of a critical 
+section for 3ms. After exiting the critical section, it executes for another 1ms. The 
+deadline is 9ms. 
+- Task T2 executes normal code for 5ms. The deadline is 13ms. 
+- Task T3 executes normal code for 1ms, followed by the execution of a critical 
+section for 2ms. The deadline is 15ms. 
+- The critical sections of tasks T1 and T3 are protected by a semaphore, S. 
+- The priority of the tasks is as follows: Priority(T1) > Priority(T2) > Priority(T3). 
+(a) Develop a schedule for the task set using a generic priority-based scheduling 
+algorithm. Is there any task that misses its deadline?   If so, which?           [10] 
+(b) Develop a schedule for the task set using a generic priority-based scheduling 
+algorithm extended with priority inheritance. Is there any task that misses its 
+deadline?  If so, which?                [10] 
+(c) Using an appropriate example, explain one weakness of priority inheritance.      
+[5] 

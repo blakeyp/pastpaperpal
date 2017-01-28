@@ -1,0 +1,7 @@
+<h1>You are at module page: {{ module }}</h1>
+<p>Available Papers:</p>
+<ul>
+{% for p in papers %}
+    <li><a href="{% url 'app:paper' p.module_code p.year %}">20{{ p.year }}</a></li>
+{% endfor %}
+</ul>

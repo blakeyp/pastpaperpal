@@ -1,0 +1,8 @@
+6. (a) Differentiate with respect to x: (i) x log x, (ii) 1−x1+x giving your answers in as [3]
+simple a form as possible.
+(b) Is the function y = 1 + |x| (i) continuous at the point where x = 0? and (ii) differen- [3]
+tiable at the point where x = 0? Justify your answers.
+(c) Find the value of [2]
+1− cosx
+lim
+x→0 x2

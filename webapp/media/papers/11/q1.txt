@@ -1,0 +1,18 @@
+1. (a) Describe possible procedures for deriving heuristics for a problem to be solved using
+search, and how you might combine multiple heuristics into a single useful heuristic.
+[5]
+(b) Explain the operation of the minimax algorithm for adversarial search, and state the
+assumptions under which it is optimal and complete. [3]
+(c) In the context of the following game tree, use the minimax algorithm to determine
+which move the first player should choose, and what utility they should expect. As-
+sume that the first player aims to maximise their utility. You should show the resulting
+search tree. [4]
+7 4 2 5 6 10 3 5 4 8 1 5 6 2 10 1
+(d) Describe the alpha-beta pruning algorithm for minimax and show how it operates on
+the game tree in part (c), assuming that the first player is the maximising player. State
+which move the first player should choose. [7]
+(e) In games where the legal moves by a player are determined by chance, explain how
+the minimax algorithm can be extended to determine the optimal move for a player.
+[2]
+(f) Describe how to adapt the search when using the minimax algorithm, to avoid going
+down to the leaf nodes of the tree. [4]

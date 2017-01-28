@@ -1,0 +1,8 @@
+2. (a) Given two vectors in R3, (x1, y1, z1) and (x2, y2, z2), give the mathematical condition [2]
+for the two vectors to be perpendicular in words, and as an equation.
+(b) Suppose that three points in R3 have position vectors p = (1, 2, 3), q = (2, 4, 5), and [2]
+r = (3, 3, 1). Find the angle between the vectors (q − p) and q − r).
+(c) State De Moivre’s theorem for computing powers of complex numbers. [4]
+Hence find√all x ∈ C such that x
+3 = −1, writing your answer in the form a + bi,
+where i = −1.
