@@ -19,7 +19,7 @@ public class Parser {
 
 		try {
 
-			File file = new File(args[0]);   // input PDF file
+			File file = new File(args[0]+".pdf");   // input PDF file
 
 			//File output = new File(args[1]+".txt");   // output text file
 
@@ -58,7 +58,7 @@ public class Parser {
    		BufferedWriter writer = null;
 		try
 		{
-		    writer = new BufferedWriter(new FileWriter(args[1]));
+		    writer = new BufferedWriter(new FileWriter(args[0]+".txt"));
 		    writer.write(text);
 
 		}

@@ -1,101 +1,193 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Paper{% endblock %}
 
 {% block content %}
 
+{% load static %}
+
+{% with questions.0 as question %}
+
 <style type="text/css">
-	#wrapper {
-	    width: 505px;
-	    margin: auto;   /* centred */
-	    overflow: hidden;   /* clipped */
+	.panel {
+    margin: auto;
+    margin-bottom: 20px;
+    position: relative;
 	}
-	iframe {
-	    margin-top: -5px;   /* crops top */
-	    margin-left: -7px;
-	    margin-bottom: -15px;
-	    width: 519px;   /* sets width + an amount to crop right-hand scroll bar */
-	    height: 348px;   /* sets height - how to get this from pdf? */
+
+	.q_wrapper {
+		max-height: 100px; /* for initial question preview */
+    margin: auto;
+    overflow: hidden;
+/*	  border-style: solid;
+    border-color: green;*/
 	}
-	#cover {position: fixed; height: 100%; width: 100%; top:0; left:0; background: white; z-index:9999;}
+
+	.q_wrapper iframe {
+    /* clips top/left/bottom */
+    margin-top: -53pt;
+    margin-left: -76pt;
+    margin-bottom: -60pt;
+	}
+
+	.loading_cover {
+		
+		/*height: 120px;*/
+		
+		/*background: white;
+		z-index:9999;*/
+	}
+
+	#loading {
+		display: block;
+		margin: auto;
+		margin-top: 25%;
+/*		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 100px;*/
+	}
+
+	.preview_overlay {
+		position: absolute;
+	  bottom: 10px; left: 0;
+	  width: 100%;
+	  margin: 0; padding: 40px 0;
+	  background-image: linear-gradient(to bottom, transparent, white);
+	}
+
+	.expand_btn, .collapse_btn {
+		position: absolute;
+	  bottom: 5px;
+	  left: 45%;
+	  opacity: 0.9;
+	  font-size: 10pt;
+	  padding: 4px;
+	  width: 40px;
+	}
+
+	.panel-heading {
+		font-size: 12pt;
+	}
+
 </style>
-
-<script>
-	$(document).ready(function(){
-		$('#cover').delay(600).hide(0);
-	});
-
-	console.log(document.documentElement.clientWidth);
-
-	$( window ).resize(function() {
-		console.log(document.defaultView.getComputedStyle(document.documentElement,null).width);
-	});
-
-</script>
 
 <div class="row">
 
-<div class="col-md-3"></div>
-
-<div class="col-md-6">
-
 	<h1>{{ paper.module_code }} 20{{ paper.year }} paper</h1>
-
 	<p>This paper has {{ rubric.total_qs }} questions.</p>
-
-
-	<div class="panel panel-default" style="width: 560px; margin:auto;">
-	  <div class="panel-heading">Example Question</div>
-	  <div class="panel-body">   <!-- could use padding here to set padding around pdf -->
-	  	<div id="cover">loading...</div>
-	  	<div id="wrapper">
-	  	<iframe src="/media/papers/3/q1.pdf#toolbar=0"></iframe></div> <!-- can control zoom! -->
-	  </div>
-	</div>
-
-
-
-	<br><br><br>
-	<iframe frameborder="0" src="http://docs.google.com/gview?url=media/papers/6/q1.pdf&amp;embedded=true" style="width:700px; height:700px;"></iframe>
-
-	<iframe src='/media/papers/6/q1.pdf#toolbar=0&navpanes=0&scrollbar=0' type='application/pdf' width="70%" height="100%"></iframe>
-
-	<img src='/media/papers/17/q1.png'>
-	<div id="pdf">
-	</div>
-
-
-
-
-
-
-	<div class="panel-group" id="accordion">
-
-		{% for i in q_range %}
-		<div class="panel panel-default">
-
-			<div class="panel-heading">
-				<h4 class="panel-title"><a data-toggle="collapse" href="#collapse{{i}}">Question {{i}} <a href="{% url 'app:similar_qs' paper.module_code paper.year i %}">See similar questions</a></h4>
-			</div>
-
-			<div id="collapse{{i}}" class="panel-collapse collapse">
-				<div class="panel-body">
-
-				<!-- <div class='embed-responsive' style='padding-bottom:55%'>
-				    <object data='/media/papers/{{paper.id}}/q{{i}}.pdf#toolbar=0&navpanes=0&scrollbar=0' type='application/pdf'></object>
-				</div> -->
-
-					<div class="aspect-ratio"><object data='/media/papers/{{paper.id}}/q{{i}}.pdf#toolbar=0&navpanes=0&scrollbar=0' type='application/pdf' width="100%"></object></div>
-
-				</div>
-			</div>
-		</div>
-		{% endfor %}
-
-	</div>
-
-<div class="col-md-3"></div>
 
 </div>
 
+<img id="loading" src="{% static 'ring-alt.svg' %}">
+
+<div id="questions_set" style="display:none;">
+
+{% for question in questions %}
+
+<div class="row">
+
+<div class="panel panel-default" style="width:{{question.width|add:'-70'}}pt;">
+  <div class="panel-heading">
+  	Question {{ question.q_num }}
+  	<label title="You've marked this question as completed" class="label label-success pull-right" style="opacity:0.9;"><span class="glyphicon glyphicon-ok"></span> completed</label>
+  </div>
+  <div class="panel-body">
+  <div id="q{{question.q_num}}">
+  	<div class="q_wrapper">
+
+  		<div
+  			class="pdf_container"
+  			data-paper="{{paper.pk}}"
+  			data-q_num="{{question.q_num}}"
+  			data-width="{{question.width}}"
+  			data-height="{{question.height}}">
+  		</div>
+
+  		<div class="preview_overlay"></div>
+  		<a class="btn btn-primary btn-circle expand_btn"><span class="glyphicon glyphicon-menu-down"></span></a>
+  		<a class="btn btn-primary collapse_btn" style="display:none;"><span class="glyphicon glyphicon-menu-up"></span></a>
+  	</div>
+  </div>
+  </div>
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<script>
+	
+	// initial browser zoom level
+	// may not work properly on devices with scaling e.g. Windows 10 high dpi!
+	var orig_zoom = Math.round(window.devicePixelRatio*100);
+	var new_zoom;
+	var delay = 1500;   // assume fixed time for pdf to load (no better way!)
+
+	$(document).ready(function() {   // only need doc.ready if this is in its own file which is linked at top of this file
+
+		loadPdfs(orig_zoom);
+
+		$('.expand_btn').click(function() {
+			var this_q = $(this).parent()
+			this_q.animate({'max-height':'999'}, 500);
+			$(this).hide();
+			$(this).siblings('.collapse_btn').show();
+			$(this).siblings('.preview_overlay').hide();
+
+			// need to scroll question into view!
+		});
+
+		$('.collapse_btn').click(function() {
+			$(this).parent().css({'max-height':'100px'});
+			$(this).hide();
+			$(this).siblings('.expand_btn').show();
+			$(this).siblings('.preview_overlay').show();
+		});
+
+		// event handler to update zoom on change of browser zoom level
+		$(window).resize(function() {
+
+			new_zoom = Math.round(window.devicePixelRatio*100);
+
+			if (new_zoom != orig_zoom) {   // check this is a zoom and not just a resize		
+				$('#questions_set').hide(0);
+				$('#loading').show(0);
+				loadPdfs(new_zoom);   // reload pdfs with new zoom level
+				orig_zoom = new_zoom;   // set new old zoom level
+			}
+
+		});
+
+
+
+	});
+
+	function loadPdfs(zoom) {
+
+		$(".pdf_container").each(function() {   // traverse pdf containers
+
+			paper = $(this).data("paper");   // get question pdf data
+			q_num = $(this).data("q_num");
+			width = +$(this).data("width")+55;
+			height = +$(this).data("height")+15;
+
+			$(this).html("<iframe src='/media/papers/"+paper+"/q"+q_num+".pdf#zoom="+zoom+"&toolbar=0&scrollbar=0' style='width:"+width+"pt; height:"+height+"pt;'></iframe>");
+
+		});
+
+		setTimeout(function() {
+			$('#loading').hide(0);
+			$('#questions_set').fadeIn(1000);
+		}, delay);
+
+	}
+
+</script>
+
+<!-- <a href="{% url 'app:similar_qs' paper.module_code paper.year 1 %}">See similar questions</a> -->
+
+{% endwith %}
 {% endblock %}

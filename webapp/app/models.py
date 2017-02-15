@@ -34,6 +34,15 @@ class Rubric(models.Model):
 	# class Meta:
 	# 	unique_together = ('module_code', 'year')
 
+class Question(models.Model):
+	paper = models.ForeignKey(Paper,on_delete=models.CASCADE)
+	q_num = models.PositiveSmallIntegerField()
+	width = models.PositiveSmallIntegerField()
+	height = models.PositiveSmallIntegerField()
+
+	def __str__(self):
+		return str(self.paper.pk) + ', ' + str(self.q_num) + ', ' + str(self.width) + ', ' + str(self.height)
+
 #class PDF(models.Model):
 	#paper = models.ForeignKey(Paper,on_delete=models.CASCADE)
 	#file = models.FileField(upload_to='documents/')

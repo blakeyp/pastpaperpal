@@ -1,6 +1,12 @@
-import sys, re
+import sys, re, os
 
-def main():
+def main():   # takes module code as argument
+	file_path = '../pastpapers/'+sys.argv[1]+'0.pdf'
+	get_rubric(file_path)
+
+def get_rubric(file_path):
+
+	os.system("java -cp '.:pdfbox.jar' Parser "+file_path)
 
 	# regex to match line that hopefully contains time details e.g. 'Time allowed: 1.5 hours.'
 	time_regex = re.compile(r'.*time.*:\s*'   # match hint to time info i.e. '...time...:'
@@ -16,7 +22,7 @@ def main():
 
 	rubric_regex = re.compile(r'.*answer.*question.*\.')
 
-	f = open('../pastpapers/astext/'+sys.argv[1]+'0.txt','rU')   # open text file of past paper PDF
+	f = open('testing.txt','rU')   # open text file of past paper PDF
 
 	for line in f:   # iterate over lines
 

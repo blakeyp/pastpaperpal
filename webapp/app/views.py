@@ -6,11 +6,11 @@ from django.core.files.storage import FileSystemStorage
 
 
 from .forms import PaperForm
-from .models import Paper
-from .models import Rubric
+from .models import Paper, Question, Rubric
 
-from paper import get_details, extract_questions
-from similar import get_similar_qs
+from scripts.paper import get_details
+from scripts.similar import get_similar_qs
+from scripts.parser import extract_questions
 
 import json
 
@@ -55,7 +55,14 @@ def upload(request):
                 year=year)
             paper.save()
 
-            num_qs = extract_questions(file_name, paper.pk)
+            num_qs, crop_sizes = extract_questions(file_name, paper.pk)
+
+            print crop_sizes
+
+            for i, crop_size in enumerate(crop_sizes):
+                question = Question(paper=paper, q_num=i+1, 
+                    width=crop_size[0], height=crop_size[1])
+                question.save()
 
             rubric = Rubric(paper=paper, total_qs=num_qs, calcs_allowed=False)
             rubric.save()
@@ -73,7 +80,9 @@ def module(request, module):
 def paper(request, module, year):
     paper = get_object_or_404(Paper, module_code=module, year=year)
     rubric = Rubric.objects.get(paper=paper)
-    return render(request, 'paper.html', {'paper':paper, 'rubric':rubric, 'q_range': range(1,rubric.total_qs+1)})
+    questions = Question.objects.filter(paper=paper)
+    print questions
+    return render(request, 'paper.html', {'paper':paper, 'rubric':rubric, 'questions': questions})
 
 def similar_qs(request, module, year, q_num):
     # get paper object for paper of question being compared to
