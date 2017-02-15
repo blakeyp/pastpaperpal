@@ -1,0 +1,2 @@
+1.  Explain what privacy, integrity, authentication and non-repudiation mean in 
+security.                  [4] 

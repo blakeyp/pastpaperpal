@@ -1,0 +1,8 @@
+2. (a) Write down the parametric equation of a line between points (x0, y0) and
+(x1, y1). [4]
+(b) What inequalities need to be satisfied for this line to be clipped against a
+box with opposite corners at (xmin, ymin), (xmax, ymax)? [4]
+(c) Using your answer to (b), explain the Liang-Barsky Clipping method for
+a line which crosses one or more clipping boundaries. [11]
+(d) In what ways is the Liang-Barsky method more efficient than the Sutherland-
+Cohen method? [6]

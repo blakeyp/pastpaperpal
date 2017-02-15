@@ -1,0 +1,6 @@
+14. (a) ActiveX is a technology that enables different software applications to share 
+functionality and information. Explain why ActiveX poses a security threat.    [5] 
+(b) A Cookie is a piece of data sent from a web server and stored in a user’s web 
+browser. Can Cookies carry viruses? Discuss three security issues cookies may cause.
+                    [10] 
+(c) Explain how the HTTPS protocol works.         [5] 

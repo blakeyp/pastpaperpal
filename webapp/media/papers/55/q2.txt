@@ -1,0 +1,5 @@
+2. (a) What is an abstract data type (ADT)?     [2 marks] 
+ (b) What is a data type?        [2 marks] 
+(c) Define the Stack ADT.       [4 marks] 
+(d) Describe one way in which a Stack may be used by a language compiler and 
+illustrate your description with a short concrete example.   [5 marks] 

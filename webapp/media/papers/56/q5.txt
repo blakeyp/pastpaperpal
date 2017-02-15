@@ -1,0 +1,12 @@
+5. Arguments, error handling and OOP
+(a) What is the difference between passing by value and by reference? Which
+of the two mechanisms is used for passing arrays and why? [4]
+(b) Describe Java’s approach to exception handling. You should include in
+your answer:
+(i) a description of the supporting classes in the Java API,
+(ii) the three fundamental components of error handling in Java,
+(iii) illustrative code in which three type of exceptions can occur,
+(iv) an explanation of the finally construct.
+[8]
+(c) Object oriented programming is based on a number of defining principles.
+List what they are and give a brief explanation of each. [8]

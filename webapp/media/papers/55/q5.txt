@@ -1,0 +1,13 @@
+5. (a) Describe, using pseudocode or otherwise, the sorting algorithm quicksort. 
+[5 marks] 
+(b) Illustrate your answer to (a) by showing the intermediate lists produced while 
+applying quicksort to the following values: 
+  2     9     1     7     8    4     0       [3 marks] 
+(c) What is the worst-case time complexity for quicksort? Justify your answer. 
+          [4 marks] 
+(d) What is the average-case time complexity for quicksort? Justify your answer. 
+          [4 marks] 
+(e) Define the concept of stability as it applies to a sorting algorithm. Is quicksort stable? 
+Explain your answer.         [4 marks] 
+(f) Define the concept of adaptivity as it applies to a sorting algorithm. Is quicksort 
+adaptive? Explain your answer.       [4 marks] 

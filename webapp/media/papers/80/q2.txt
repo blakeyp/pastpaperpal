@@ -1,0 +1,36 @@
+2. Many programming languages and technologies can be combined in the development of
+web applications.
+(a) GET and POST requests allow you to recieve data sent from a client. Explain the
+difference between GET and POST requests and describe situations where each is
+best suited. [4]
+(b) Given the PHP code in listing 1, write secure implementations for the missing meth-
+ods storePassword, checkPassword. You make use the readColumn and writeColumn
+to read or write values to the database. You may define additional methods if you
+wish. [8]
+Listing 1: PHP User Class
+<?php
+c l a s s User {
+p u b l i c s t o r e P a s s w o r d ( $newPassword ) {
+/ / You need t o imp lemen t t h i s .
+}
+/ / r e t u r n s t r u e i f t h e
+/ / password matches s t o r e d v a l u e
+p u b l i c checkPassword ( $password ) {
+/ / You need t o imp lemen t t h i s .
+}
+/ / You may use t h e methods below , which w i l l read
+/ / and w r i t e i n d i v i d u a l columns t o t h e d a t a b a s e .
+/ / R e t u r n s t h e v a l u e o f t h e read column .
+p r i v a t e readColumn ( $columnName ) { . . . }
+p r i v a t e wr i teColumn ( $columnName , $ v a l u e ) { . . . }
+}
+?>
+(c) Structured Query Language (SQL) queries are subject to injection attacks. Write a
+query that is susceptible to an attack, and suggest two ways to mitigate it. [3]
+(d) Javascript enables the creation of interactive documents through its event model. De-
+scribe with the aid of an example how events on an element are triggered, and any
+side effects of the process. [5]
+(e) Javascript is often used for form validation. Do you think that this validation is suffi-
+cient for your applications? Explain your reasoning. [2]
+(f) Execution of Javascript is often deferred until the document is loaded. Explain the
+mechanism for this process and why this is required. [3]

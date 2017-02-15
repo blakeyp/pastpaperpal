@@ -1,0 +1,3 @@
+5. What is Discretionary Access Control (DAC)? There are two ways to represent the 
+permissions in DAC, namely, Access Control Lists and Capabilities. Explain how 
+Access Control Lists and Capabilities store permissions.       [4] 

@@ -1,0 +1,8 @@
+4. (a) What is the JCF (Java Collections Framework)?    [3 marks] 
+(b) In the package java.util, the declaration for Queue is 
+public interface Queue<E> extends Collection 
+(i) Why is Queue declared as an interface?   [2 marks] 
+(ii) Why does Queue extend Collection?   [2 marks] 
+(iii) What does the Java syntax <E> mean?    [1 mark]
+(c) Why might a programmer choose to use java.util.Queue rather than write 
+their own Queue class?       [5 marks] 

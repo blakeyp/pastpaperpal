@@ -1,0 +1,4 @@
+3. (a) Using pseudocode, describe the algorithm bubble sort.   [6 marks] 
+(b) Illustrate your answer for part (a) by tracing the successive steps of bubble sort 
+applied to the list (2,0,7,1,9,3)      [4 marks] 
+(c) What is the time complexity of bubble sort? Justify your answer.  [3 marks] 

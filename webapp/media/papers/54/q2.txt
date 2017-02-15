@@ -1,0 +1,6 @@
+2. (a) What is an abstract data type (ADT)?     [3 marks] 
+ (b) What is the relationship between an ADT and a data type?   [2 marks] 
+(c) Define an ADT to represent a list.      [4 marks] 
+(d) State one problem which would occur if a list were to be implemented using an 
+array, and explain how this problem might be solved.    [4 
+marks] 

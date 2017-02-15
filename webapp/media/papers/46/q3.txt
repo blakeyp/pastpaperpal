@@ -1,0 +1,8 @@
+3. Specify the following queries in relational algebra for the COMPANY database (Figure 1).
+(a) Retrieve Social Security Numbers of all employees whose first name is ‘Graham’.[6]
+(b) Retrieve names of Alan J. Baker’s dependents. [6]
+(c) Retrieve the last names of all employees supervised by the manager of Department
+No. 3. [6]
+(d) Find the last names of employees who work on all the projects controlled by Depart-
+ment No. 1. [7]
+Total mark for this question: 25

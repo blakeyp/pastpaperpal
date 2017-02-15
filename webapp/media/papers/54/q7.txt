@@ -1,0 +1,20 @@
+7. Consider the following undirected graph G. 
+ B C 
+ A G 
+ D H 
+ F E 
+(a) Assuming node A is the root, list the sequence in which vertices of G are visited by a 
+depth-first search algorithm.       [2 marks] 
+(b) Assuming node A is the root, list the sequence in which vertices of G are visited by a 
+breadth-first search algorithm.      [2 marks] 
+(c) Using pseudocode or otherwise, describe Dijkstra’s algorithm for finding a shortest 
+path between two nodes in a weighted connected graph.   [10 marks] 
+(d) Traveller Chris wishes to travel from London to Sydney. His journey involves 
+several legs, and each leg is costed separately by his airline, as follows: 
+London-Amsterdam: £70 
+London-Paris: £60 
+Amsterdam-Dubai: £300 
+Amsterdam-Kuala Lumpur: £580 
+Amsterdam-Hong Kong: £450 
+Paris-Dubai: £320 
+Paris-Kuala Lumpur: £570 

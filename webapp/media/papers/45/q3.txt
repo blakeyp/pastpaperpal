@@ -1,0 +1,25 @@
+3. (a) Explain the following heuristics, and how they are used in a backtracking search.
+• minimum remaining values,
+• degree heuristic, and
+• least constraining value. [6]
+(b) Consider a CSP containing variables {A,B,C,D,E, F,G} that must be assigned
+values from the set {red, green, blue}. Suppose we have the constraint that certain
+regions must not be the same colour, as defined by the constraint graph given below.
+Use the backtracking algorithm and the heuristics from part (a) to find a solution to
+this problem. Show all the steps carried out by the algorithm.
+C
+A D
+G
+B E
+F
+[6]
+(c) Explain how cutset conditioning could be used in the CSP from part (b) to make the
+search more efficient. State the upper bound on the number of nodes expanded with
+and without cutset conditioning. [6]
+(d) Suppose that you have been tasked with determining the control parameters for an
+automated flood defence system. These parameters are stored in a vector of length n.
+i. Describe how you would use a genetic algorithm to solve this problem, including
+in your answer an explanation of how crossover and mutation operate in this
+context. [5]
+ii. Would there be any advantage to using A* instead of a genetic algorithm? Ex-
+plain your reasoning. [2]

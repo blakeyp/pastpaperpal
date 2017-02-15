@@ -1,0 +1,10 @@
+8. (a) In the context of the object-oriented programming language Java, explain the 
+meaning of each of the following terms, using example code to illustrate your 
+explanation. Note that you will not be penalised for minor syntactical errors in your 
+examples. 
+(i) Comparator        [4 marks] 
+(ii) Iterator        [5 marks] 
+(iii) Casting        [4 marks] 
+(iv) Generics        [4 marks] 
+(b) Using the Queue ADT as an example, explain the role of an Interface in 
+implementing an ADT using Java.      [7 marks] 

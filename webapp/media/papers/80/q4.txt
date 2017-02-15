@@ -1,0 +1,10 @@
+4. Users with a wide range of abilities may access your application.
+(a) The Web Content Accessibility Guidelines (WCAG) specify how to make content
+accessible.
+i. Explain how conformance to the criteria is graded with the aid of an example.
+[2]
+ii. Why might it not be feasible to achieve a top grade? [3]
+(b) Describe five different disabilities, and suggest one method or technique to assist
+users with these conditions. [10]
+(c) The think aloud protocol is one method for conducting a usability test. Describe the
+process and its advantages and disadvantages. [10]

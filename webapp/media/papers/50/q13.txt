@@ -1,0 +1,6 @@
+13. (a) Discuss the challenges of protecting the security of virtual machines. You 
+should develop your discussions by comparing the features of virtual machines and 
+physical machines.                 [10] 
+(b) What is a firewall? Explain three main methods used in a firewall to control 
+network traffic. Explain the features of these three methods and compare their 
+advantages and disadvantages.               [10] 

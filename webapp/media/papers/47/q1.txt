@@ -1,0 +1,20 @@
+1. (a) Distinguish between real-time and off-line computer graphics. How does
+computer graphics exploit human visual capabilities to achieve visual re-
+alism? [4]
+(b) What are the principal elements of a graphics system and what are the
+roles of an application model and a graphics kernel? [4]
+(c) What is meant by rasterization? Explain why standard frame-buffers store
+colour, transparency and depth information. [7]
+(d) i. Specify the 3D rotation matrix that rotates points about the z-axis
+by θ degrees.
+ii. Specify the rotation matrix that takes the negative z-axis onto the
+positive z-axis.
+iii. Give the set of rotations required to rotate a point about an arbitrary
+axis (a, b, c)T which passes through the origin.
+iv. What further homogeneous transformations would be required if the
+arbitrary axis in (iii) passed through a point (e, f, g) instead of the
+origin?
+Give a set of OpenGL transformation statements which implements a
+rotation of θ degrees, about axis (a, b, c)T which passes through point
+(e, f, g).
+[10]

@@ -1,0 +1,4 @@
+3. (a) Using pseudocode, or a fragment of Java, describe the algorithm selection sort. 
+            [7 marks] 
+(b) Illustrate your answer for part (a) by tracing all the successive steps of selection sort 
+applied to the list (9, 1, 8, 2, 7, 3).      [6 marks] 

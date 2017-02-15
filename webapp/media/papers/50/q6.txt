@@ -1,0 +1,3 @@
+6. Permutation and substitution are two common methods to help generate cipher 
+texts. What are the permutation and the substitution methods? Explain how frequency 
+analysis can be used to crack long cipher texts.         [4] 
