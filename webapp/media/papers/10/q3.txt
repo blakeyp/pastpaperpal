@@ -1,2 +1,0 @@
-3.  What is hashing and what is encryption in security? Explain the differences 
-between hashing and encryption             [4] 

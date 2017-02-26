@@ -1,6 +1,0 @@
-3. Karnaugh maps and Boolean algebra can be used to simplify logic functions.
-F1 = A.B + Ā.B.C̄.D + Ā.B.C.D + A.B̄.C̄.D̄
-F2 = (A+ B̄).(Ā+ C).(B + C̄)
-(a) Reduce F1 to its simplest sum of products form using a Karnaugh map. [9]
-(b) Reduce F2 to its simplest sum of products form using Boolean algebra. [9]
-(c) Design a logic circuit that implements F1 using only NAND gates. [7]

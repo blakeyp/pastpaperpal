@@ -1,2 +1,0 @@
-9. Discuss why public key encryption algorithms, such as RSA, are generally much 
-slower than secret key encryption algorithms, such as AES.      [4] 

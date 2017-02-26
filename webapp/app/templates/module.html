@@ -1,7 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Module{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+{% if message %}
+	<div class="alert alert-success" role="alert">Success! Your uploaded paper has been successfully added - see below.</div>
+{% endif %}
+
 <h1>You are at module page: {{ module }}</h1>
-<p>Available Papers:</p>
+<p style="font-size:14pt;">Available Papers:</p>
 <ul>
 {% for p in papers %}
-    <li><a href="{% url 'app:paper' p.module_code p.year %}">20{{ p.year }}</a></li>
+    <li>
+    	<p style="font-size:14pt;"><a href="{% url 'app:paper' p.module_code p.year %}">20{{ p.year }}</a>
+    	{% if message == p.year %} <span class="label label-success">new upload</span> {% endif %}</p>
+    </li>
 {% endfor %}
 </ul>
+
+
+{% endblock %}

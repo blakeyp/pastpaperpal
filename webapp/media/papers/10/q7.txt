@@ -1,2 +1,0 @@
-7. What is a one way function in security? Give two one way functions that are used 
-in encryption.                 [4] 

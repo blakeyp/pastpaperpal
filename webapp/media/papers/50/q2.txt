@@ -1,4 +1,0 @@
-2.  (a) State a common feature of viruses and worms and a difference between 
-viruses and worms               [2] 
-(b) Explain what is a buffer overflow attack and describe a measure to prevent a 
-buffer overflow attack.              [2] 

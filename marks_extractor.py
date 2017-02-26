@@ -4,18 +4,18 @@ def main():
 
 	global marks2style
 
-	paper = sys.argv[1]
+	#paper = sys.argv[1]
 
 	q_marks = []   # list of lists one for each question with the num marks for each of its parts
 
-	for file in os.listdir('../questions'):   # traverse text files of questions
+	for file in os.listdir('../media/papers/104'):   # traverse text files of questions
 		
 		marks2style = False
 
 		if file.endswith('.txt'):
 			if file.endswith('0.txt') or file.endswith('rubric.txt'):
 				continue
-			f = open('../questions/'+file,'rU')
+			f = open('../media/papers/104/'+file,'rU')
 			q_text = f.readlines()   # string containing question text
 
 			q_num = int(file.split('q')[1].split('.txt')[0])
@@ -48,7 +48,7 @@ def main():
 
 	total_marks=0
 
-	f=open('../marks'+paper,'w')
+	f=open('../media/papers/104/marks.txt','w')
 
 	for i, part_marks in enumerate(q_marks):
 		#print

@@ -44,7 +44,7 @@ def get_details(file):
 			continue
 		elif year == None and yr_match:
 			print 'year match!'
-			year = yr_match.group(1) if yr_match.group(2) \
+			year = yr_match.group(2) if yr_match.group(2) \
 				else yr_match.group(1)
 			break
 

@@ -2,28 +2,45 @@
 
 {% block title %}Home{% endblock %}
 
+{% block nav_index %}
+    class="active"
+{% endblock %}
+
 {% block content %}
+
+<style>
+
+	#results {
+		font-size: 18pt;
+		line-height: 40px;
+		padding:10px;
+	}
+
+</style>
 
 <div class="row">
 
 	<div class="col-md-4"></div>
 
 	<div class="col-md-4" style="font-size:18px; margin-top: 100px;">
-		<div class="form-group has-feedback">
-			<input style="font-size:20pt; margin-top:15px;" id="module_search" type="text" class="form-control input-lg" autofocus placeholder="Search a module code...">
+<!-- 		<div class="form-group has-feedback">
+			<input style="font-size:20pt; margin-top:15px;" id="module_search" type="text" class="form-control input-lg" autofocus placeholder="search a module code...">
 			<i class="glyphicon glyphicon-search form-control-feedback"></i>
 		</div>
-		<div id="results" style="padding:10px; line-height:22pt;"></div>
+		<div id="results"></div> -->
 	</div>
 
 	<div class="col-md-4"></div>
 
 </div>
 
+
 <script>
 
-	// populate list of modules from server (on page load)
+/*	// populate list of modules and paper counts from server (on page load)
 	var modules = {{module_codes|safe}};
+	console.log(modules)
+	var counts = {{count_papers|safe}};
 
 	// regex to validate module code input
 	var valid_code = new RegExp("^[A-Z]{1,2}[0-9]{0,3}$");
@@ -35,26 +52,32 @@
 	    var input = this.value.toUpperCase();
 	    if (input.length == 0) return;
 	    if (!valid_code.test(input)) {
-	    		$("#results").html("Oops. This doesn't look much \
+	    		$("#results").html("Oops. That doesn't look much \
 	    			like a valid module code..."); return; }
 	    var found_results = updateResults(input);
 	   	if (input.length == 5 && !found_results)
 	    	$("#results").html("Oops. No paper has been uploaded \
-	    		yet for this module. Upload one?");
+	    		yet for this module. <a href='/upload'>Upload one?</a>");
 	});
 
 	// updates module search results using list of module codes
 	function updateResults(input) {
 		var found_results = false;
-    for (i=0; i<modules.length; i++) {
-      if (modules[i].startsWith(input)) {
-      	// concatenate to existing results
-				$("#results").html($("#results").html() + modules[i]+'</br>');
+	    for (i=0; i<modules.length; i++) {
+
+	      	if (modules[i].startsWith(input)) {
+	      		// concatenate to existing results
+	      		var paper = (counts[i]==1 ? " paper" : " papers")
+				$("#results").html(
+					$("#results").html() + 
+					"<a href='/"+modules[i].toLowerCase()+"'>"+modules[i]+"</a> &bull; \
+					<span style='font-size:16pt'> "+counts[i]+paper+"</span></br>");
 				found_results = true;
 			}
-    }
-    return found_results;
-	}
+
+	    }
+	    return found_results;
+	}*/
 
 	/* // some random ajax examples:
 

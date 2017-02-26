@@ -1,8 +1,0 @@
-3. Specify the following queries for the COMPANY database (Figure 1) in relational algebra.
-(a) Retrieve the birth dates of all male employees. [6]
-(b) Retrieve the names of all dependants of people working on Project No. 8. [6]
-(c) For every project located in Warwick, list the project number, the number of the
-controlling department along with the manager’s last name. [6]
-(d) Retrieve the numbers of all projects such that all employees from Department No. 7
-work on them. [7]
-Total mark for this question: 25

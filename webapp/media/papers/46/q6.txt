@@ -1,8 +1,0 @@
-6. (a) One of the main heuristic rules for query optimisation is to apply SELECT and
-PROJECT before JOIN. Explain why. [4]
-(b) What is the difference between pipelining and materialisation? [4]
-(c) A file of 4096 blocks is to be sorted with an available buffer space of 64 blocks.
-How many passes will be needed in the merge phase of the external sort-merge
-algorithm? [5]
-(d) Outline the six steps of the heuristic algebraic optimisation algorithm. [12]
-Total mark for this question: 25

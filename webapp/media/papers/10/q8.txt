@@ -1,4 +1,0 @@
-8. Assume Alice and Bob use the Diffie-Hellman-Merkle (DHM) key exchange 
-protocol to establish a secret key. Assume Alice and Bob choose 8 and 11 as the secret 
-numbers, respectively. What is the secret key exchanged between them? You should 
-show the main steps used in the DHM protocol to establish the secret key.   [4] 

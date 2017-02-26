@@ -1,8 +1,0 @@
-7. Using precise, labelled diagrams and clear explanation, write short essays on
-any two of the following topics.
-(a) The Phong Reflection Model and its relation to Interpolated Shading.
-(b) Texture, Bump and Environment mapping.
-(c) Use of Raytracing and Radiosity in the quest for realism in computer
-graphics.
-(d) Shadow generation.
-[25]

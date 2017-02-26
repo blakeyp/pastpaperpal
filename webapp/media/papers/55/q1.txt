@@ -1,9 +1,0 @@
-1. (a) State formally what is meant by each of: 
-  f(n) is O(g(n))         [3 marks] 
-f(n) is Ω(g(n))         [2 marks] 
-f(n) is θ (g(n))         [2 marks] 
- (b) Determine whether each of the following statements is true or false, justifying your 
-answers: 
-i. 2 is O(1) 
-ii. n2 log(n)  is O(n3) 
-iii. n2 is Ω (n log(n))      [6 marks]   

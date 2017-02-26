@@ -1,8 +1,0 @@
-12. Alice creates an RSA public key pair. She chooses 17 and 11 as the two prime 
-numbers to generate the public key and 7 as the other publicly-known value e. 
- i. How is the public key generated?           [4] 
- ii. Explain the principle used to generate the publicly-known value e    [2] 
-iii. What is the formula to generate the private key?       [6] 
- iv. Alice wants to send the letter “M” (the numeric representation of M is 88) to 
-Bob. What is the formula that Alice should use to generate the cipher message?  [4] 
- v. What is the formula that Bob should use to decrypt the cipher message?  [4] 

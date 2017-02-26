@@ -1,6 +1,0 @@
-1. Answer each of the two parts of this question in about 100 words.
-(a) Functional programming uses a declarative paradigm. Explain what this
-is. Compare and contrast the imperative programming paradigm with a
-declarative one. [10]
-(b) Functional programming uses higher order functions (HOFs). Explain
-what these are. What are the strengths and weaknesses of HOFs? [10]

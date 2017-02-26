@@ -6,21 +6,22 @@
 
 {% load static %}
 
-{% with questions.0 as question %}
-
 <style type="text/css">
+
 	.panel {
     margin: auto;
-    margin-bottom: 20px;
-    position: relative;
+    margin-bottom: 30px;
+	}
+
+	.panel-body {
+		position: relative;
+		padding: 15px 17px;
 	}
 
 	.q_wrapper {
-		max-height: 100px; /* for initial question preview */
+		max-height: 80px; /* for initial question preview */
     margin: auto;
     overflow: hidden;
-/*	  border-style: solid;
-    border-color: green;*/
 	}
 
 	.q_wrapper iframe {
@@ -30,52 +31,93 @@
     margin-bottom: -60pt;
 	}
 
-	.loading_cover {
-		
-		/*height: 120px;*/
-		
-		/*background: white;
-		z-index:9999;*/
-	}
-
 	#loading {
 		display: block;
 		margin: auto;
 		margin-top: 25%;
-/*		position: absolute;
-		top: 50%;
-		left: 50%;
-		width: 100px;*/
 	}
 
 	.preview_overlay {
 		position: absolute;
-	  bottom: 10px; left: 0;
+	  bottom: 15px; left: 0;
 	  width: 100%;
-	  margin: 0; padding: 40px 0;
+	  margin: 0; padding: 30px 0;
 	  background-image: linear-gradient(to bottom, transparent, white);
 	}
 
 	.expand_btn, .collapse_btn {
 		position: absolute;
-	  bottom: 5px;
-	  left: 45%;
+	  bottom: 10px;
+	  right: 10px;
 	  opacity: 0.9;
 	  font-size: 10pt;
-	  padding: 4px;
+	  padding: 5px;
 	  width: 40px;
+	  background-color: #f8fbfa;
+	}
+
+	.collapse_btn {
+		opacity: 0.3;
+	}
+
+	.tool_btn {
+		padding: 5px 10px;
+		color: #484848;
+		font-size: 11pt;
 	}
 
 	.panel-heading {
+		padding: 10px 13px;
+		font-size: 11pt;
+		height: 43px;
+		background-color: #f8fbfa;
+	}
+
+	#to_top {
+		display: none;
+		position: fixed;
+    bottom: 40px;
+    right: 40px;
+	}
+
+	.sect_heading {
+		margin: 15px auto;
+		background-color: #e6e6e6;
+		border-color: #c7c7c7;
+		padding: 6px 10px;
+		height: 35px;
+	}
+
+	.glyphicon-ok-circle {
+		top: 3.5px;
+		left: 3px;
 		font-size: 12pt;
 	}
 
 </style>
 
-<div class="row">
+<div class="local_nav">
+  
+  <div style="float:left; padding-right:2px;"><a style="color:#414141;" href="#">{{paper.module_code|upper}}</a> /</div>
 
-	<h1>{{ paper.module_code }} 20{{ paper.year }} paper</h1>
-	<p>This paper has {{ rubric.total_qs }} questions.</p>
+  <div class="btn-group">
+  	{% if other_years %}
+	  	<button type="button" class="btn btn-default dropdown-toggle my_btn year_dropdown" data-toggle="dropdown">
+		    20{{paper.year}} <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu">
+		  	{% for year in other_years %}
+			    <li><a href="../{{year}}">20{{year}} paper</a></li>
+			  {% endfor %}
+		  </ul>
+	  {% else %}
+	  	<div class="year_dropdown">20{{paper.year}}</div>
+	  {% endif %}
+	</div>
+
+	<a href="/media/uploads/{{paper.module_code}}_{{paper.year}}.pdf" target="_blank" style="font-size:14pt; margin-bottom:2px;" class="btn btn-default my_btn pull-right" data-toggle="tooltip" title="Link to full paper" data-delay='{"show":"300", "hide":"0"}'>
+		<span style="top:3px;" class="glyphicon glyphicon-file"></span>
+	</a>
 
 </div>
 
@@ -85,38 +127,80 @@
 
 {% for question in questions %}
 
-<div class="row">
+{% if question.new_section %} 
+	<div style="width:{{q_width|add:'-65'}}pt;" class="panel panel-default panel-heading sect_heading">Section {{ question.new_section }}</div>
+{% endif %}
 
-<div class="panel panel-default" style="width:{{question.width|add:'-70'}}pt;">
+<div class="panel panel-default question_panel" style="width:{{q_width|add:'-65'}}pt;">
   <div class="panel-heading">
-  	Question {{ question.q_num }}
-  	<label title="You've marked this question as completed" class="label label-success pull-right" style="opacity:0.9;"><span class="glyphicon glyphicon-ok"></span> completed</label>
-  </div>
-  <div class="panel-body">
-  <div id="q{{question.q_num}}">
-  	<div class="q_wrapper">
 
-  		<div
-  			class="pdf_container"
-  			data-paper="{{paper.pk}}"
-  			data-q_num="{{question.q_num}}"
-  			data-width="{{question.width}}"
-  			data-height="{{question.height}}">
+  	Q{{ question.q_num }}
+  	&bull; {% if question.total_marks == 0 %} ? {% else %} {{ question.total_marks }} {% endif %} marks
+
+  	{% if question.q_num == 2 or question.q_num == 4 or question.q_num == 5 %}
+  		<span style="color: #1c8d76;" class="glyphicon glyphicon-ok-circle" data-toggle="tooltip" title="Marked complete"></span>
+  	{% else %}
+  		<span style="color: #ababab" class="glyphicon glyphicon-ok-circle" data-toggle="tooltip" title="Not yet completed"></span>
+  	{% endif %}
+
+    <div class="pull-right" style="margin-top:-4px; margin-right:-4px;">
+
+      <a href="q{{question.q_num}}/similar" class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="See similar questions" data-delay='{"show":"300", "hide":"0"}'>
+      	<span class="glyphicon glyphicon-tags"></span>
+      </a>
+      <a href="q{{question.q_num}}" class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="Do this question" data-delay='{"show":"300", "hide":"0"}'>
+      	<span class="glyphicon glyphicon-pencil"></span>
+      </a>
+
+    </div>
+
+<!-- drop-down alternative:
+		<div class="btn-group">
+      <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="padding: 5px 10px;"><span class="glyphicon glyphicon-option-horizontal" style="font-size: 12pt; padding-top: 3px; padding-bottom: 1px;"></span></a>
+      <ul class="dropdown-menu">
+ 				<li><a href="#"><span class="glyphicon glyphicon-pencil" style="font-size: 10pt; padding-right:2px;"></span> Do this question</a></li>
+  			<li><a href="#"><span class="glyphicon glyphicon-tags" style="font-size: 10pt; padding-right:3px;"></span> See similar questions</a></li>
+			</ul>
+		</div> -->
+
+  </div> <!-- closes panel-heading -->
+
+  <div class="panel-body">
+
+  	<div class="q_wrapper" {% if question.height <= 170 %} style="max-height:999px;" {% endif %} >
+
+  		<div class="pdf_container" data-paper="{{paper.pk}}" data-q_num="{{question.q_num}}" 
+  				data-width="{{question.width}}" data-height="{{question.height}}">
   		</div>
 
-  		<div class="preview_overlay"></div>
-  		<a class="btn btn-primary btn-circle expand_btn"><span class="glyphicon glyphicon-menu-down"></span></a>
-  		<a class="btn btn-primary collapse_btn" style="display:none;"><span class="glyphicon glyphicon-menu-up"></span></a>
-  	</div>
-  </div>
-  </div>
-</div>
+  		{% if question.height > 170 %}
+	  		<div class="preview_overlay"></div>
+	  		<a class="btn btn-default expand_btn">
+	  			<span class="glyphicon glyphicon-menu-down"></span>
+	  		</a>
+	  		<a class="btn btn-default collapse_btn" style="display:none;">
+	  			<span class="glyphicon glyphicon-menu-up"></span>
+	  		</a>
+  		{% endif %}
 
-</div>
+  	</div> <!-- q_wrapper -->
+
+<!--   {% if question.q_num == 1 %}
+	  <div style="position: absolute; top: -45px; right: -125px;">
+	  <div id="expand_all" class="btn btn-default" style="display:none;">expand all</div>
+		<div id="collapse_all" class="btn btn-default" style="display:none;">collapse all</div>
+		</div>
+	{% endif %} -->
+
+  </div> <!-- closes panel-body -->
+
+</div> <!-- closes panel -->
 
 {% endfor %}
 
-</div>
+</div> <!-- closes questions_set -->
+
+<div id="to_top" class="btn btn-default">back to top</div>
 
 <script>
 	
@@ -124,28 +208,64 @@
 	// may not work properly on devices with scaling e.g. Windows 10 high dpi!
 	var orig_zoom = Math.round(window.devicePixelRatio*100);
 	var new_zoom;
-	var delay = 1500;   // assume fixed time for pdf to load (no better way!)
 
-	$(document).ready(function() {   // only need doc.ready if this is in its own file which is linked at top of this file
+	var num_qs = {{rubric.total_qs}};
+	var delay = num_qs*500;   // assume fixed time for pdf to load (no better way!) - 0.5 seconds per question to load
+
+	var can_expand_all = true;
+
+	$(document).ready(function() {
 
 		loadPdfs(orig_zoom);
 
+		$('[data-toggle="tooltip"]').tooltip(); 
+
+		$('.q_wrapper').hover(
+			function() {$(this).children('.collapse_btn').css({'opacity':'0.9'});},
+			function() {$(this).children('.collapse_btn').css({'opacity':'0.4'});}
+		);
+	
 		$('.expand_btn').click(function() {
-			var this_q = $(this).parent()
-			this_q.animate({'max-height':'999'}, 500);
 			$(this).hide();
 			$(this).siblings('.collapse_btn').show();
+			$(this).parent().animate({'max-height':'999px'}, 400);
+			$(this).parents('.question_panel').css({'box-shadow':'0 0 10px #b9b9b9'});
 			$(this).siblings('.preview_overlay').hide();
-
-			// need to scroll question into view!
 		});
 
 		$('.collapse_btn').click(function() {
-			$(this).parent().css({'max-height':'100px'});
 			$(this).hide();
 			$(this).siblings('.expand_btn').show();
+			$(this).parent().css({'max-height':'80px'});
+			$(this).parents('.question_panel').css({'box-shadow':'none'});
 			$(this).siblings('.preview_overlay').show();
 		});
+
+		if (can_expand_all) {
+
+			$('#expand_all').show();
+
+			$('#expand_all').click(function() {
+				$(this).hide();
+				$('#collapse_all').show();
+				$('.q_wrapper').animate({'max-height':'999px'}, 400);
+				$('.question_panel').css({'box-shadow':'0 0 10px #b9b9b9'});
+				$('.preview_overlay').hide();
+				$('.expand_btn').hide();
+				$('.collapse_btn').show();
+			});
+
+			$('#collapse_all').click(function() {
+				$(this).hide();
+				$('#expand_all').show();
+				$('.q_wrapper').css({'max-height':'80px'});
+				$('.question_panel').css({'box-shadow':'none'});
+				$('.preview_overlay').show();
+				$('.collapse_btn').hide();
+				$('.expand_btn').show();
+			});
+
+		}
 
 		// event handler to update zoom on change of browser zoom level
 		$(window).resize(function() {
@@ -161,13 +281,29 @@
 
 		});
 
+		$(window).on('scroll', function() {
 
+			if ($(this).scrollTop() > 100)
+				$('#to_top').fadeIn();
+			else
+				$('#to_top').fadeOut();
+			});
+
+		$('#to_top').on('click', function() {
+			$("html, body").animate({scrollTop: 0}, 200);
+
+		});
 
 	});
 
 	function loadPdfs(zoom) {
 
 		$(".pdf_container").each(function() {   // traverse pdf containers
+
+			// don't allow expanding/collapsing all if some 
+			// aren't going to be collapsed in first place
+			if ($(this).data("height") <= 170)
+				can_expand_all = false;
 
 			paper = $(this).data("paper");   // get question pdf data
 			q_num = $(this).data("q_num");
@@ -189,5 +325,4 @@
 
 <!-- <a href="{% url 'app:similar_qs' paper.module_code paper.year 1 %}">See similar questions</a> -->
 
-{% endwith %}
 {% endblock %}

@@ -1,15 +1,0 @@
-3. (a) Using a suitable example, explain how priority is assigned to processes in the 
- Rate Monotonic Algorithm (RMA).       [5]  
-(b) Explain when a page fault occurs and how such a fault is handled.   [5]  
-(c) Compare and contrast the following two memory problems: internal 
-fragmentation and external fragmentation.      [5]  
-(d) Explain the best fit and first fit algorithms for memory allocation.  [5]  
-(e) The following list describes holes currently available in memory, together 
-with their respective sizes:  
-⟨(B1, 20), (B2, 30), (B3, 25), (B4, 10), (B5, 20), (B6, 15)⟩ The kernel keeps track of the memory requests of different processes, as 
-follows:  
-⟨(P1, 22), (P2, 17), (P3, 3), (P4, 10), (P5, 8), (P6, 17)⟩  
-(i) Calculate the size of the holes left when the first fit algorithm is used 
-for memory allocation. Justify your answer.     [3] 
-(ii) Show the memory allocation for each process when the worst fit 
-algorithm is used.        [2]  

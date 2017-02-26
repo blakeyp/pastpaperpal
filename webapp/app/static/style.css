@@ -1,18 +1,19 @@
 
 /*h3 {color:green;}*/
 
-/*.container {
-	margin-top: 5%;
-	width: 70%;
-	max-width: 800px;
-	min-width: 600px;
-}*/
+html {
+	overflow-y: scroll;
+}
 
-.vertical-center {
+.container {
+/*	width: 1125px !important;*/
+}
+
+/*.vertical-center {
 	min-height: 85%;
 	display: flex;
 	align-items: center;
-}
+}*/
 
 /*.glyphicon.glyphicon-upload {
 	font-size: 70px;

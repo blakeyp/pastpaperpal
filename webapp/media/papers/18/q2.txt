@@ -1,6 +1,0 @@
-2. (a) Present a procedure for deciding satisfiability of conjunctions of equalities between
-terms that are built from variables and uninterpreted functions. The procedure should
-allow uninterpreted functions with several arguments. [20]
-(b) Describe by an example how equality logic with uninterpreted functions can be used
-to verify correctness of optimisations of pipelined circuits. The example should in-
-volve a circuit with a multiplexer and at least three pipeline stages. [15]

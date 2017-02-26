@@ -1,2 +1,0 @@
-4. What is an entropy value for passwords? Explain the general principles which are 
-used for increasing password entropy.           [4] 

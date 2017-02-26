@@ -16,70 +16,147 @@
 
 		<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
 
+		<link rel="icon" href="{% static 'favicon.png' %}">
+
+		<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
 		<title>{% block title %}{% endblock %}</title>
+
+		<style type="text/css">
+
+			html {
+  			overflow-y: scroll;
+			}
+
+			body {
+				font-family: ;
+			}
+
+			.navbar-default {
+				border: none;
+				border-radius: 0;
+				background-color: #1c8d76;
+			}
+
+			.navbar-default .navbar-nav>li>a,
+			.navbar-default .navbar-nav>li>a:focus {
+				color: white;
+				transition: opacity 0.4s ease-in-out;
+			}
+
+			.navbar-default .navbar-nav>li>a:hover {
+				color: white;
+				opacity: 0.8;
+			}
+
+			.navbar .form-control {
+				background-color: rgba(255,255,255,0.2);
+				border: 0;
+				color: white;
+				transition: background-color 0.2s ease-in-out;
+			}
+
+			.navbar .form-control::-webkit-input-placeholder {
+				color: white;
+			}
+
+			.navbar .form-control:focus {
+				background-color: rgba(255,255,255,0.3);
+				box-shadow: none;
+			}
+
+			.dropdown-menu>li>a {
+				padding: 7px 11px;
+				font-size: 16px;
+			}
+
+			.local_nav {
+				font-size: 18pt;
+				line-height: 1.5;
+				padding-left: 4px;
+		    margin-top: 15px;
+		    margin-bottom: 40px;
+		    color: #525252;
+		    border-bottom: 1px solid #dddddd;
+			}
+
+			.year_dropdown {
+				font-size: 16pt;
+				color: inherit;
+		    padding: 2px 6px;
+			}
+
+			.my_btn {
+				border: 0;
+				background: inherit;
+			}
+
+		</style>
 
 	</head>
 
 	<body>
 
 		<nav class="navbar navbar-default">
-		  <div class="container-fluid">
-		    <!-- Brand and toggle get grouped for better mobile display -->
-		    <div class="navbar-header">
-		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-		        <span class="sr-only">Toggle navigation</span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		      </button>
-		      <a class="navbar-brand" href="#">Past Paper App</a>
-		    </div>
+			<div class="container">
 
-		    <!-- Collect the nav links, forms, and other content for toggling -->
-		    <div class="collapse navbar-collapse" id="navbar">
+				<div class="navbar-header">
 
-		      <ul class="nav navbar-nav">
-		        <li class="active"><a href="">Home</a></li>
-		        <li><a href="upload">Upload paper</a></li>
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
 
-<!-- 		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-		          <ul class="dropdown-menu">
-		            <li><a href="#">Action</a></li>
-		            <li><a href="#">Another action</a></li>
-		            <li><a href="#">Something else here</a></li>
-		            <li role="separator" class="divider"></li>
-		            <li><a href="#">Separated link</a></li>
-		            <li role="separator" class="divider"></li>
-		            <li><a href="#">One more separated link</a></li>
-		          </ul>
-		        </li> -->
+					<a class="navbar-brand" href="/" style="padding:6px;">
+						<img src="{% static 'pastpaperpal_logo.png' %}" height=38px>
+					</a>
 
-		      </ul>
+				</div>
 
-<!-- 		      <form class="navbar-form navbar-left">
-		        <div class="form-group">
-		          <input type="text" class="form-control" placeholder="Search">
-		        </div>
-		        <button type="submit" class="btn btn-default">Submit</button>
-		      </form> -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				
+					<form class="navbar-form navbar-left">
+						<div id="search_area" class="form-group has-feedback">
 
-<!-- 		      <ul class="nav navbar-nav navbar-right">
-		        <li><a href="#">Link</a></li>
-		        <li class="dropdown">
-		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-		          <ul class="dropdown-menu">
-		            <li><a href="#">Action</a></li>
-		            <li><a href="#">Another action</a></li>
-		            <li><a href="#">Something else here</a></li>
-		            <li role="separator" class="divider"></li>
-		            <li><a href="#">Separated link</a></li>
-		          </ul>
-		        </li>
-		      </ul> -->
+							<input id="module_search" type="text" class="form-control" placeholder="Search a module code..." style="width:210px;">
+							<span class="glyphicon glyphicon-search form-control-feedback" style="color:white;"></span>
 
-		    </div><!-- /.navbar-collapse -->
-		  </div><!-- /.container-fluid -->
+							<div id="search_dropdown" class="dropdown">
+								<ul id="dropdown_results" class="dropdown-menu" style="min-width:210px;"></ul>
+							</div>
+
+						</div>
+					</form>
+
+					<!-- dropdown button
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+						<li><a href="#">Link</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">Separated link</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a href="#">One more separated link</a></li>
+							</ul>
+						</li>
+					</ul>
+					-->
+
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#" style="font-size:15px;">
+							<span class="glyphicon glyphicon-log-in" style="padding-right:3px;"></span> Sign In
+						</a></li>
+					</ul>
+
+				</div> <!-- /.navbar-collapse -->
+			</div> <!-- /.container-fluid -->
+
 		</nav>
 
 		<div class="container">
@@ -89,3 +166,85 @@
 	</body>
 
 </html>
+
+<!-- 
+
+  {% if user.is_authenticated %}
+
+    Hey {{ user.username }}!
+    <a href="/sign_out" class="btn btn-default">Sign Out</a>
+
+  {% else %}
+
+    <form method="post" enctype="multipart/form-data" id="signin_form" action="/sign_in/" class="navbar-form" role="search">
+      {% csrf_token %}
+      <div class="form-group">
+        <input type="text" class="form-control" name="username" placeholder="Username">
+      </div>
+      <div class="form-group">
+        <input type="password" class="form-control" name="password" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-default">Sign In</button>
+    </form>
+
+      {% endif %}
+
+-->
+
+<script>
+
+	$(document).click(function(e) {
+    e.stopPropagation();
+    var container = $("#search_area");
+    if (container.has(e.target).length === 0) {
+			$('#search_dropdown').removeClass('open');
+			$('#module_search').css('font-size','14px');
+			$('#module_search').val('');
+    }
+	});
+
+	// populate list of modules and paper counts from server (on page load)
+	var modules = {{module_codes|safe}};
+	var counts = {{count_papers|safe}};
+
+	// regex to validate module code input
+	var valid_code = new RegExp("^[A-Z]{1,2}[0-9]{0,3}$");
+
+	// validate input on key up of module code search box
+	// call to update results
+	$('#module_search').keyup(function() {
+		$(this).css('font-size','16px');
+		$('#search_dropdown').addClass('open');
+		$("#dropdown_results").html("");   // clear current results
+    var input = this.value.toUpperCase();
+    if (input.length == 0)  {
+    	$('#search_dropdown').removeClass('open');
+    	return;
+    }
+    if (!valid_code.test(input)) {
+    	$("#dropdown_results").html("<li><a>Not a valid module code!</a></li>"); return; }
+    var found_results = updateResults(input);
+   	if (input.length == 5 && !found_results)
+    	$("#dropdown_results").html("<li><a>No results found. <a style='color:#337ab7;' href='/upload'>Upload new paper?</a></a></li>");
+    else if (!found_results)
+    	$("#dropdown_results").html("<li><a>No results found.</a></li>");
+	});
+
+	// updates module search results using list of module codes
+	function updateResults(input) {
+		var found_results = false;
+    for (i=0; i<modules.length; i++) {
+      if (modules[i].startsWith(input)) {
+      	// concatenate to existing results
+      	var paper = (counts[i]==1 ? " paper" : " papers")
+				$("#dropdown_results").html(
+					$("#dropdown_results").html() + 
+					"<li><a href='/"+modules[i].toLowerCase()+"'>"+modules[i]+" &bull; \
+					<span style='font-size:15px'> "+counts[i]+paper+"</span></a></li>");
+				found_results = true;
+			}
+    }
+	  return found_results;
+	}
+
+</script>

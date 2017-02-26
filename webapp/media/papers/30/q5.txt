@@ -1,9 +1,0 @@
-5. (a) Compare and contrast the Intersection of Half-Planes and Winding Num-
-ber Rule as insideness tests. [8]
-(b) What are z-buffers and how are they used to: (1) perform hidden surface
-removal; (2) blend opaque and transparent geometry; and (3) generate
-shadows? [10]
-(c) Explain why Phong shading is computationally more expensive than
-Gouraud shading of triangles. What is the Phong shading value at (0, 0)
-for the triangle (1,−1)0, (0, 1)1, (−1,−1)2 if the vertices have illumina-
-tion/vertex normal attributes {I0,n0}, {I1,n1} and {I2,n2}? [7]

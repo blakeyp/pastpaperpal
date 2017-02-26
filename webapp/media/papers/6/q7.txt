@@ -1,9 +1,0 @@
-7. The theme of Question 7 is the untyped λ-calculus. That is, the calculus of
-anonymous functions such as λn . (+1) n which form the logical foundation
-of functional programming.
-(a) Give a hand coded evaluation for the lambda expression,
-(+) ((λn . (+) n 2) 3) ((λn . (∗) 3 ((−) 6 n)) 4). [12]
-(b) The so-called Y combinator is defined in the original notation
-of untyped λ−calculus by, Y = λf . (λx . f(x(x))) (λx . f(x(x))) .
-For any function g prove that Y (g) ; g(Y (g)) . That is, Y (g)
-reduces to g(Y (g)) . [8]
