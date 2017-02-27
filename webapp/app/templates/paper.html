@@ -96,7 +96,43 @@
 
 </style>
 
-<div class="local_nav">
+<div id="local_nav">
+
+	<a href="..">{{paper.module_code|upper}}</a>
+	
+	<small> /
+		{% if other_years %}		
+			<span class="dropdown">
+			  <span class="dropdown-toggle" data-toggle="dropdown">
+			    20{{paper.year}} <span class="caret"></span>
+			  </span>
+			  <ul class="dropdown-menu">
+			  	<li class="dropdown-header">Switch paper</li>
+			  	<li class="divider"></li>
+			  	{% for year in other_years %}
+				    <li><a href="../{{year}}">20{{year}}</a></li>
+				  {% endfor %}
+			  </ul>
+			</span>
+		{% else %}
+			20{{paper.year}}
+		{% endif %}
+	</small>
+
+	<a href="/media/uploads/{{paper.module_code}}_{{paper.year}}.pdf" target="_blank" style="font-size:14pt;" class="btn btn-default my_btn pull-right" data-toggle="tooltip" title="Link to full paper" data-delay='{"show":"300", "hide":"0"}'>
+		<span style="left:1px; top:3px;" class="glyphicon glyphicon-file"></span>
+	</a>
+
+</div>
+
+
+
+
+
+
+
+
+<!-- <div class="local_nav">
   
   <div style="float:left; padding-right:2px;"><a style="color:#414141;" href="#">{{paper.module_code|upper}}</a> /</div>
 
@@ -119,7 +155,15 @@
 		<span style="top:3px;" class="glyphicon glyphicon-file"></span>
 	</a>
 
-</div>
+</div> -->
+
+
+
+
+
+
+
+
 
 <img id="loading" src="{% static 'ring-alt.svg' %}">
 

@@ -172,17 +172,15 @@ def similar_qs(request, module, year, q_num):
 def question(request, module, year, q_num):
     paper = get_object_or_404(Paper, module_code=module, year=year)
     question = get_object_or_404(Question, paper=paper, q_num=q_num)
+    other_questions = [q for q in Question.objects.filter(paper=paper).exclude(q_num=q_num)]
 
-    # use faux object type thing - maybe all this stuff better processed before db entry?
     Part = namedtuple('Part', ['part','marks','mins','percent'])
 
     marks_breakdown = json.loads(question.marks_breakdown)
-    print marks_breakdown
+
     total_time = 120
     mins_per_mark = total_time/100.0
     total_marks = question.total_marks
-
-    print total_marks
 
     q_time = int(round(total_marks*mins_per_mark)*60)
     q_mins = int(round(total_marks*mins_per_mark))
@@ -196,7 +194,6 @@ def question(request, module, year, q_num):
             mins = str(mins).split('.', 1)[0]
         else:
             mins = str(mins).split('.', 1)[0]+'&frac12;'
-
         percent = marks/float(total_marks)*100
         parts.append(Part(part, marks, mins, percent))
 
@@ -209,7 +206,7 @@ def question(request, module, year, q_num):
         except ObjectDoesNotExist:
             print 'no user notes found'
 
-    return render(request, 'question.html', {'paper':paper, 'question':question,
+    return render(request, 'question.html', {'paper':paper, 'question':question, 'other_questions':other_questions,
         'user_notes':user_notes, 'parts':parts, 'q_time':q_time, 'q_mins':q_mins})
 
 def save_notes(request, module, year, q_num):

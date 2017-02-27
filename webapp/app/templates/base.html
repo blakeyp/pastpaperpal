@@ -18,7 +18,7 @@
 
 		<link rel="icon" href="{% static 'favicon.png' %}">
 
-		<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
 
 		<title>{% block title %}{% endblock %}</title>
 
@@ -29,7 +29,7 @@
 			}
 
 			body {
-				font-family: ;
+				font-family: 'Rubik', sans-serif;
 			}
 
 			.navbar-default {
@@ -65,30 +65,63 @@
 				box-shadow: none;
 			}
 
-			.dropdown-menu>li>a {
+			.dropdown-menu li a {
 				padding: 7px 11px;
 				font-size: 16px;
-			}
-
-			.local_nav {
-				font-size: 18pt;
-				line-height: 1.5;
-				padding-left: 4px;
-		    margin-top: 15px;
-		    margin-bottom: 40px;
-		    color: #525252;
-		    border-bottom: 1px solid #dddddd;
-			}
-
-			.year_dropdown {
-				font-size: 16pt;
-				color: inherit;
-		    padding: 2px 6px;
 			}
 
 			.my_btn {
 				border: 0;
 				background: inherit;
+			}
+
+			#local_nav {
+				color:  #404040;
+				font-size: 26px;
+				margin-top: 20px;
+				padding: 0 0 2px 3px;
+				border-bottom: 1px solid #dddddd;
+				margin-bottom: 45px;
+			}
+
+			#local_nav a { color: inherit; }
+
+			#local_nav small { color: #555555; }
+
+			#local_nav .dropdown-toggle { 
+				cursor: pointer;
+				margin-left: 2px;
+			}
+
+			#local_nav .caret { margin-left: -2px; }
+
+			#local_nav .dropdown-header {
+				padding: 4px 11px;
+				font-weight: bold;
+				font-size: 14px;
+			}
+
+			#local_nav .dropdown-menu a { padding: 6px 11px; }
+
+			#local_nav .divider {
+				margin-top: 3px;
+				margin-bottom: 5px;
+			}
+
+			.btn-primary {
+				background-color: #1c8d76; 
+				border-color: #247d6c;
+			}
+
+			.btn-primary:hover, .btn-primary:active,
+			.btn-primary:focus, .btn-primary:active:focus,
+			.btn-primary:active:hover {
+				background-color: #177965;
+				border-color: #247d6c;
+			}
+
+			.modal-open {
+				padding-right: 0 !important
 			}
 
 		</style>
@@ -119,6 +152,7 @@
 					<form class="navbar-form navbar-left">
 						<div id="search_area" class="form-group has-feedback">
 
+							<input style="display:none" type="text"/>
 							<input id="module_search" type="text" class="form-control" placeholder="Search a module code..." style="width:210px;">
 							<span class="glyphicon glyphicon-search form-control-feedback" style="color:white;"></span>
 
