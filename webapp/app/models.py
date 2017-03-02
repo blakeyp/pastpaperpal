@@ -39,10 +39,13 @@ def delete_paper_dir(sender, instance, *args, **kwargs):
 class Rubric(models.Model):
 	paper = models.ForeignKey(Paper,on_delete=models.CASCADE)
 	total_qs = models.PositiveSmallIntegerField()
-	calcs_allowed = models.BooleanField()
+	time_mins = models.PositiveSmallIntegerField(null=True)
+	calcs_allowed = models.NullBooleanField(null=True)
+	choice_choose = models.PositiveSmallIntegerField(null=True)
+	choice_text = models.CharField(max_length=100,null=True)
 
 	def __str__(self):
-		return str(self.paper.pk) + ', ' + str(self.calcs_allowed)
+		return str(self.paper.pk) + ', ' + str(self.time_mins) + ', ' + str(self.calcs_allowed) + ', ' + str(self.choice_choose) + ', ' + str(self.choice_text)
 
 	# class Meta:
 	# 	unique_together = ('module_code', 'year')
@@ -66,3 +69,10 @@ class UserNotes(models.Model):
 
 	def __str__(self):
 		return str(self.user.pk) + ', ' + str(self.question.pk) + ', ' + str(self.notes)
+
+class UserCompletedQuestion(models.Model):
+	user = models.ForeignKey(User,on_delete=models.CASCADE)
+	question = models.ForeignKey(Question,on_delete=models.CASCADE)
+
+	def __str__(self):
+		return str(self.user.pk) + ', ' + str(self.question.pk)

@@ -13,8 +13,6 @@ urlpatterns = [
 
     url(r'^upload/$', views.upload, name='upload'),
 
-    url(r'^get_modules/$', views.get_modules, name='get_modules'),
-
     # matches '/<module_code>/' url
     url(r'^(?P<module>.{5})/', include([
     	url(r'^$', views.module, name='module'),
@@ -25,6 +23,7 @@ urlpatterns = [
     		url(r'^q(?P<q_num>[0-9]{1,2})/similar$', views.similar_qs, name='similar_qs'),
             url(r'^q(?P<q_num>[0-9]{1,2})/$', views.question, name='question'),
             url(r'^q(?P<q_num>[0-9]{1,2})/save_notes$', views.save_notes, name='save_notes'),
+            url(r'^q(?P<q_num>[0-9]{1,2})/set_completed$', views.set_completed, name='set_completed'),
     	])),
 
     ])),

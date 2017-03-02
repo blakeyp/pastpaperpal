@@ -10,7 +10,7 @@
 
 	.panel {
     margin: auto;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 	}
 
 	.panel-body {
@@ -53,7 +53,7 @@
 	  font-size: 10pt;
 	  padding: 5px;
 	  width: 40px;
-	  background-color: #f8fbfa;
+	  background-color: #f5f5f5;
 	}
 
 	.collapse_btn {
@@ -81,17 +81,19 @@
 	}
 
 	.sect_heading {
+		border-bottom: 1px solid #dddddd;
+		padding: 6px;
 		margin: 15px auto;
-		background-color: #e6e6e6;
-		border-color: #c7c7c7;
-		padding: 6px 10px;
-		height: 35px;
 	}
 
 	.glyphicon-ok-circle {
 		top: 3.5px;
 		left: 3px;
 		font-size: 12pt;
+	}
+
+	.dropdown-menu>.active>a, .dropdown-menu>.active>a:hover {
+		background-color: rgba(28, 141, 118, 0.14);
 	}
 
 </style>
@@ -110,7 +112,11 @@
 			  	<li class="dropdown-header">Switch paper</li>
 			  	<li class="divider"></li>
 			  	{% for year in other_years %}
-				    <li><a href="../{{year}}">20{{year}}</a></li>
+			  		{% if year == paper.year %}
+				    	<li class="active"><a href="../{{year}}">20{{year}}</a></li>
+			  		{% else %}
+			  			<li><a href="../{{year}}">20{{year}}</a></li>
+			  		{% endif %}
 				  {% endfor %}
 			  </ul>
 			</span>
@@ -119,15 +125,11 @@
 		{% endif %}
 	</small>
 
-	<a href="/media/uploads/{{paper.module_code}}_{{paper.year}}.pdf" target="_blank" style="font-size:14pt;" class="btn btn-default my_btn pull-right" data-toggle="tooltip" title="Link to full paper" data-delay='{"show":"300", "hide":"0"}'>
+	<a href="/media/uploads/{{paper.module_code}}_{{paper.year}}.pdf" target="_blank" style="font-size:14pt;" class="btn btn-default my_btn pull-right" data-toggle="tooltip" title="Link to full paper">
 		<span style="left:1px; top:3px;" class="glyphicon glyphicon-file"></span>
 	</a>
 
 </div>
-
-
-
-
 
 
 
@@ -159,12 +161,6 @@
 
 
 
-
-
-
-
-
-
 <img id="loading" src="{% static 'ring-alt.svg' %}">
 
 <div id="questions_set" style="display:none;">
@@ -172,7 +168,7 @@
 {% for question in questions %}
 
 {% if question.new_section %} 
-	<div style="width:{{q_width|add:'-65'}}pt;" class="panel panel-default panel-heading sect_heading">Section {{ question.new_section }}</div>
+	<h4 style="width:{{q_width|add:'-65'}}pt;" class="sect_heading">Section {{ question.new_section }}</h4>
 {% endif %}
 
 <div class="panel panel-default question_panel" style="width:{{q_width|add:'-65'}}pt;">
@@ -181,18 +177,18 @@
   	Q{{ question.q_num }}
   	&bull; {% if question.total_marks == 0 %} ? {% else %} {{ question.total_marks }} {% endif %} marks
 
-  	{% if question.q_num == 2 or question.q_num == 4 or question.q_num == 5 %}
-  		<span style="color: #1c8d76;" class="glyphicon glyphicon-ok-circle" data-toggle="tooltip" title="Marked complete"></span>
+  	{% if question.completed %}
+  		<span style="font-size:18px; margin-top:-2px; color:#1c8d76;" class="glyphicon glyphicon-ok-circle" data-toggle="tooltip" title="Marked completed"></span>
   	{% else %}
-  		<span style="color: #ababab" class="glyphicon glyphicon-ok-circle" data-toggle="tooltip" title="Not yet completed"></span>
+  		<span style="font-size:18px; margin-top:-2px; color:#ababab" class="glyphicon glyphicon-ok-circle" data-toggle="tooltip" title="Not yet completed"></span>
   	{% endif %}
 
     <div class="pull-right" style="margin-top:-4px; margin-right:-4px;">
 
-      <a href="q{{question.q_num}}/similar" class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="See similar questions" data-delay='{"show":"300", "hide":"0"}'>
+      <a href="q{{question.q_num}}/similar" class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="See similar questions">
       	<span class="glyphicon glyphicon-tags"></span>
       </a>
-      <a href="q{{question.q_num}}" class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="Do this question" data-delay='{"show":"300", "hide":"0"}'>
+      <a href="q{{question.q_num}}" class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="Do this question">
       	<span class="glyphicon glyphicon-pencil"></span>
       </a>
 
