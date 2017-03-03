@@ -9,7 +9,7 @@
 <style>
 
 #local_nav {
-	margin-bottom: 15px;
+	margin-bottom: 25px;
 }
 
 .tile {
@@ -81,6 +81,13 @@
 	text-decoration: none;
 }
 
+h4 {
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 7px;
+  padding-left: 3px;
+  margin-top: 15px;
+}
+
 </style>
 
 {% if message %}
@@ -96,10 +103,11 @@
 
 </div>
 
+<div style="margin:auto; width:570px;">
 
 <div class="row" style="margin-left:5px;">
 
-<h4>Exam Format <span style="color:#1c8d76;" class="glyphicon glyphicon-info-sign pop-over" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="This data has been extracted from the most recent available paper for this module (20{{latest_paper.year}}). You are reminded that the exam format is subject to change year-on-year, so please check with your module organiser for the most up-to-date information."></span></h4>
+<h4>Exam Format <span style="color:#1c8d76;" class="glyphicon glyphicon-info-sign pop-over" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Exam formats are subject to change year-on-year, so be sure to check with the module organiser for the most up-to-date information."></span></h4>
 
 <div class="tile">
 
@@ -140,7 +148,7 @@
 			<p style="font-size:45px;">{{rubric.total_qs}}</p>
 		</div>
 		<div style="margin-top:16px; float:left;">
-			<span style="color:#1c8d76; font-size:25px;" class="glyphicon glyphicon-info-sign pop-over" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" title="Original Instructions"  data-content='"{{rubric.choice_text}}."'></span>
+			<span style="color:#1c8d76; font-size:25px;" class="glyphicon glyphicon-info-sign pop-over" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" title="Original Instructions"  data-content='{% if rubric.choice_text %} "{{rubric.choice_text}}." {% else %} not found {% endif %}'></span>
 		</div>
 	</div>
 
@@ -176,11 +184,17 @@
 </div>
 
 <div class="row" style="margin-left:5px; margin-top:15px;">
-<h4 style="margin-bottom:20px;">Available Papers</h4>
+<h4 style="margin-bottom:20px;">
+	Available Papers 	
+
+	<a href="/upload" style="font-size:21px; margin-top:-10px; padding:1px 7px;" style="font-size:24px;" class="btn btn-default my_btn pull-right" data-toggle="tooltip" title="Upload a new paper">
+		<span style="top:3px; left:1px;" class="glyphicon glyphicon-upload"></span>
+	</a>
+</h4>
 
 {% for p in papers %}
 
-<div class="progress paper-progress">
+<div class="progress paper-progress" {% if message == p.year %} style="box-shadow: 0 0 10px #a7e8dc;" {% endif %}>
 	<a href="{{p.year}}" class="paper-a">
 	<div class="progress-bar" style="width:{{p.completed_percent}}%"></div>
 	<div class="paper-btn">
@@ -193,9 +207,48 @@
 
 </div>
 
+</div>
+
+<!-- modal for upload? - needs ajax
+<div class="modal fade" id="upload-modal">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        <h4 class="modal-title">Upload a new paper</h4>
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data" id="upload_form">
+					{% csrf_token %}
+					
+					<button type="button" class="btn btn-default btn-lg" id="upload"><span class="glyphicon glyphicon-upload"></span> Upload a new paper</button>
+
+					<div style="height:0px; width:0px; overflow:hidden;">{{ form.file }}</div>
+
+					<h4><small>PDF format please</small></h4>
+				</form>
+      </div>
+    </div>
+  </div>
+</div> -->
 
 <script>
+	
 	$('.pop-over').popover();
+	$('[data-toggle="tooltip"]').tooltip();
+
+	$('#upload').click(function() {
+			console.log('ehy');
+	    var input = $(this).next().find('input');
+	    console.log(input);
+	    input.click();
+	});
+	$('#id_file').change(function() {   // submit file upload once chosen
+		$('#upload_form').submit();
+		$('#form').hide();
+		$('#processing').show();
+	});
+
 </script>
 
 {% endblock %}

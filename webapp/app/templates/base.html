@@ -165,40 +165,26 @@
 							<span class="glyphicon glyphicon-search form-control-feedback" style="color:white;"></span>
 
 							<div id="search_dropdown" class="dropdown">
-								<ul id="dropdown_results" class="dropdown-menu" style="min-width:210px;"></ul>
+								<ul id="dropdown_results" class="dropdown-menu" style="overflow-y:scroll; max-height:228px; min-width:210px;"></ul>
 							</div>
 
 						</div>
 					</form>
 
-					<!-- dropdown button
-					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-						<li><a href="#">Link</a></li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="#">Action</a></li>
-								<li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">Separated link</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="#">One more separated link</a></li>
-							</ul>
-						</li>
-					</ul>
-					-->
-
 					<ul class="nav navbar-nav navbar-right">
 						
 						{% if user.is_authenticated %}
 
-						<li>
-						<a href="/sign_out/?previous={{request.path}}" style="font-size:15px;">
-							<span class="glyphicon glyphicon-log-out" style="padding-right:3px;"></span> Sign Out
-						</a>
-						</li>
+						<li class="dropdown">
+	            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+	            <span class="glyphicon glyphicon-user" style="padding-right:3px;"></span>
+	            {{user.username}} <span class="caret"></span></a>
+	            <ul class="dropdown-menu" style="min-width:130px;">
+									<li><a href="/sign_out/?previous={{request.path}}" style="font-size:inherit;">
+										<span class="glyphicon glyphicon-log-out" style="padding-left:3px; padding-right:3px;"></span> Sign Out
+									</a></li>
+	            </ul>
+          	</li>
 
 						{% else %}
 

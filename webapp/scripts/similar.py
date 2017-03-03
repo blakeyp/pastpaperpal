@@ -19,13 +19,13 @@ def get_similar_qs(paper, q_num, other_papers, get_top):
 	for paper in other_papers:
 		root = 'media/papers/'+str(paper)+'/'
 		for file in os.listdir(root):   # traverse paper directory
-			if file.startswith('q') and file.endswith('.txt'):
+			if file.startswith('q') and file.endswith('.txt') and 'n' not in file:
 				q_texts.append(open(root+file).read())   # add question content
 				q_num = int(file.strip('q.txt'))
 				q_index.append([paper,q_num])   # keep track of paper_id/q_num for this question
 
 	stopwords = nltk.corpus.stopwords.words('english')
-	vectorizer = TfidfVectorizer(tokenizer=tokenize,sublinear_tf=True, stop_words=stopwords)
+	vectorizer = TfidfVectorizer(tokenizer=_tokenize,sublinear_tf=True, stop_words=stopwords)
 	tfidf_matrix = vectorizer.fit_transform(q_texts)
 	pairwise_sim = tfidf_matrix*tfidf_matrix.T   # cosine similarity between texts
 

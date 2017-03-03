@@ -1,39 +1,159 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>Similar Questions</title>
-	<meta charset="utf-8"> 
-</head>
-
 {% load static %}
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
-
-<div class="container">
+<style type="text/css">
 	
-	<h1>Found top {{get_top}} similar questions</h1>
+	.panel {
+    margin: auto;
+    margin-bottom: 25px;
+	}
+
+	.panel-body {
+		position: relative;
+		padding: 15px 17px;
+	}
+
+	.q-wrapper {
+    margin: auto;
+    overflow: hidden;
+	}
+
+	.q-wrapper iframe {
+    /* clips top/left/bottom */
+    margin-top: -53pt;
+    margin-left: -76pt;
+    margin-bottom: -60pt;
+	}
+
+	#simqs-modal #loading-cover {
+		display: block;
+		margin: auto;
+		margin-bottom: 10px;
+	}
+
+	#simqs-modal .my-btn {
+		border: 0;
+    background: inherit;
+    font-size: inherit;
+    margin-top: -5px;
+    margin-right: -6px;
+    padding: 7px 10px;
+	}
+
+	#simqs-modal .panel-heading {
+		padding: 10px 13px;
+		font-size: 16px;
+		height: 43px;
+	}
+
+	#simqs-modal .modal-content {
+		padding-bottom: 15px;
+	}
+
+	.sect_heading {
+		border-bottom: 1px solid #dddddd;
+		padding: 6px;
+		margin: 15px auto;
+	}
+
+</style>
+
+<div class="modal-header" style="background-color:#f5f5f5; margin-bottom:25px;">
+	<button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+	<span style="font-size:18px;">Similar Questions</span> <span style="color:#1c8d76; font-size:18px; top:2px; left:2px;" class="glyphicon glyphicon-info-sign pop-over" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Similar questions are found by comparing the text content of all of the available questions for a module."></span>
+</div>
+
+<img id="loading-cover" src="{% static 'ring-alt.svg' %}">
+
+<div id="questions-set" style="display:none;">
+
+{% for question in similar_qs %}
+
+{% if forloop.counter == 1 %}
+	<h4 style="width:{{q_width|add:'-65'}}pt;" class="sect_heading">Your selected question</h4>
+{% elif forloop.counter == 2 %}
+	<h4 style="width:{{q_width|add:'-65'}}pt;" class="sect_heading">Top 3 similar questions from other papers</h4>
+{% endif %}
+
+<div class="panel panel-default question_panel" style="width:{{q_width|add:'-65'}}pt;">
+  <div class="panel-heading">
+
+  	20{{question.paper.year}} Q{{question.q_num}}
+
+  	<a href="../../{{question.paper.year}}/q{{question.q_num}}" class="pull-right btn btn-default my-btn" data-toggle="tooltip" title="Do this question">
+  		<span class="glyphicon glyphicon-pencil"></span>
+  	</a>
+
+  </div>
+
+  <div class="panel-body">
+  	<div class="q-wrapper">
+  		<div class="pdf_container" data-paper="{{question.paper.pk}}" data-q_num="{{question.q_num}}" 
+  				data-width="{{q_width}}" data-height="{{question.height}}">
+  		</div>
+  	</div>
+  </div>
+
+</div> <!-- closes panel -->
 
 
-<div class="panel-group" id="accordion">
-
-{% for q in similar_qs %}
-<div class="panel panel-default">
-<div class="panel-heading">
-<h4 class="panel-title"><a data-toggle="collapse" href="#collapse{{forloop.counter}}"> {% if forloop.counter == 1 %} The question comparing to: {% else %} Similar question {{forloop.counter0}}: {% endif %} 20{{ q.0.year }} Q{{ q.1 }}</a></h4>
-</div>
-<div id="collapse{{forloop.counter}}" class="panel-collapse collapse in">
-<div class="panel-body"><img class='img-responsive' src='/media/papers/{{q.0.pk}}/q{{q.1}}.png' width="90%" style="margin:3%"></div>
-</div>
-</div>
 {% endfor %}
 
-</div>
+</div> <!-- closes questions-set -->
 
+<script>
+	
+	// initial browser zoom level
+	// may not work properly on devices with scaling e.g. Windows 10 high dpi!
+	var orig_zoom = Math.round(window.devicePixelRatio*100);
+	var new_zoom;
 
-</div>
+	var num_qs = {{get_top}};
+	var delay = num_qs*500;   // assume fixed time for pdf to load (no better way!) - 0.5 seconds per question to load
 
-</html>
+	$(document).ready(function() {
+
+		loadPdfs(orig_zoom);
+
+		$('[data-toggle="tooltip"]').tooltip();
+		$('.pop-over').popover();
+
+		// event handler to update zoom on change of browser zoom level
+		$(window).resize(function() {
+			new_zoom = Math.round(window.devicePixelRatio*100);
+			if (new_zoom != orig_zoom) {   // check this is a zoom and not just a resize		
+				$('#questions-set').hide(0);
+				$('#loading-cover').show(0);
+				loadPdfs(new_zoom);   // reload pdfs with new zoom level
+				orig_zoom = new_zoom;   // set new old zoom level
+			}
+		});
+
+		$(window).on('scroll', function() {
+			if ($(this).scrollTop() > 100)
+				$('#to-top').fadeIn();
+			else
+				$('#to-top').fadeOut();
+			});
+		$('#to-top').on('click', function() {
+			$("html, body").animate({scrollTop: 0}, 200);
+		});
+
+	});
+
+	function loadPdfs(zoom) {
+		$("#simqs-modal .pdf_container").each(function() {   // traverse pdf containers
+			paper = $(this).data("paper");   // get question pdf data
+			q_num = $(this).data("q_num");
+			width = +$(this).data("width")+55;
+			height = +$(this).data("height")+15;
+			$(this).html("<iframe src='/media/papers/"+paper+"/q"+q_num+".pdf#zoom="+zoom+"&toolbar=0&scrollbar=0' style='width:"+width+"pt; height:"+height+"pt;'></iframe>");
+		});
+
+		setTimeout(function() {
+			$('#loading-cover').hide(0);
+			$('#questions-set').fadeIn(1000);
+		}, delay);
+
+	}
+
+</script>

@@ -197,23 +197,32 @@ def similar_qs(request, module, year, q_num):
     other_papers = [p.pk for p in Paper.objects.filter(module_code=module).exclude(year=year)]
 
     if not other_papers:
-        return HttpResponse('sorry, no available papers to compare to!')
-    else: get_top = len(other_papers)*2+1   # determine top number of questions to return
+        return HttpResponse('Sorry, no available papers to compare to!')
+    else: get_top = 3#len(other_papers)*2+1   # determine top number of questions to return
 
-    similar_qs = get_similar_qs(paper.pk, q_num, other_papers, get_top)
+    sim_qs = get_similar_qs(paper.pk, q_num, other_papers, get_top)
+    # returns paper_id, q_num pairs
 
+    similar_qs = []
+    q_width = 0
     # get paper object from paper_id
     # so that can label questions by year
-    for q in similar_qs: q[0] = Paper.objects.get(pk=q[0])
+    # and question object from q_num
+    for q in sim_qs:
+        question = Question.objects.get(paper=q[0],q_num=q[1])
+        question.paper = Paper.objects.get(pk=q[0])
+        similar_qs.append(question)
+        if question.width > q_width:
+            q_width = question.width
 
-    return render(request, 'similar_qs.html', { 'similar_qs':similar_qs, 'get_top':get_top })
+    return render(request, 'similar_qs.html', {'similar_qs':similar_qs, 'get_top':get_top, 'q_width':q_width})
 
 def question(request, module, year, q_num):
     paper = get_object_or_404(Paper, module_code=module, year=year)
     question = get_object_or_404(Question, paper=paper, q_num=q_num)
     other_questions = [q for q in Question.objects.filter(paper=paper)]
 
-    total_time = 120
+    total_time = Rubric.objects.get(paper=paper).time_mins
     mins_per_mark = total_time/100.0
     total_marks = question.total_marks
 

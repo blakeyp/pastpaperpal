@@ -103,7 +103,7 @@
 	<a href="..">{{paper.module_code|upper}}</a>
 	
 	<small> /
-		{% if other_years %}		
+		{% if other_years %}
 			<span class="dropdown">
 			  <span class="dropdown-toggle" data-toggle="dropdown">
 			    20{{paper.year}} <span class="caret"></span>
@@ -185,7 +185,7 @@
 
     <div class="pull-right" style="margin-top:-4px; margin-right:-4px;">
 
-      <a href="q{{question.q_num}}/similar" class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="See similar questions">
+      <a class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="See similar questions" onclick="get_similar({{question.q_num}})">
       	<span class="glyphicon glyphicon-tags"></span>
       </a>
       <a href="q{{question.q_num}}" class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="Do this question">
@@ -241,6 +241,15 @@
 </div> <!-- closes questions_set -->
 
 <div id="to_top" class="btn btn-default">back to top</div>
+
+
+<div id="simqs-modal" class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
 
 <script>
 	
@@ -358,6 +367,26 @@
 			$('#loading').hide(0);
 			$('#questions_set').fadeIn(1000);
 		}, delay);
+
+	}
+
+
+	function get_similar(q_num) {
+
+		$.get('q'+q_num+'/similar', function(data) {
+			console.log(data);
+			$('#simqs-modal').find('.modal-content').html(data);
+      $('#simqs-modal').modal('show');
+		});
+
+/*		$.ajax({
+				type: 'GET',
+				url: q_num+'/similar/',
+			},
+			success: function(data) {
+				console.log(data);
+			},
+		});*/
 
 	}
 
