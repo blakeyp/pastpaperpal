@@ -1,6 +1,9 @@
 import os, nltk
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+import numpy as np
+import pandas as pd
+
 # takes paper_id/q_num of question to compare to,
 # paper_ids of papers to compare with,
 # and number of top questions to return
@@ -16,6 +19,8 @@ def get_similar_qs(paper, q_num, other_papers, get_top):
 	# paper/question comparing to will be at index 0
 	q_index = [[paper,int(q_num)]]
 
+
+
 	for paper in other_papers:
 		root = 'media/papers/'+str(paper)+'/'
 		for file in os.listdir(root):   # traverse paper directory
@@ -24,9 +29,38 @@ def get_similar_qs(paper, q_num, other_papers, get_top):
 				q_num = int(file.strip('q.txt'))
 				q_index.append([paper,q_num])   # keep track of paper_id/q_num for this question
 
+
+	# qs = []
+	# for i in range(len(q_index)*3):
+	# 	qs.append(i)
+	# print '*****',qs
+
+
 	stopwords = nltk.corpus.stopwords.words('english')
 	vectorizer = TfidfVectorizer(tokenizer=_tokenize,sublinear_tf=True, stop_words=stopwords)
 	tfidf_matrix = vectorizer.fit_transform(q_texts)
+
+
+	# print '****************************** KEYWORDS!!!!!!!!'
+
+	# feature_names = vectorizer.get_feature_names()
+	# #print feature_names
+	# dense = tfidf_matrix.todense()
+	# denselist = dense.tolist()
+	# df = pd.DataFrame(denselist, columns=feature_names, index=qs)
+	# s = pd.Series(df.loc[2])
+
+	# print s[s > 0].sort_values(ascending=False)[:50]
+
+	# feature_array = np.array(vectorizer.get_feature_names())
+	# tfidf_sorting = np.argsort(tfidf_matrix.toarray()).flatten()[::-1]
+
+	# n = 30
+	# top_n = feature_array[tfidf_sorting][:n]
+
+	# print top_n
+
+
 	pairwise_sim = tfidf_matrix*tfidf_matrix.T   # cosine similarity between texts
 
 	# get pairwise similarity of question with every other question
