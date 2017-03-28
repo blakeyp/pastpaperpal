@@ -4,42 +4,48 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 import pandas as pd
 
-# takes paper_id/q_num of question to compare to,
-# paper_ids of papers to compare with,
+# takes paper_id q_num of question to compare to,
+# paper_id of paper to compare with,
 # and number of top questions to return
 # returns (paper_id, q_num) of similar questions
-def get_similar_qs(paper, q_num, other_papers, get_top):
+def get_similar_qs(paper_id, q_num, other_papers, get_top):
 	
 	# list storing text content for each question
-	# insert text of question comparing to first
-	q_texts = [open('media/papers/'+str(paper)+'/q'+str(q_num)+'.txt').read()]
+	# first add text of question comparing to
+	q_texts = [open('media/papers/'+str(paper_id)+'/q'+str(q_num)+'.txt').read()]
 
 	# ordered list of lists each storing paper_id and question_num
 	# since this info will be lost when computing tfidf stuff
-	# paper/question comparing to will be at index 0
-	q_index = [[paper,int(q_num)]]
+	# first add paper_id/question comparing to, at index 0
+	q_index = [[paper_id,int(q_num)]]
 
-
-
-	for paper in other_papers:
-		root = 'media/papers/'+str(paper)+'/'
-		for file in os.listdir(root):   # traverse paper directory
-			if file.startswith('q') and file.endswith('.txt') and 'n' not in file:
-				q_texts.append(open(root+file).read())   # add question content
+	for paper_id in other_papers:
+		paper_dir = 'media/papers/'+str(paper_id)+'/'
+		for file in os.listdir(paper_dir):   # traverse paper_id directory
+			if file.startswith('q') and file.endswith('.txt'):
+				q_texts.append(open(paper_dir + file).read())   # add question content
 				q_num = int(file.strip('q.txt'))
-				q_index.append([paper,q_num])   # keep track of paper_id/q_num for this question
-
+				q_index.append([paper_id,q_num])   # keep track of paper_id/q_num for this question
 
 	# qs = []
 	# for i in range(len(q_index)*3):
 	# 	qs.append(i)
 	# print '*****',qs
 
-
+	# using nltk stopwords (slightly different list?)
 	stopwords = nltk.corpus.stopwords.words('english')
-	vectorizer = TfidfVectorizer(tokenizer=_tokenize,sublinear_tf=True, stop_words=stopwords)
+	vectorizer = TfidfVectorizer(tokenizer=_tokenize, sublinear_tf=True, stop_words=stopwords)
+
+	# # using default sklearn stopwords list
+	# vectorizer = TfidfVectorizer(tokenizer=_tokenize, sublinear_tf=True, stop_words='english')
+
+	# # filtering no stopwords - doesn't perform as well
+	# vectorizer = TfidfVectorizer(tokenizer=_tokenize, sublinear_tf=True)
+
 	tfidf_matrix = vectorizer.fit_transform(q_texts)
 
+	print tfidf_matrix
+	print vectorizer.get_feature_names()
 
 	# print '****************************** KEYWORDS!!!!!!!!'
 
@@ -64,7 +70,7 @@ def get_similar_qs(paper, q_num, other_papers, get_top):
 	pairwise_sim = tfidf_matrix*tfidf_matrix.T   # cosine similarity between texts
 
 	# get pairwise similarity of question with every other question
-	# store with retrieved paper/q_num using q_index
+	# store with retrieved paper_id/q_num using q_index
 	# returns list of ([<paper_id>,<q_num>], <pw_sim>) tuples
 	pw_sims = []
 	for i in range(0,len(q_texts)):
