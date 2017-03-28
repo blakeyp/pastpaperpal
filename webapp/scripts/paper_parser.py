@@ -14,41 +14,44 @@ from wand.image import Image, Color
 
 # check input file is a past paper
 # and get paper details i.e. module code/year
+# this is done BEFORE going into extracting rubric/questions and text
+# quickly scans text using pdfminer text extraction functionality
 def get_details(file):
 
-    module_code = None
-    year = None
+    module_code = year = None
 
     code_re = re.compile(r'^([a-z]{2}[0-9]{3})')
-    yr_re = re.compile(r'''(?:\s|^)20([0-9]{2})(?:(?:\s+\n?|$)|\/([0-9]{2})(?:\s+\n?|$))''')
+    yr_re = re.compile(r'(?:\s|^)20([0-9]{2})'   # matches year e.g. '2016'
+                       r'(?:\/([0-9]{2}))?'   # optionally year may be represented as academic year e.g. '2016/17'
+                       r'(?:\s+\n?|$)')   # spaces and new line, or just end of string
 
     device, interpreter, pages = _init_pdf(file)
     
     lt_objs = _process_page(device, interpreter, pages[0])
 
-    for i, lt_obj in enumerate(lt_objs):
+    for lt_obj in lt_objs:
+        
         try:
             text = lt_obj.get_text().lower().strip()
         except AttributeError:
-            pass
-        print text
+            pass   # not a text object, continue
+
         code_match = code_re.search(text.replace(' ',''))
         yr_match = yr_re.search(text)
-        if module_code == None and code_match:
-            module_code = code_match.group(1)
-            continue
-        elif year == None and yr_match:
-            print 'year match!'
-            year = yr_match.group(2) if yr_match.group(2) \
-                else yr_match.group(1)
-            break
+        
+        if not module_code and code_match:
+            module_code = code_match.group()
 
-    if module_code == None and year == None:
-        raise Exception('module code and year not found!')
-    elif module_code == None:
-        raise Exception('module code not found!')
-    elif year == None:
-        raise Exception('year not found!')
+        if not year and yr_match:
+            year = yr_match.group(2) if yr_match.group(2) \
+                else yr_match.group(1)   # '2015/*16*' vs. '20*16*'
+
+    if not module_code and not year:
+        raise Exception('Module code and year not found!')
+    elif not module_code:
+        raise Exception('Module code not found!')
+    elif not year:
+        raise Exception('Year not found!')
 
     return module_code, year
 
