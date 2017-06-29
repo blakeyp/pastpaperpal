@@ -1,0 +1,11 @@
+6. (a) Instruction Selection algorithms try to reduce the running ‘cost’ of generated
+code. Explain the factors that affect the calculation of the cost of machine
+instructions. [5]
+(b) Explain the role of the architecture of the target machine (ie whether a RISC or
+CISC processor) in the design of the Instruction Selection phase of a compiler.
+[6]
+(c) In the context of data-flow analysis, explain what is meant by a reaching defini-
+tion, and justify whether this information flows backwards or forwards through
+a control flow graph. [7]
+(d) Explain what is meant by a live variable and justify whether this information
+flows backwards or forwards through a control flow graph. [7]

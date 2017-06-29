@@ -1,12 +1,11 @@
 from django.shortcuts import render, redirect, get_list_or_404, get_object_or_404
-from django.conf import settings
 from django.http import HttpResponse
-
 from django.core.files.storage import FileSystemStorage
-
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
-from .forms import PaperForm, NotesForm
+from .forms import PaperForm
 from .models import Paper, Question, Rubric, UserNotes, UserCompletedQuestion
 
 from scripts.paper_parser import get_details, extract_questions
@@ -15,15 +14,8 @@ from scripts.rubric_parser import get_rubric
 from scripts.similar import get_similar_qs
 from scripts.merge_contds import merge
 
-from django.contrib.auth import authenticate, login, logout
-
-import json, os
-
-from django.http import JsonResponse
-
-from django.contrib import messages
-
 from collections import Counter, namedtuple
+import json
 
 # each function defines a 'view'
 # views represent 'types' of web pages
@@ -48,7 +40,6 @@ def index(request):
     count_papers = json.dumps(list(count_papers))
 
     return render(request, 'index.html')
-
 
 def sign_in(request):
     username = request.POST['username']
@@ -87,11 +78,8 @@ def upload(request):
 
             num_qs, crop_sizes, sections = extract_questions(file_name, paper.pk)
 
-            merge('media/papers/'+str(paper.pk)+'/')   # merge contds
-
-            # now can remove uploaded file, don't need it anymore - not true!!!
-            # instead, remove on deleting a paper from db
-            #os.remove('media/'+file_name)
+            # merge text of questions that continue over pages
+            merge('media/papers/'+str(paper.pk)+'/')
 
             # traverse questions in paper to populate questions records in db
             for i in range(num_qs):
@@ -111,10 +99,6 @@ def upload(request):
                 question.save()
 
             time, calcs_allowed, choice_choose, choice_outof, choice_text = get_rubric(paper.pk)
-            print '********', time, calcs_allowed, choice_choose, choice_outof, choice_text
-
-            if choice_outof != num_qs:   # sanity check
-                print('Oops, we may have a problem...')
 
             rubric = Rubric(paper=paper, total_qs=num_qs, time_mins=time, calcs_allowed=calcs_allowed, 
                 choice_choose=choice_choose, choice_text=choice_text)
@@ -134,9 +118,7 @@ def module(request, module):
     for msg in storage:
         message = int(msg.message)
         break
-    print message
 
-    #papers = get_list_or_404(Paper, module_code=module)
     papers = Paper.objects.filter(module_code=module).order_by('-year')
     latest_paper = papers.first()
     rubric = Rubric.objects.get(paper=latest_paper)
@@ -169,8 +151,8 @@ def module(request, module):
 
 def paper(request, module, year):
     paper = get_object_or_404(Paper, module_code=module, year=year)
-    other_years = []
-    for o_paper in Paper.objects.filter(module_code=module):   # years of other papers available for this module in db
+    other_years = []   # years of other papers available for this module in db
+    for o_paper in Paper.objects.filter(module_code=module):
         other_years.append(o_paper.year)
     other_years.sort(reverse=True)
     rubric = Rubric.objects.get(paper=paper)
@@ -183,10 +165,11 @@ def paper(request, module, year):
             try:
                 q.completed = UserCompletedQuestion.objects.get(user=user,question=q)
             except ObjectDoesNotExist:
-                print 'user not done this question'
+                pass   # user has not done this question, continue
 
     print questions
-    return render(request, 'paper.html', {'paper':paper, 'other_years':other_years, 'rubric':rubric, 'questions': questions, 'q_width':q_width})
+    return render(request, 'paper.html', {'paper':paper, 'other_years':other_years, 
+    	'rubric':rubric, 'questions': questions, 'q_width':q_width})
 
 def similar_qs(request, module, year, q_num):
     # get paper object for paper of question being compared to
@@ -198,7 +181,7 @@ def similar_qs(request, module, year, q_num):
 
     if not other_papers:
         return HttpResponse('Sorry, no available papers to compare to!')
-    else: get_top = 3#len(other_papers)*2+1   # determine top number of questions to return
+    else: get_top = 3   # top number of questions to return
 
     sim_qs = get_similar_qs(paper.pk, q_num, other_papers, get_top)
     # returns paper_id, q_num pairs
@@ -215,7 +198,8 @@ def similar_qs(request, module, year, q_num):
         if question.width > q_width:
             q_width = question.width
 
-    return render(request, 'similar_qs.html', {'similar_qs':similar_qs, 'get_top':get_top, 'q_width':q_width})
+    return render(request, 'similar_qs.html', {'similar_qs':similar_qs,
+    	'get_top':get_top, 'q_width':q_width})
 
 def question(request, module, year, q_num):
     paper = get_object_or_404(Paper, module_code=module, year=year)
@@ -255,17 +239,17 @@ def question(request, module, year, q_num):
     if user.is_authenticated:
         try:
             user_notes = UserNotes.objects.get(user=user, question=question).notes
-            print 'found!', user_notes
         except ObjectDoesNotExist:
-            print 'no user notes found'
-
+            pass
         try:
             completed_q = UserCompletedQuestion.objects.filter(user=user, question=question)
         except ObjectDoesNotExist:
-            print 'question not completed'
+            pass
 
     return render(request, 'question.html', {'paper':paper, 'question':question, 'other_questions':other_questions,
         'user_notes':user_notes, 'parts':parts, 'q_time':q_time, 'q_mins':q_mins, 'completed_q':completed_q})
+
+# ajax views
 
 def save_notes(request, module, year, q_num):
     if request.method == "POST":

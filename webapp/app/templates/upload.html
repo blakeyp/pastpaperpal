@@ -1,14 +1,55 @@
-{% extends "base.html" %}
+{% extends "home_base.html" %}
 
-{% block title %}Paper{% endblock %}
-
-{% block nav_upload %}
-    class="active"
-{% endblock %}
+{% block title %}Upload Page{% endblock %}
 
 {% block content %}
 
 {% load static %}
+
+<style type="text/css">
+
+	#upload {
+		background-color: rgba(255,255,255,0.2);
+		color: white;
+		font-size: 22px;
+		padding: 10px 20px;
+	}
+
+</style>
+
+<div class="row">
+
+	<a href="/"><img id="logo" style="margin:auto; display:block; margin-top:190px;" src="{% static 'pastpaperpal_logo.png' %}" height=120px></a>
+
+	<div class="row">
+
+		<div class="col-md-4"></div>
+
+		<div class="col-md-4 text-center" style="margin-top:50px;">
+			<div id="form">
+
+			<form method="post" enctype="multipart/form-data" id="upload_form">
+			{% csrf_token %}
+			
+			<button type="button" class="btn btn-default btn-lg" id="upload"><span style="top:2px;" class="glyphicon glyphicon-upload"></span> Choose PDF file</button>
+
+			<div style="height:0px; width:0px; overflow:hidden;">{{ form.file }}</div>
+
+			</form>
+			</div>
+			
+			<div id="processing" style="margin-top:350px; display:none">
+			<img src="{% static 'loading2.svg' %}" id="loading_gif"/>
+			<h4 style="margin-top:25px; color:white;">processing upload...</h4>
+			</div>
+
+		</div>
+
+		<div class="col-md-4"></div>
+
+	</div>
+
+</div>
 
 <script>
 
@@ -20,41 +61,12 @@
 		$('#id_file').change(function() {   // submit file upload once chosen
 			$('#upload_form').submit();
 			$('#form').hide();
+			$('#logo').hide();
+			$('.navbar').hide();
 			$('#processing').show();
 		});
-
 	});
 
 </script>
-
-<div class="row">
-
-	<div class="col-md-4"></div>
-
-	<div class="col-md-4 text-center" style="margin-top: 150px;">
-		<div id="form">
-
-		<form method="post" enctype="multipart/form-data" id="upload_form">
-		{% csrf_token %}
-		
-		<button type="button" class="btn btn-default btn-lg" id="upload"><span class="glyphicon glyphicon-upload"></span> Upload a new paper</button>
-
-		<div style="height:0px; width:0px; overflow:hidden;">{{ form.file }}</div>
-
-		<h4><small>PDF format please</small></h4>
-
-		</form>
-		</div>
-		
-		<div id="processing" style="display:none">
-		<img src="{% static 'ring-alt.svg' %}" id="loading_gif"/>
-		<h4 style="margin-top:25px;margin-left:5px;">processing upload...</h4>
-		</div>
-
-	</div>
-
-	<div class="col-md-4"></div>
-
-</div>
 
 {% endblock %}

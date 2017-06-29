@@ -1,0 +1,10 @@
+2. (a) A 1-bit full-adder performs addition on two significant bits and a previous carry bit.
+i. State whether a 1-bit full adder is an example of a combinatorial or sequential
+logic circuit. Justify your answer. [4]
+ii. Design the logic circuit for a 1-bit full adder. [8]
+(b) D-type flip-flops are used in the design of many common sequential logic circuits.
+i. Draw and explain the truth table for a D-type flip-flop. [3]
+ii. Design an N-bit register using D-type flip-flops. Your design should be capable
+of storing N bits in response to a single clock cycle. State any assumptions. [7]
+(c) Explain the operation of a decoder. Your answer should include the truth table for an
+active-high 2-to-4 line decoder. [3]

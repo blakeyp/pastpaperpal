@@ -1,0 +1,16 @@
+3. (a) Explain the role of item grammars in building bottom-up parsers and the role of the
+look-ahead input token in resolving conflicts. [8]
+(b) Construct an LR(0) state machine for the following grammar, where S is the start
+symbol:
+S → A $ | x b $ A→ a A b | B B → x
+[8]
+(c) Consider the following grammar:
+(1)E → E ; D (4)T → int
+(2)E → D (5)T → real
+(3)D → T L (6)L→ L , id
+(7)L→ id
+Extend the grammar with attribute rules, associating each identifier with an attribute
+to represent its type and placing this information in a simple symbol table. Assume
+that there is an external function that associates each identifier with an attribute s
+such that id.s contains the string value of id.
+[9]

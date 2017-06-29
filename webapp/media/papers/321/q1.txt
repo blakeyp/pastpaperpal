@@ -1,0 +1,8 @@
+1. (a) Describe the three main subfields of Machine Learning; give examples for each one
+and describe their differences and similarities. [6]
+(b) Describe two different Loss functions for regression and/or classification given train-
+ing data {tn,xn}Nn=1 and a model estimate t̂n. [7]
+(c) Explain what is the Naive Bayes assumption of independence. Give an example
+where that assumption is violated and explain why. [6]
+(d) Give the mathematical description of the F1 score, Sensitivity and Specificity. What
+do they measure? What does a value of F1 = 1 say for our model? [6]

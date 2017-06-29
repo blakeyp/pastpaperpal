@@ -1,0 +1,10 @@
+2. (a) Explain the difference between top-down and bottom-up parsing. Explain the mean-
+ing of the abbreviations LL and LR which are often used to denote the two ap-
+proaches. [8]
+(b) Consider the following grammar, where S is the start symbol:
+S → A $ A→ B A a |  B → b B c | A A
+Calculate Nullable, First, and Follow for A and B. [9]
+(c) The First and Follow sets are used primarily to predict grammar rules in a top-down
+parser, but they can also be used for syntax error recovery. Show how syntax errors
+can be managed, using First and Follow sets for a grammar for arithmetic expressions
+as an example. [8]

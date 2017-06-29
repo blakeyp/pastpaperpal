@@ -1,0 +1,7 @@
+3. (a) Explain what is meant by an Abstract Syntax Tree. Illustrate with an outline of
+the process to generate an AST for a Boolean expression. [7]
+(b) Discuss the advantages and disadvantages of representing intermediate code in
+the form of dags instead of trees. [8]
+(c) Show how the decimal value of a binary number can be generated using at-
+tributes. Explain the difference between inherited and synthesized attributes.
+[10]

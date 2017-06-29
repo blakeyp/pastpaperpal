@@ -1,0 +1,13 @@
+1. (a) Explain what is meant by a D-context-free language and discuss why a context-
+free grammar is preferred when building a compiler for a language.
+[6]
+(b) Explain what is meant by a closure algorithm and what makes this approach
+useful in programming a compiler.
+[6]
+(c) Consider the following grammar:
+S -> A $
+A -> B A a B -> b B c
+A -> ! B -> A A
+Calculate Nullable, First, and Follow for A and B. Explain the steps you have
+taken.
+[13]

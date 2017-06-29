@@ -1,0 +1,11 @@
+CS3420
+THE UNIVERSITY OF WARWICK
+Third Year Examinations: Summer 2016
+Machine Learning
+Time allowed: 2 hours.
+Answer FOUR questions, TWO questions from Section A and TWO questions from Section B.
+Use one answer book for your Section A answers and a separate answer book for your Section B
+answers.
+Read carefully the instructions on the answer book and make sure that the particulars required
+are entered on each answer book.
+Approved calculators are allowed.

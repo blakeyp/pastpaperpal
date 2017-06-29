@@ -1,0 +1,12 @@
+2. (a) Consider the following grammar:
+N -> L L -> B B -> "0"
+N -> L "." L L -> L B B -> "1"
+Explain why this is not an LL(1) grammar, and show a grammar for the same lan-
+guage that is LL(1). [8]
+(b) Consider adding multiple assignments of the form
+var_1 = var_2 = ... var_n = Exp
+to Java, to give all the variables the value of Exp.. Propose a syntax (productions) for
+this feature such that it can be parsed with an LR(1) parser. Assume that appropriate
+syntax for Exp already exists and all variables have already been declared. [9]
+(c) LR parsing is based on the construction of what is known as a characteristic finite
+state machine. Explain clearly how the states of the machine are constructed. [8]

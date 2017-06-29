@@ -1,0 +1,10 @@
+1. (a) Explain why it is desirable to have more than one possible representation for a value.
+Give an example of where this might be useful in computer system design. [3]
+(b) i. Convert 15810 to 8-bit wide unsigned binary. [3]
+ii. Convert 10011111001001112 to hexadecimal. [3]
+iii. Convert 214410 to octal. [4]
+iv. Explain the concept of overflow. Your answer should describe why the concept
+is relevant to computer system design. [3]
+v. Show how 1810 can be subtracted from 4610 in two’s complement. [5]
+(c) Convert 2.062510 to an 8-bit wide fixed point binary representation. Comment on the
+range of your fixed point representation. [4]

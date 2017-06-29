@@ -1,0 +1,16 @@
+5. (a) Discuss the advantages and disadvantages of compiling to a virtual machine
+(such as JVM) as opposed to straightforward translation to assembly code.
+[11]
+(b) Consider the following program and function expressed as 3-address code:
+x := 11
+y := 13
+t1 := x + y
+z := t1 * 2
+a := 17
+b := 19
+t2 := a * b
+z := z * t2
+Perform the register allocation procedure to assign one of the available 3 registers
+(R0, R1, and R2) for each variable, and show the resulting code. Include code
+for spilling if needed. Explain any algorithms and criteria that are used.
+[14]

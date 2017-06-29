@@ -1,0 +1,505 @@
+{% extends "page_base.html" %}
+
+{% block title %}Question Page{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
+
+<link href="https://fonts.googleapis.com/css?family=Comfortaa|Inconsolata" rel="stylesheet">
+
+<style type="text/css">
+
+	.panel {
+		float: left;
+		position: relative;
+		min-height: 150px;
+	}
+
+	.panel-body {
+		padding: 15px 17px;
+	}
+
+	#question {
+		margin: auto;
+		overflow: hidden;
+	}
+
+	#question iframe {
+		/* clips top/left/bottom */
+		margin-top: -53pt;
+		margin-left: -76pt;
+		margin-bottom: -60pt;
+	}
+
+	#loading {
+		position: absolute;
+		top: calc(50% - 50px);
+		left: calc(50% - 50px);
+	}
+
+	.panel-heading {
+		padding: 10px 13px;
+		font-size: 11pt;
+		height: 43px;
+	}
+
+	#to_top {
+		display: none;
+		position: fixed;
+		bottom: 40px;
+		right: 40px;
+	}
+
+	.well {
+		font-family: 'Comfortaa', cursive;
+		font-size: 13px;
+		overflow-y: auto;
+	}
+
+	.empty_well {
+		padding: 0;
+		border: 0;
+		background-color: white;
+	}
+
+	#add_notes {
+		cursor: pointer;
+		font-family: 'Rubik', sans-serif;
+		text-align: center;
+		color: grey;
+		font-size: 13pt;
+		position: relative;
+		top: 40%;
+	}
+
+	.container {
+		min-width: 1000px;
+	}
+
+	.progress {
+		background-color: white;
+		height: 45px;
+		margin-bottom: 5px;
+		margin-top: 10px;
+	}
+
+	.progress-bar {
+		background-color: #14b393;
+	}
+
+	#full_bar {
+		opacity: 0.2;
+	}
+
+	.part {
+		background-color:rgba(0,0,0,0.0);
+		color: #797979;
+		font-size: 14px;
+		line-height: 48px;
+		box-shadow: none;
+		border-right: 1px dotted #adadad;
+	}
+
+	.note-editor {
+		width: 100%;
+	}
+
+	#local_nav {
+		margin-bottom: 25px;
+	}
+
+	#start_btn:hover,#pause_btn:hover,
+	#reset_btn:hover {
+		opacity: 0.8;
+	}
+
+	.btn-default {
+		background-color: #f5f5f5;
+	}
+
+	.btn-default:hover {
+		background-color: #e8e8e8;
+	}
+
+	.completed-btn {
+		display:none;
+		width:170px;
+		margin-top: -1px;
+		margin-right: 3px;
+	}
+
+	.dropdown-menu>.active>a, .dropdown-menu>.active>a:hover {
+		background-color: rgba(28, 141, 118, 0.14);
+	}
+
+	.timer-btn {
+		cursor: pointer;
+		font-size: 20px;
+		margin-left: -5px;
+		color: #1c8d76;
+	}
+
+	#timer-text {
+		background-color: white;
+		border-radius: 4px;
+		padding: 4px 9px;
+		font-size: 26px;
+		font-family: 'Inconsolata', monospace;
+	}
+
+	#timer {
+		background-color: #f5f5f5;
+		border-radius: 5px;
+		padding-top: 13px;
+		padding-left: 14px;
+		padding-right: 14px;
+		padding-bottom: 6px;
+		margin-bottom: 25px;
+	}
+
+</style>
+
+<div id="local_nav">
+
+	<a href="../..">{{paper.module_code|upper}}</a>
+	
+	<small> / <a href="..">20{{paper.year}}</a> /
+			<span class="dropdown">
+			  <span class="dropdown-toggle" data-toggle="dropdown">
+				Q{{question.q_num}} <span class="caret"></span>
+			  </span>
+			  <ul class="dropdown-menu">
+				<li class="dropdown-header">Switch question</li>
+				<li class="divider"></li>
+				{% for q in other_questions %}
+					{% if q.q_num == question.q_num %}
+						<li class="active"><a href="../q{{q.q_num}}">Q{{q.q_num}}</a></li>
+					{% else %}
+						<li><a href="../q{{q.q_num}}">Q{{q.q_num}}</a></li>
+					{% endif %}
+				  {% endfor %}
+			  </ul>
+			</span>
+	</small>
+
+	<button id="marked-complete" class="pull-right btn btn-primary completed-btn" onclick="unset_completed()" type="button" data-toggle="tooltip" title="Click to unset">
+		<span style=" font-size:16px; top:3px; padding-right:2px;" class="glyphicon glyphicon-ok-circle"></span> Marked completed
+	</button>
+
+	<button id="set-completed" class="pull-right btn btn-default completed-btn" onclick="set_completed()" type="button">
+		<span style="color:grey; font-size:16px; top:3px; padding-right:2px;" class="glyphicon glyphicon-ok-circle"></span> Mark as complete
+	</button>
+
+<script>
+	{% if user.is_authenticated %}
+		{% if completed_q %}
+			$('#marked-complete').show();
+		{% else %}
+			$('#set-completed').show();
+		{% endif %}
+	{% endif %}
+</script>
+
+</div>
+
+<div class="modal fade" id="sign_in_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h4 class="modal-title">Please sign in</h4>
+	  </div>
+	  <div class="modal-body">
+		You must be signed in to make notes.
+	  </div>
+	</div>
+  </div>
+</div>
+
+<div id="timer">
+	
+	<span id="timer-text">
+		<span id="time">0:00</span>
+		<span id="start_btn" class="glyphicon glyphicon-play timer-btn" onclick="start_timer()" data-toggle="tooltip" title="Start timer"></span>
+		<span id="pause_btn" style="display:none;" class="glyphicon glyphicon-pause timer-btn" onclick="pause_timer()" data-toggle="tooltip" title="Pause timer"></span>
+		<span id="reset_btn" style="display:none;" class="glyphicon glyphicon-stop timer-btn" onclick="reset_timer()" data-toggle="tooltip" title="Reset timer"></span>
+	</span>
+	
+	<div class="pull-right" style="padding:6px 7px; font-size:16px">
+		<span style="font-size:11pt;" class="glyphicon glyphicon-check"></span> {{question.total_marks}} marks 
+		<span style="margin-left:4px; font-size:11pt;" class="glyphicon glyphicon-time"></span> {{q_mins}} mins
+	</div>
+
+	<div class="progress" style="position: relative;">
+
+		<div class="progress-bar" id="full_bar" style="width:0%; position: absolute;"></div>
+
+		{% if parts %}
+		
+		{% for part in parts %}
+			<div id="part_{{part.part}}" class="progress-bar part" style="width:{{part.percent}}%; {% if forloop.last %} border-right:none;{% endif %}">
+		  <span style="margin-right:3px;">({{part.part}})</span>
+		  <span class="glyphicon glyphicon-time"></span> {{part.mins|safe}} mins
+			</div>
+		{% endfor %}
+
+		{% else %}
+		<div style="font-size:16px; line-height:48px; width:100%; text-align:center;">
+			<span class="glyphicon glyphicon-time"></span> ~{{q_mins|safe}} mins
+		</div>
+		{% endif %}
+
+	</div>
+
+</div>
+
+<div class="panel panel-default question_panel" style="width:{{question.width|add:'-65'}}pt; 
+height:{{question.height|add:'-70'}}pt;">
+  
+  <div class="panel-body">
+	<img id="loading" src="{% static 'loading1.svg' %}" height=100px>
+
+	<div id="question" style="display:none;">
+		<div class="pdf_container" data-paper="{{paper.pk}}" data-q_num="{{question.q_num}}" 
+				data-width="{{question.width}}" data-height="{{question.height}}">
+		</div>
+	</div>
+  </div>
+
+</div>
+
+<div style="position: relative; min-height: 150px; margin-left:{{question.width|add:'-50'}}pt; height:{{question.height|add:'-70'}}pt;">
+
+	<div onclick="edit()" class="well" style="width: 100%; height: 100%">
+		{% if user_notes %} 
+			<div class="click2edit">{{user_notes|safe}}</div>
+		{% else %}
+		<div class="click2edit"></div>
+			<div id="add_notes"><span class="glyphicon glyphicon-edit"></span> Click to add notes</div>
+		{% endif %}
+	</div>
+
+	<div id="saved" class="alert alert-success" style="display:none; padding: 10px; width: 170px; text-align: center; position: absolute; bottom: 0; opacity: 0.9; left: calc(50% - 80px);" role="alert"><span class="glyphicon glyphicon-ok"></span> successfully saved!</div>
+
+	<button id="save" style="display:none; position:absolute; bottom:-40px; right:0;" class="btn btn-primary" onclick="save()" type="button">Save</button>
+
+</div>
+
+<div id="to_top" class="btn btn-default">back to top</div>
+
+<script>
+	
+	// initial browser zoom level
+	// may not work properly on devices with scaling e.g. Windows 10 high dpi!
+	var orig_zoom = Math.round(window.devicePixelRatio*100);
+	var new_zoom;
+
+	var delay = 500;
+
+	$(document).ready(function() {
+
+		$('#sign_in_modal').modal('hide')
+
+		loadPdfs(orig_zoom);
+
+		$('[data-toggle="tooltip"]').tooltip(); 
+
+		// event handler to update zoom on change of browser zoom level
+		$(window).resize(function() {
+
+			new_zoom = Math.round(window.devicePixelRatio*100);
+
+			if (new_zoom != orig_zoom) {   // check this is a zoom and not just a resize		
+				$('#question').hide(0);
+				$('#loading').show(0);
+				loadPdfs(new_zoom);   // reload pdfs with new zoom level
+				orig_zoom = new_zoom;   // set new old zoom level
+			}
+
+		});
+
+		$(window).on('scroll', function() {
+
+			if ($(this).scrollTop() > 100)
+				$('#to_top').fadeIn();
+			else
+				$('#to_top').fadeOut();
+			});
+
+		$('#to_top').on('click', function() {
+			$("html, body").animate({scrollTop: 0}, 200);
+
+		});
+
+	});
+
+	function getCookie(name) {
+		var cookieValue = null;
+		if (document.cookie && document.cookie !== '') {
+			var cookies = document.cookie.split(';');
+			for (var i = 0; i < cookies.length; i++) {
+				var cookie = jQuery.trim(cookies[i]);
+				// Does this cookie string begin with the name we want?
+				if (cookie.substring(0, name.length + 1) === (name + '=')) {
+					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+					break;
+				}
+			}
+		}
+		return cookieValue;
+	}
+
+	var csrftoken = getCookie('csrftoken');
+
+	function csrfSafeMethod(method) {
+		// these HTTP methods do not require CSRF protection
+		return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+	}
+	$.ajaxSetup({
+		beforeSend: function(xhr, settings) {
+			if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+				xhr.setRequestHeader("X-CSRFToken", csrftoken);
+			}
+		}
+	});
+
+	function edit() {
+
+		{% if not user.is_authenticated %}
+			$('#sign_in_modal').modal('show');
+			return;
+		{% endif %}
+
+		$('#add_notes').hide();
+		$('.well').addClass('empty_well');
+		$('.well').css('overflow-y', 'visible');
+		$('#save').show();
+		$('.click2edit').summernote({
+			focus: 'true',
+		height: $('.well').height()-55,
+		toolbar: [
+			['style', ['bold', 'italic', 'underline', 'clear']],
+			['font', ['superscript', 'subscript']],
+			['fontsize', ['fontsize']],
+			['color', ['color']],
+			['para', ['ul', 'ol', 'paragraph']],
+		]
+	});
+
+		$('.note-statusbar').css('visibility','hidden');
+		$('.note-resizebar').css('visibility','hidden');
+	}
+
+	function save() {
+		var notes = $('.click2edit').summernote('code');
+
+		$('#save').hide();
+		$('.well').removeClass('empty_well');
+		$('.well').css('overflow-y', 'auto');
+
+		$.post('save_notes', {'q_id': {{question.pk}}, 'notes': notes}, function(){
+			$('#saved').slideDown().delay(5000).fadeOut();
+			console.log('sucessfully saved!');
+		});
+
+	  $('.click2edit').summernote('destroy');
+
+	}
+
+	function set_completed() {
+		$('#set-completed').hide()
+		$('#marked-complete').show();
+		$.post('set_completed', {'q_id': {{question.pk}}, 'completed': 'set'});
+	}
+
+	function unset_completed() {
+		$('#marked-complete').hide()
+		$('#set-completed').show()
+		$.post('set_completed', {'q_id': {{question.pk}}, 'completed': 'delete'});
+	}
+
+	function loadPdfs(zoom) {
+
+		paper = $(".pdf_container").data("paper");   // get question pdf data
+		q_num = $(".pdf_container").data("q_num");
+		width = +$(".pdf_container").data("width")+55;
+		height = +$(".pdf_container").data("height")+15;
+
+		$(".pdf_container").html("<iframe src='/media/papers/"+paper+"/q"+q_num+".pdf#zoom="+zoom+"&toolbar=0&scrollbar=0' style='width:"+width+"pt; height:"+height+"pt;'></iframe>");
+
+		setTimeout(function() {
+			$('#loading').hide(0);
+			$('#question').fadeIn(1000);
+		}, delay);
+
+	}
+
+	var timer;
+	var i = 0;
+	var total_secs = 0;
+
+	function start_timer() {
+		$('#start_btn').hide();
+		$('#reset_btn').hide();
+		$('#pause_btn').show();
+
+		if (i == 0)
+			$('#part_a').css('color','black');
+
+	  timer = setInterval(function () {
+		i += (100/{{q_time}});
+		total_secs += 1;
+		var secs_left = (10*60)-total_secs
+		$('#time').html(to_time(total_secs));
+		if (i < 100) {
+
+			var width = $('#full_bar').width();
+				var parentWidth = $('#full_bar').offsetParent().width();
+				var prog_percent = 100*width/parentWidth;
+				console.log(prog_percent);			
+
+			{% for part in parts reversed %}   // highlights current part according to progress bar
+				{% if forloop.first %} if {% else %} else if {% endif %} (prog_percent >= {{part.cumul_percent}}) {
+					$('#part_{{part.part}}').css('color','');   // current part
+					$('#part_'+String.fromCharCode('{{part.part}}'.charCodeAt(0)+1)).css('color','black');   // next part
+				}
+			{% endfor %}
+			
+		  $('#full_bar').css('width', i+'%');
+		}
+	  }, 1000);
+	}
+
+	function reset_timer() {
+		$('#reset_btn').hide();
+		clearInterval(timer);
+	  $('#time').html('0:00');
+	  {% for part in parts %}
+		$('#part_{{part.part}}').css('color','');
+	  {% endfor %}
+	  $('#full_bar').css('width', '0%');
+	  i = 0;
+	  total_secs = 0;
+	}
+
+	function pause_timer() {
+		$('#pause_btn').hide();
+		$('#start_btn').show();
+		$('#reset_btn').show();
+		clearInterval(timer);
+	}
+
+	function to_time(seconds) {
+	  var mins = Math.floor(seconds/60);
+	  var secs = seconds - mins*60;
+	  secs = (secs < 10) ? '0' + secs : secs;
+	  return mins+':'+secs
+	}
+
+</script>
+
+{% endblock %}

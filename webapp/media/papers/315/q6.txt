@@ -1,0 +1,13 @@
+6. (a) Explain what is meant by data-flow analysis. Illustrate using either reaching
+definitions or live variables analysis, and explain how the information flows
+through the following pseudocode:
+x := a ;
+if x = b then y := n else z := n ;
+x := x + y ;
+[13]
+(b) Explain what is meant by each type of translator below and discuss the useful-
+ness of each approach:
+i. A cross-compiler
+ii. An interpretive compiler
+iii. A bootstrapping compiler
+[12]

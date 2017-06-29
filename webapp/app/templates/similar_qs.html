@@ -3,8 +3,8 @@
 <style type="text/css">
 	
 	.panel {
-    margin: auto;
-    margin-bottom: 25px;
+		margin: auto;
+		margin-bottom: 25px;
 	}
 
 	.panel-body {
@@ -13,15 +13,15 @@
 	}
 
 	.q-wrapper {
-    margin: auto;
-    overflow: hidden;
+		margin: auto;
+		overflow: hidden;
 	}
 
 	.q-wrapper iframe {
-    /* clips top/left/bottom */
-    margin-top: -53pt;
-    margin-left: -76pt;
-    margin-bottom: -60pt;
+		/* clips top/left/bottom */
+		margin-top: -53pt;
+		margin-left: -76pt;
+		margin-bottom: -60pt;
 	}
 
 	#simqs-modal #loading-cover {
@@ -32,11 +32,11 @@
 
 	#simqs-modal .my-btn {
 		border: 0;
-    background: inherit;
-    font-size: inherit;
-    margin-top: -5px;
-    margin-right: -6px;
-    padding: 7px 10px;
+		background: inherit;
+		font-size: inherit;
+		margin-top: -5px;
+		margin-right: -6px;
+		padding: 7px 10px;
 	}
 
 	#simqs-modal .panel-heading {
@@ -62,7 +62,7 @@
 	<span style="font-size:18px;">Similar Questions</span> <span style="color:#1c8d76; font-size:18px; top:2px; left:2px;" class="glyphicon glyphicon-info-sign pop-over" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" data-content="Similar questions are found by comparing the text content of all of the available questions for a module."></span>
 </div>
 
-<img id="loading-cover" src="{% static 'ring-alt.svg' %}">
+<img id="loading-cover" src="{% static 'loading1.svg' %}">
 
 <div id="questions-set" style="display:none;">
 
@@ -77,20 +77,20 @@
 <div class="panel panel-default question_panel" style="width:{{q_width|add:'-65'}}pt;">
   <div class="panel-heading">
 
-  	20{{question.paper.year}} Q{{question.q_num}}
+	20{{question.paper.year}} Q{{question.q_num}}
 
-  	<a href="../../{{question.paper.year}}/q{{question.q_num}}" class="pull-right btn btn-default my-btn" data-toggle="tooltip" title="Do this question">
-  		<span class="glyphicon glyphicon-pencil"></span>
-  	</a>
+	<a href="../{{question.paper.year}}/q{{question.q_num}}" class="pull-right btn btn-default my-btn" data-toggle="tooltip" title="Do this question">
+		<span class="glyphicon glyphicon-pencil"></span>
+	</a>
 
   </div>
 
   <div class="panel-body">
-  	<div class="q-wrapper">
-  		<div class="pdf_container" data-paper="{{question.paper.pk}}" data-q_num="{{question.q_num}}" 
-  				data-width="{{q_width}}" data-height="{{question.height}}">
-  		</div>
-  	</div>
+	<div class="q-wrapper">
+		<div class="pdf_container" data-paper="{{question.paper.pk}}" data-q_num="{{question.q_num}}" 
+				data-width="{{q_width}}" data-height="{{question.height}}">
+		</div>
+	</div>
   </div>
 
 </div> <!-- closes panel -->

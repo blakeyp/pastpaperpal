@@ -1,0 +1,17 @@
+3. (a) Give the pseudocode for stochastic gradient descent with a linear unit perceptron.
+Explain the differences between batch-mode and stochastic gradient descent. [8]
+(b) Give the primal optimisation problem for both the Hard Margin and Soft Margin
+SVM. Explain the role of the slack variables, and parameter C. How do we set C?
+[7]
+(c) Given the training examples in Table 3, a fixed learning rate of η = 0.1, and initial
+values for the parameters w0 = 0.1, w1 = 0.1, w2 = −0.1, perform the first 3 pa-
+rameter updates for the standard perceptron with a Heaviside step activation function.
+Show your working. [10]
+x1 (first attribute) x2 (second attribute) Class Variable
+0.5 0.5 -1
+2 2 1
+2 -1 1
+1 -1.5 -1
+-1 -1 -1
+Table 3: A toy dataset with 5 observations (rows), 2 attributes (x1, x2) and the target class (Class
+Variable)

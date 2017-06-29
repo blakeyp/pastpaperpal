@@ -1,0 +1,6 @@
+1. (a) Why is the RGB model a good choice for graphic displays? [5]
+(b) Explain how LCD displays work. [7]
+(c) What advantages do GPUs have over CPU/video-controller architectures?
+[5]
+(d) State the main components of a viewing pipeline, giving the principal data
+values that are passed from stage to stage. [8]

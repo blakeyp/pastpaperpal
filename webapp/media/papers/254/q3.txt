@@ -1,0 +1,6 @@
+3. Karnaugh maps and Boolean algebra can be used to simplify logical expressions.
+F = (A + B̄).(Ā + C).(B + C̄)
+G = W.X + W̄ .X.Ȳ .Z + W̄ .X.Y.Z + W.X̄.Ȳ .Z̄
+(a) Reduce F to its simplest form using a Karnaugh map or Boolean algebra. [8]
+(b) Reduce G to its simplest form using Boolean algebra. [9]
+(c) Design a logic circuit that implements F . [8]

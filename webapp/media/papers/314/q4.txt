@@ -1,0 +1,15 @@
+4. (a) Explain the usefulness of virtual machines as targets of compilation instead of creat-
+ing object code directly. [8]
+(b) Describe activation stacks, and explain how they support the use of non-local names
+for languages with static binding. [8]
+(c) Describe the sequence of instructions that need to be performed when calling and re-
+turning from functions. In your explanation consider the following function, assum-
+ing that the values of the non-local integer variables x and y should not be modified
+and that the language uses dynamic binding:
+f (x, y)
+{ int z;
+z := 3 ;
+x := x * 3 ;
+y := g(x) + y ;
+return (x * y) }
+[9]

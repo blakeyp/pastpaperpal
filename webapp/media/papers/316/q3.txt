@@ -1,0 +1,11 @@
+3. (a) Explain the difference between synthesized and inherited attributes. [8]
+(b) Consider the following grammar for arithmetic expressions:
+S -> E T -> T "*" F F -> id
+E -> E "+" T T -> F F -> num
+E -> T F -> "(" E ")"
+i. Show two specific ways in which error recovery can be added into an LR parser
+for this language. Illustrate with examples. [8]
+ii. Any arithmetic expression can be associated with its postfix form, which places
+the operator after the representation of both operands. For example, the postfix
+of (5+4)*(3+2) is 5 4 + 3 2 + * . Design attribute rules for the above grammar
+that produce the postfix representation of an expression. [9]

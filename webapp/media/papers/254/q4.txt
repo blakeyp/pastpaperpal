@@ -1,0 +1,10 @@
+4. (a) Interrupts and memory mapping are common mechanisms for I/O.
+i. Explain the operation of interrupt-driven I/O. [5]
+ii. Compare the advantages and disadvantages of memory mapped I/O and interrupt-
+driven I/O. [5]
+(b) Microprocessors function on the basis of a set of interacting components.
+i. Give a detailed account of the fetch-decode-execute cycle. Your answer should
+give details of the specific microprocessor components involved. [8]
+ii. Using a suitable example, explain how the condition code register (CCR) is used
+to bring about change in control flow during program execution. [4]
+iii. Distinguish between micro-operations and macro-instructions. [3]

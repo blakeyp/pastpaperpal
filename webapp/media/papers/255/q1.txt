@@ -1,0 +1,10 @@
+1. (a) Justify the use of the binary number system in computer systems. [2]
+(b) i. Convert 8810 to unsigned 8-bit binary. [3]
+ii. Show how 2810 can be subtracted from 8810 using two’s complement. [3]
+iii. Convert 11111101010101002 to hexadecimal. [3]
+iv. Covert 146310 to octal. [3]
+v. Calculate the difference between 146310 and 25458 in two’s complement. [6]
+(c) i. Explain floating point representation. Your answer should outline the advantages
+and disadvantages of floating point representation. [3]
+ii. Convert 4.62510 to an a 8-bit wide fixed point binary representation. Comment
+on the range of your fixed point representation. [2]

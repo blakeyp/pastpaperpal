@@ -1,0 +1,21 @@
+1. (a) The probabilistic output of a binary classifier on a test set of 10 observations is de-
+picted in the left column of Table 1 together with the true labels in the right column.
+Calculate the Precision and Recall for a decision threshold of 0.5. Show your work-
+ing. [9]
+(b) What is the range of values the decision threshold can take in order for the classifier
+to get 0 False Positives on this test set? [7]
+(c) Calculate the point on the ROC curve for the probabilistic classifier using its output
+in Table 1 and a decision threshold of 0.6. What is the AUC and what information it
+conveys? [9]
+P (t∗ = +1) True Class
+0.4 -1
+0.4 +1
+0.6 +1
+0.2 -1
+0.6 -1
+0.1 -1
+0.6 +1
+0.4 +1
+0.5 +1
+0.5 -1
+Table 1: Your model’s probabilities for class 1 assignment versus the true class of the test set.

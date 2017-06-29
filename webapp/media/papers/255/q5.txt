@@ -1,0 +1,12 @@
+5. (a) Distinguish between high-level and low-level programming languages. Your answer
+should comment on the motivations, applications and characteristics of each. [4]
+(b) Microprocessors consist of a set of components that interact to provide function.
+i. Explain what is meant by the term von Neumann architecture. [2]
+ii. Explain the roles of the arithmetic logic unit (ALU), program counter (PC) and
+instruction register (IR) in program execution. [5]
+iii. Using an example in assembler, explain how the condition code register (CCR)
+is used to affect change in control flow during program execution. [4]
+(c) Control units can be designed using a hardwired approach.
+i. Explain the role of the control unit in a microprocessor. [3]
+ii. Explain how hardwired control units operate. [4]
+iii. Discuss the advantages and disadvantages of a hardwired control unit design. [3]

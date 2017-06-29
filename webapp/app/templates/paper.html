@@ -1,16 +1,18 @@
-{% extends "base.html" %}
+{% extends "page_base.html" %}
 
-{% block title %}Paper{% endblock %}
+{% block title %}Paper Page{% endblock %}
 
 {% block content %}
 
 {% load static %}
 
+<link rel="stylesheet" href="{% static 'loader.css' %}">
+
 <style type="text/css">
 
 	.panel {
-    margin: auto;
-    margin-bottom: 25px;
+		margin: auto;
+		margin-bottom: 25px;
 	}
 
 	.panel-body {
@@ -20,15 +22,15 @@
 
 	.q_wrapper {
 		max-height: 80px; /* for initial question preview */
-    margin: auto;
-    overflow: hidden;
+		margin: auto;
+		overflow: hidden;
 	}
 
 	.q_wrapper iframe {
-    /* clips top/left/bottom */
-    margin-top: -53pt;
-    margin-left: -76pt;
-    margin-bottom: -60pt;
+		/* clips top/left/bottom */
+		margin-top: -53pt;
+		margin-left: -76pt;
+		margin-bottom: -60pt;
 	}
 
 	#loading {
@@ -39,21 +41,21 @@
 
 	.preview_overlay {
 		position: absolute;
-	  bottom: 15px; left: 0;
-	  width: 100%;
-	  margin: 0; padding: 30px 0;
-	  background-image: linear-gradient(to bottom, transparent, white);
+		bottom: 15px; left: 0;
+		width: 100%;
+		margin: 0; padding: 30px 0;
+		background-image: linear-gradient(to bottom, transparent, white);
 	}
 
 	.expand_btn, .collapse_btn {
 		position: absolute;
-	  bottom: 10px;
-	  right: 10px;
-	  opacity: 0.9;
-	  font-size: 10pt;
-	  padding: 5px;
-	  width: 40px;
-	  background-color: #f5f5f5;
+		bottom: 10px;
+		right: 10px;
+		opacity: 0.9;
+		font-size: 10pt;
+		padding: 5px;
+		width: 40px;
+		background-color: #f5f5f5;
 	}
 
 	.collapse_btn {
@@ -76,8 +78,8 @@
 	#to_top {
 		display: none;
 		position: fixed;
-    bottom: 40px;
-    right: 40px;
+		bottom: 40px;
+		right: 40px;
 	}
 
 	.sect_heading {
@@ -106,17 +108,17 @@
 		{% if other_years %}
 			<span class="dropdown">
 			  <span class="dropdown-toggle" data-toggle="dropdown">
-			    20{{paper.year}} <span class="caret"></span>
+				20{{paper.year}} <span class="caret"></span>
 			  </span>
 			  <ul class="dropdown-menu">
-			  	<li class="dropdown-header">Switch paper</li>
-			  	<li class="divider"></li>
-			  	{% for year in other_years %}
-			  		{% if year == paper.year %}
-				    	<li class="active"><a href="../{{year}}">20{{year}}</a></li>
-			  		{% else %}
-			  			<li><a href="../{{year}}">20{{year}}</a></li>
-			  		{% endif %}
+				<li class="dropdown-header">Switch paper</li>
+				<li class="divider"></li>
+				{% for year in other_years %}
+					{% if year == paper.year %}
+						<li class="active"><a href="../{{year}}">20{{year}}</a></li>
+					{% else %}
+						<li><a href="../{{year}}">20{{year}}</a></li>
+					{% endif %}
 				  {% endfor %}
 			  </ul>
 			</span>
@@ -131,37 +133,9 @@
 
 </div>
 
+<div id="ajax-loading" style="display:none; padding: 10px; width: 170px; text-align: center; position: absolute; top: 55px; opacity: 0.9; left: calc(50% - 80px);"><div class="loader"></div></div>
 
-
-
-<!-- <div class="local_nav">
-  
-  <div style="float:left; padding-right:2px;"><a style="color:#414141;" href="#">{{paper.module_code|upper}}</a> /</div>
-
-  <div class="btn-group">
-  	{% if other_years %}
-	  	<button type="button" class="btn btn-default dropdown-toggle my_btn year_dropdown" data-toggle="dropdown">
-		    20{{paper.year}} <span class="caret"></span>
-		  </button>
-		  <ul class="dropdown-menu">
-		  	{% for year in other_years %}
-			    <li><a href="../{{year}}">20{{year}} paper</a></li>
-			  {% endfor %}
-		  </ul>
-	  {% else %}
-	  	<div class="year_dropdown">20{{paper.year}}</div>
-	  {% endif %}
-	</div>
-
-	<a href="/media/uploads/{{paper.module_code}}_{{paper.year}}.pdf" target="_blank" style="font-size:14pt; margin-bottom:2px;" class="btn btn-default my_btn pull-right" data-toggle="tooltip" title="Link to full paper" data-delay='{"show":"300", "hide":"0"}'>
-		<span style="top:3px;" class="glyphicon glyphicon-file"></span>
-	</a>
-
-</div> -->
-
-
-
-<img id="loading" src="{% static 'ring-alt.svg' %}">
+<img id="loading" src="{% static 'loading1.svg' %}">
 
 <div id="questions_set" style="display:none;">
 
@@ -174,63 +148,47 @@
 <div class="panel panel-default question_panel" style="width:{{q_width|add:'-65'}}pt;">
   <div class="panel-heading">
 
-  	Q{{ question.q_num }}
-  	&bull; {% if question.total_marks == 0 %} ? {% else %} {{ question.total_marks }} {% endif %} marks
+	Q{{ question.q_num }}
+	&bull; {% if question.total_marks == 0 %} ? {% else %} {{ question.total_marks }} {% endif %} marks
 
-  	{% if question.completed %}
-  		<span style="font-size:18px; margin-top:-2px; color:#1c8d76;" class="glyphicon glyphicon-ok-circle" data-toggle="tooltip" title="Marked completed"></span>
-  	{% else %}
-  		<span style="font-size:18px; margin-top:-2px; color:#ababab" class="glyphicon glyphicon-ok-circle" data-toggle="tooltip" title="Not yet completed"></span>
-  	{% endif %}
+	{% if question.completed %}
+		<span style="font-size:18px; margin-top:-2px; color:#1c8d76;" class="glyphicon glyphicon-ok-circle" data-toggle="tooltip" title="Marked completed"></span>
+	{% else %}
+		<span style="font-size:18px; margin-top:-2px; color:#ababab" class="glyphicon glyphicon-ok-circle" data-toggle="tooltip" title="Not yet completed"></span>
+	{% endif %}
 
-    <div class="pull-right" style="margin-top:-4px; margin-right:-4px;">
+	<div class="pull-right" style="margin-top:-4px; margin-right:-4px;">
 
-      <a class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="See similar questions" onclick="get_similar({{question.q_num}})">
-      	<span class="glyphicon glyphicon-tags"></span>
-      </a>
-      <a href="q{{question.q_num}}" class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="Do this question">
-      	<span class="glyphicon glyphicon-pencil"></span>
-      </a>
+	  <a class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="See similar questions" onclick="get_similar({{question.q_num}})">
+		<span class="glyphicon glyphicon-tags"></span>
+	  </a>
+	  <a href="q{{question.q_num}}" class="btn btn-default my_btn tool_btn" data-toggle="tooltip" title="Do this question">
+		<span class="glyphicon glyphicon-pencil"></span>
+	  </a>
 
-    </div>
-
-<!-- drop-down alternative:
-		<div class="btn-group">
-      <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="padding: 5px 10px;"><span class="glyphicon glyphicon-option-horizontal" style="font-size: 12pt; padding-top: 3px; padding-bottom: 1px;"></span></a>
-      <ul class="dropdown-menu">
- 				<li><a href="#"><span class="glyphicon glyphicon-pencil" style="font-size: 10pt; padding-right:2px;"></span> Do this question</a></li>
-  			<li><a href="#"><span class="glyphicon glyphicon-tags" style="font-size: 10pt; padding-right:3px;"></span> See similar questions</a></li>
-			</ul>
-		</div> -->
+	</div>
 
   </div> <!-- closes panel-heading -->
 
   <div class="panel-body">
 
-  	<div class="q_wrapper" {% if question.height <= 170 %} style="max-height:999px;" {% endif %} >
+	<div class="q_wrapper" {% if question.height <= 170 %} style="max-height:999px;" {% endif %} >
 
-  		<div class="pdf_container" data-paper="{{paper.pk}}" data-q_num="{{question.q_num}}" 
-  				data-width="{{question.width}}" data-height="{{question.height}}">
-  		</div>
-
-  		{% if question.height > 170 %}
-	  		<div class="preview_overlay"></div>
-	  		<a class="btn btn-default expand_btn">
-	  			<span class="glyphicon glyphicon-menu-down"></span>
-	  		</a>
-	  		<a class="btn btn-default collapse_btn" style="display:none;">
-	  			<span class="glyphicon glyphicon-menu-up"></span>
-	  		</a>
-  		{% endif %}
-
-  	</div> <!-- q_wrapper -->
-
-<!--   {% if question.q_num == 1 %}
-	  <div style="position: absolute; top: -45px; right: -125px;">
-	  <div id="expand_all" class="btn btn-default" style="display:none;">expand all</div>
-		<div id="collapse_all" class="btn btn-default" style="display:none;">collapse all</div>
+		<div class="pdf_container" data-paper="{{paper.pk}}" data-q_num="{{question.q_num}}" 
+				data-width="{{question.width}}" data-height="{{question.height}}">
 		</div>
-	{% endif %} -->
+
+		{% if question.height > 170 %}
+			<div class="preview_overlay"></div>
+			<a class="btn btn-default expand_btn">
+				<span class="glyphicon glyphicon-menu-down"></span>
+			</a>
+			<a class="btn btn-default collapse_btn" style="display:none;">
+				<span class="glyphicon glyphicon-menu-up"></span>
+			</a>
+		{% endif %}
+
+	</div> <!-- q_wrapper -->
 
   </div> <!-- closes panel-body -->
 
@@ -242,14 +200,12 @@
 
 <div id="to_top" class="btn btn-default">back to top</div>
 
-
 <div id="simqs-modal" class="modal fade">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-    </div>
+	<div class="modal-content">
+	</div>
   </div>
 </div>
-
 
 <script>
 	
@@ -370,23 +326,14 @@
 
 	}
 
-
 	function get_similar(q_num) {
+		$('#ajax-loading').show();
 
 		$.get('q'+q_num+'/similar', function(data) {
-			console.log(data);
 			$('#simqs-modal').find('.modal-content').html(data);
-      $('#simqs-modal').modal('show');
+			$('#ajax-loading').hide();
+	  $('#simqs-modal').modal('show');
 		});
-
-/*		$.ajax({
-				type: 'GET',
-				url: q_num+'/similar/',
-			},
-			success: function(data) {
-				console.log(data);
-			},
-		});*/
 
 	}
 

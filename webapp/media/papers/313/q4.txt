@@ -1,0 +1,10 @@
+4. (a) Summarise what is meant by three-address code and discuss the difference be-
+tween triple and quad notations. [5]
+(b) Consider the following code fragment:
+a = 45 * a + 2 * (a + b);
+Translate it into three-address code and explain informally the translation pro-
+cess. [6]
+(c) Explain and illustrate the translation of multidimensional arrays, in particular:
+i. The processing of the declaration of an array, such as in Java or C. [7]
+ii. The translation of an access to an array element into some intermediate
+representation, assuming a uni-dimensional storage. [7]

@@ -1,0 +1,11 @@
+5. (a) Describe the main steps in the register allocation algorithm, including both coalescing
+and spilling. [8]
+(b) Compare and contrast the use of Maximal Munch with the use of Dynamic Program-
+ming for instruction selection. How does the target architecture affect the choice of
+instruction selection method? [8]
+(c) Explain the process of efficiently translating Boolean expressions into jump instruc-
+tions to true and false branches. Illustrate the method using the following code frag-
+ment:
+if x < y and z = a + b then x := y else x := -y ;
+y := x ;
+[9]

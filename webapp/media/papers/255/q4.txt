@@ -1,0 +1,11 @@
+4. (a) Explain the memory hierarchy using a labelled diagram. Your answer should focus
+on the motivation for the hierarchy and its role in computer system design. [10]
+(b) Cache memory is commonly used to improve computer system performance.
+i. Explain the term cache memory. [3]
+ii. Explain why it is possible to significantly improve performance using relatively
+small cache sizes. [3]
+(c) Interrupt-driven I/O is commonly used by computer systems.
+i. Explain the concept of interrupt-driven I/O. Your answer should incorporate the
+concept of context switching. [5]
+ii. Outline a situation where interrupt-driven I/O would be unsuitable. Your answer
+should suggest a more appropriate I/O mechanism for this situation. [4]

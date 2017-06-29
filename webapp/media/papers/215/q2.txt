@@ -1,0 +1,44 @@
+2. Control statements
+(a) Under what conditions will the statements p1, p2, p3 and p4 be executed?
+if (a<0) { p1 } else if (b!=0) { p2 }
+else if (a==b) { p3 } else if (a==0) { p4 }
+[4]
+(b) Rewrite the following program statement
+if (a<b) if (b<0) { p1 }
+else if (a==b) if (b==0) { p2 } else if (b>0) { p3 }
+in the simplest form you can. [2]
+(c) Give the output of the following program.
+1 class TooMany {
+2 static void howMany (int k) {
+3 switch (k) {
+4 case 1 : System.out.print("one");
+5 case 2 : System.out.print("too");
+6 case 3 : System.out.println("many");
+7 }
+8 }
+9
+10 public static void main(String[] args) {
+11 howMany(3);
+12 howMany(2);
+13 howMany(1);
+14 }
+15 }
+[3]
+State the difference to the output if a break statement were added to the
+end of:
+(i) line 4;
+(ii) lines 4 and 5;
+(iii) lines 4, 5 and 6.
+[3]
+(d) The Speaking Clock is a national telephone service in the UK that has
+been around since 1936. Today it receives around 135 million calls a
+year from the general public and from companies, such as British Rail for
+example, who wish to know the exact time to the nearest second. The
+Speaking Clock receives an accurate time feed and converts this to spoken
+English. For example, the feed 21.36:25 is converted to
+“At the third stroke the time will be nine thirty six and twenty
+five seconds”
+Write a program that takes the time feed as an integer (i.e. 213625, in
+the above example) and from this is able to produce the correct text that
+can then be fed to a speech synthesiser for the telephone announcement.
+[8]

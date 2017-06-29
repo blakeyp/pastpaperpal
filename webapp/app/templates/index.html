@@ -1,272 +1,37 @@
+{% extends "home_base.html" %}
+
+{% block title %}Past Paper Pal{% endblock %}
+
+{% block content %}
+
 {% load static %}
 
-<!DOCTYPE html>
+<div class="row">
 
-<html lang="en">
+<a href="/"><img style="margin:auto; display:block; margin-top:190px;" src="{% static 'pastpaperpal_logo.png' %}" height=120px></a>
 
-	<head>
+<form style="width:350px; margin:auto; margin-top:50px;">
+	<div id="search_area" class="form-group has-feedback">
 
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<input style="display:none" type="text"/>   <!-- prevent pressing enter (for now) -->
+		<input autofocus autocomplete="off" id="module_search" type="text" class="form-control" placeholder="Search a module code..." style="width:350px;">
+		<span class="glyphicon glyphicon-search form-control-feedback" style="font-size:24px; top:8px; right:9px; color:white;"></span>
 
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
-
-		<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
-		<link rel="icon" href="{% static 'favicon.png' %}">
-
-		<title>Past Paper Pal</title>
-
-		<style type="text/css">
-
-			html {
-  			overflow-y: scroll;
-			}
-
-			body {
-				font-family: 'Rubik', sans-serif;
-				background-color: #1c8d76;
-			}
-
-			.navbar-default {
-				border: none;
-				border-radius: 0;
-				background-color: #1c8d76;
-			}
-
-			.navbar-default .navbar-nav>li>a,
-			.navbar-default .navbar-nav>li>a:focus {
-				color: white;
-				transition: opacity 0.4s ease-in-out;
-			}
-
-			.navbar-default .navbar-nav>li>a:hover {
-				color: white;
-				opacity: 0.8;
-			}
-
-			.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover { background-color: white; }
-
-			#search_area .form-control {
-				background-color: rgba(255,255,255,0.2);
-				border: 0;
-				color: white;
-				transition: background-color 0.2s ease-in-out;
-			}
-
-			#search_area .form-control::-webkit-input-placeholder {
-				color: white;
-			}
-
-			#search_area .form-control:focus {
-				background-color: rgba(255,255,255,0.3);
-				box-shadow: none;
-			}
-
-			.dropdown-menu li a {
-				padding: 7px 11px;
-				font-size: 18px;
-			}
-
-			.my_btn {
-				border: 0;
-				background: inherit;
-			}
-
-			#local_nav {
-				color:  #404040;
-				font-size: 26px;
-				margin-top: 20px;
-				padding: 0 0 2px 3px;
-				border-bottom: 1px solid #dddddd;
-				margin-bottom: 45px;
-			}
-
-			#local_nav a { color: inherit; }
-
-			#local_nav small { color: #555555; }
-
-			#local_nav .dropdown-toggle { 
-				cursor: pointer;
-				margin-left: 2px;
-			}
-
-			#local_nav .caret { margin-left: -2px; }
-
-			#local_nav .dropdown-header {
-				padding: 4px 11px;
-				font-weight: bold;
-				font-size: 14px;
-			}
-
-			#local_nav .dropdown-menu a { padding: 6px 11px; }
-
-			#local_nav .divider {
-				margin-top: 3px;
-				margin-bottom: 5px;
-			}
-
-			.btn-primary {
-				background-color: #1c8d76;
-				border-color: #247d6c;
-			}
-
-			.btn-primary:hover, .btn-primary:active,
-			.btn-primary:focus, .btn-primary:active:focus,
-			.btn-primary:active:hover {
-				background-color: #177965;
-				border-color: #247d6c;
-			}
-
-			.modal-open {
-				padding-right: 0 !important
-			}
-
-			.alert-success {
-				color: #137561;
-				background-color: rgba(28, 141, 118, 0.28);
-				border-color: #a7e8dc;
-			}
-
-			.form-control {
-				font-size: 24px;
-				height: 50px;
-			}
-
-		</style>
-
-	</head>
-
-	<body>
-
-		<nav class="navbar navbar-default">
-			<div class="container">
-
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-					<ul class="nav navbar-nav navbar-right">
-						
-						{% if user.is_authenticated %}
-
-						<li>
-						<a href="/sign_out/?previous={{request.path}}" style="font-size:15px;">
-							<span class="glyphicon glyphicon-log-out" style="padding-right:3px;"></span> Sign Out
-						</a>
-						</li>
-
-						{% else %}
-
-						<li class="dropdown">
-	            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-	            <span class="glyphicon glyphicon-log-in" style="padding-right:3px;"></span>
-	            Sign In <span class="caret"></span></a>
-	            <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
-
-						    <form method="post" enctype="multipart/form-data" id="signin_form" action="/sign_in/?previous={{request.path}}" class="navbar-form" role="search">
-						      {% csrf_token %}
-						      <div class="form-group">
-						        <input type="text" class="form-control" name="username" placeholder="Username">
-						      </div>
-						      <div class="form-group">
-						        <input type="password" style="margin-top:7px; margin-bottom:10px;" class="form-control" name="password" placeholder="Password">
-						      </div>
-						      <button type="submit" style="width: 100%; margin-bottom: 15px;" class="btn btn-primary">Sign In</button>
-						    </form>
-	            </div>
-          	</li>
-
-          	{% endif %}
-
-					</ul>
-
-				</div> <!-- /.navbar-collapse -->
-			</div> <!-- /.container-fluid -->
-
-		</nav>
-
-		<div class="container">
-			
-			<div class="row">
-
-			<img style="margin:auto; display:block; margin-top:190px;" src="{% static 'pastpaperpal_logo.png' %}" height=120px>
-
-			<form style="width:350px; margin:auto; margin-top:50px;">
-				<div id="search_area" class="form-group has-feedback">
-
-					<input style="display:none" type="text"/>   <!-- prevent pressing enter (for now) -->
-					<input autocomplete="off" id="module_search" type="text" class="form-control" placeholder="Search a module code..." style="width:350px;">
-					<span class="glyphicon glyphicon-search form-control-feedback" style="font-size:24px; top:8px; right:9px; color:white;"></span>
-
-					<div id="search_dropdown" class="dropdown">
-						<ul style="overflow-y:scroll; max-height:246px; min-width:350px;" id="dropdown_results" class="dropdown-menu"></ul>
-					</div>
-
-				</div>
-			</form>
-
-			</div>
+		<div id="search_dropdown" class="dropdown">
+			<ul style="overflow-y:scroll; max-height:246px; min-width:350px;" id="dropdown_results" class="dropdown-menu"></ul>
 
 		</div>
 
-	</body>
+	</div>
+</form>
 
-</html>
+</div>
 
-<script>
-
-	$(document).click(function(e) {
-    e.stopPropagation();
-    var container = $("#search_area");
-    if (container.has(e.target).length === 0) {
-			$('#search_dropdown').removeClass('open');
-			$('#module_search').val('');
-    }
-	});
-
-	// populate list of modules and paper counts from server (on page load)
+<script>   // populate list of modules and paper counts from server (on page load)
 	var modules = {{module_codes|safe}};
 	var counts = {{count_papers|safe}};
-
-	// regex to validate module code input
-	var valid_code = new RegExp("^[A-Z]{1,2}[0-9]{0,3}$");
-
-	// validate input on key up of module code search box
-	// call to update results
-	$('#module_search').keyup(function() {
-		$('#search_dropdown').addClass('open');
-		$("#dropdown_results").html("");   // clear current results
-    var input = this.value.toUpperCase();
-    if (input.length == 0)  {
-    	$('#search_dropdown').removeClass('open');
-    	return;
-    }
-    if (!valid_code.test(input)) {
-    	$("#dropdown_results").html("<li><a>Not a valid module code!</a></li>"); return; }
-    var found_results = updateResults(input);
-   	if (input.length == 5 && !found_results)
-    	$("#dropdown_results").html("<li><a>No results found. <a style='color:#337ab7;' href='/upload'>Upload new paper?</a></a></li>");
-    else if (!found_results)
-    	$("#dropdown_results").html("<li><a>No results found.</a></li>");
-	});
-
-	// updates module search results using list of module codes
-	function updateResults(input) {
-		var found_results = false;
-    for (i=0; i<modules.length; i++) {
-      if (modules[i].startsWith(input)) {
-      	// concatenate to existing results
-      	var paper = (counts[i]==1 ? " paper" : " papers")
-				$("#dropdown_results").html(
-					$("#dropdown_results").html() + 
-					"<li><a href='/"+modules[i].toLowerCase()+"'>"+modules[i]+" &bull; \
-					<span style='font-size:16px'> "+counts[i]+paper+"</span></a></li>");
-				found_results = true;
-			}
-    }
-	  return found_results;
-	}
-
 </script>
+
+<script src="{% static 'module_search.js' %}"></script>
+
+{% endblock %}

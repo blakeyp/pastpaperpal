@@ -1,0 +1,10 @@
+1. (a) Describe the functions performed by a lexer and describe the differences between a
+Finite State Machine and a lexer. [5]
+(b) Write grammars for the following languages:
+i. the set of non-negative odd integers; [4]
+ii. the set of non-negative even integers with no leading zeros permitted. [4]
+(c) Consider the following grammar:
+E → E + T | T T → T ∗ id | id | (E)
+Is this an ambiguous grammar? Justify your answer. [5]
+(d) Explain the difference between context sensitive, context-free and D-context-free lan-
+guages, and discuss the relevance of this distinction to compiler construction. [7]

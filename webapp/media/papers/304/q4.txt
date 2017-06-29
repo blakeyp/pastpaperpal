@@ -1,0 +1,13 @@
+4. (a) Caches have become fundamental to the performance of computer systems.
+i. Explain why memory access time is considered to have become a performance
+bottleneck in computer systems. [2]
+ii. Explain the role of caches in the memory heirarchy. Your answer should explain
+how caches exploit spatial locality and temporal locality. [6]
+(b) Explain how parity codes enable the detection of errors in the transmission of binary
+messages, giving a simple example that uses odd parity. [6]
+(c) Microprocessors consist of a set of components that interact to provide function.
+i. Explain what is meant by the term von Neumann architecture. [2]
+ii. Explain the roles of the arithmetic logic unit (ALU), program counter (PC) and
+instruction register (IR) in program execution. [5]
+iii. Explain how a control unit can be implemented using a hardwired approach,
+giving the advantages and disadvantages of the approach. [4]

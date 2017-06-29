@@ -12,12 +12,6 @@ import os, shutil
 # '__init__.py') then run 'python manage.py flush'
 # might also need to clear 'django_migrations' in db!
 
-def file_path(instance, filename):
-	return 'uploads/{0}_{1}.pdf'.format(instance.module_code, instance.year)
-
-# def file_path(instance, filename):
-# 	return 'uploads/paper_{0}.pdf'.format(instance.id)
-
 class Paper(models.Model):
 	module_code = models.CharField(max_length=5)
 	year = models.PositiveSmallIntegerField()

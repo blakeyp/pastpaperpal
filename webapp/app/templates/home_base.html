@@ -1,0 +1,201 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		
+		<link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
+
+		<link rel="icon" href="{% static 'favicon.png' %}">
+
+		<title>{% block title %}{% endblock %}</title>
+
+		<style type="text/css">
+
+			html {
+  				overflow-y: scroll;
+			}
+
+			body {
+				font-family: 'Rubik', sans-serif;
+				background-color: #1c8d76;
+			}
+
+			.navbar-default {
+				border: none;
+				border-radius: 0;
+				background-color: #1c8d76;
+			}
+
+			.navbar-default .navbar-nav>li>a,
+			.navbar-default .navbar-nav>li>a:focus {
+				color: white;
+				transition: opacity 0.4s ease-in-out;
+			}
+
+			.navbar-default .navbar-nav>li>a:hover {
+				color: white;
+				opacity: 0.8;
+			}
+
+			.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover { background-color: white; }
+
+			#search_area .form-control {
+				background-color: rgba(255,255,255,0.2);
+				border: 0;
+				color: white;
+				transition: background-color 0.2s ease-in-out;
+			}
+
+			#search_area .form-control::-webkit-input-placeholder {
+				color: white;
+			}
+
+			#search_area .form-control:focus {
+				background-color: rgba(255,255,255,0.3);
+				box-shadow: none;
+			}
+
+			.dropdown-menu li a {
+				padding: 7px 11px;
+				font-size: 18px;
+			}
+
+			.my_btn {
+				border: 0;
+				background: inherit;
+			}
+
+			#local_nav {
+				color:  #404040;
+				font-size: 26px;
+				margin-top: 20px;
+				padding: 0 0 2px 3px;
+				border-bottom: 1px solid #dddddd;
+				margin-bottom: 45px;
+			}
+
+			#local_nav a { color: inherit; }
+
+			#local_nav small { color: #555555; }
+
+			#local_nav .dropdown-toggle { 
+				cursor: pointer;
+				margin-left: 2px;
+			}
+
+			#local_nav .caret { margin-left: -2px; }
+
+			#local_nav .dropdown-header {
+				padding: 4px 11px;
+				font-weight: bold;
+				font-size: 14px;
+			}
+
+			#local_nav .dropdown-menu a { padding: 6px 11px; }
+
+			#local_nav .divider {
+				margin-top: 3px;
+				margin-bottom: 5px;
+			}
+
+			.btn-primary {
+				background-color: #1c8d76;
+				border-color: #247d6c;
+			}
+
+			.btn-primary:hover, .btn-primary:active,
+			.btn-primary:focus, .btn-primary:active:focus,
+			.btn-primary:active:hover {
+				background-color: #177965;
+				border-color: #247d6c;
+			}
+
+			.modal-open {
+				padding-right: 0 !important
+			}
+
+			.alert-success {
+				color: #137561;
+				background-color: rgba(28, 141, 118, 0.28);
+				border-color: #a7e8dc;
+			}
+
+			#search_area .form-control {
+				font-size: 24px;
+				height: 50px;
+			}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<nav class="navbar navbar-default">
+			<div class="container">
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+					<ul class="nav navbar-nav navbar-right">
+						
+						{% if user.is_authenticated %}
+
+						<li class="dropdown">
+	            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+	            <span class="glyphicon glyphicon-user" style="padding-right:3px;"></span>
+	            {{user.username}} <span class="caret"></span></a>
+	            <ul class="dropdown-menu" style="min-width:130px;">
+									<li><a href="/sign_out/?previous={{request.path}}" style="font-size:inherit;">
+										<span class="glyphicon glyphicon-log-out" style="padding-left:3px; padding-right:3px;"></span> Sign Out
+									</a></li>
+	            </ul>
+          	</li>
+
+						{% else %}
+
+						<li class="dropdown">
+	            <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+	            <span class="glyphicon glyphicon-log-in" style="padding-right:3px;"></span>
+	            Sign In <span class="caret"></span></a>
+	            <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
+
+						    <form method="post" enctype="multipart/form-data" id="signin_form" action="/sign_in/?previous={{request.path}}" class="navbar-form" role="search">
+						      {% csrf_token %}
+						      <div class="form-group">
+						        <input type="text" class="form-control" name="username" placeholder="Username">
+						      </div>
+						      <div class="form-group">
+						        <input type="password" style="margin-top:7px; margin-bottom:10px;" class="form-control" name="password" placeholder="Password">
+						      </div>
+						      <button type="submit" style="width: 100%; margin-bottom: 15px;" class="btn btn-primary">Sign In</button>
+						    </form>
+	            </div>
+          	</li>
+
+          				{% endif %}
+
+					</ul>
+
+				</div> <!-- /.navbar-collapse -->
+			</div> <!-- /.container-fluid -->
+
+		</nav>
+
+		<div class="container">
+			{% block content %}{% endblock %}
+		</div>
+
+	</body>
+
+</html>

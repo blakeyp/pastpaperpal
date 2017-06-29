@@ -1,0 +1,10 @@
+1. (a) Textbooks typically describe a compiler as composed of distinct phases linked by
+unidirectional arrows. Discuss reasons why real compilers are not usually structured
+in this way. [7]
+(b) Explain clearly the difference between pushdown automata and deterministic push-
+down automata and the relevance of this distinction to parser construction. [7]
+(c) Consider the grammar below:
+S -> a S b | A B A | b A -> a b B A | a | eps
+C -> A A c | d B -> A b A | b | C A
+where S is the start symbol and eps is the empty string. Calculate the First and Follow
+sets and the Nullable predicate for each of the nonterminals. [11]

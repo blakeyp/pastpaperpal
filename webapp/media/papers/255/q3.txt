@@ -1,0 +1,8 @@
+3. (a) Explain the motivations for the simplification of logical expressions. [4]
+(b) Karnaugh maps and Boolean algebra can both be used to simplify logical expressions,
+such as the ones shown below.
+F = Ā.B̄.C̄ + Ā.B̄.C + Ā.B.C̄ + A.B.C̄ + A.B.C
+i. Simplify F using Karnaugh maps or Boolean algebra. [9]
+ii. Design a logic circuit that implements F . [8]
+(c) Comment on the advantages and disadvantages of using a Karnaugh map to simplify
+a logical expression instead of Boolean algebra. [4]

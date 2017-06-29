@@ -1,0 +1,10 @@
+5. (a) Explain the memory hierarchy with the aid of a diagram. Comment on the motivation
+for the hierarchy and its role in computer system design. [10]
+(b) The diagram below shows a 4M×1 memory integrated circuit (IC). Explain how a
+CS1320 
+collection of these ICs could be organised in the design of a 16M×8 memory. Justify
+the organisation and state how many ICs would be required. [7]
+(c) Computer systems commonly use cFaigucre h5.1e s to improve performance.
+i. Outline the role of caches in the memory hierarchy. [3]
+ii. Explain what is meant by spatial locality and temporal locality. Your answer
+should explain how these concepts relate to cache performance. [5]

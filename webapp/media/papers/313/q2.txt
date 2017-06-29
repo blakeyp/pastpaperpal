@@ -1,0 +1,9 @@
+2. (a) Consider the following grammar, assuming S is the start symbol:
+S → A #
+A → A z | B y
+B → A x | x y | 
+Calculate the First and Follow sets (where applicable) for S, A, and B. Show
+the steps taken to reach your solution. [10]
+(b) Draw the Characteristic LR Automaton for this grammar and write, for each
+state, the closure of items matched at that state. [10]
+(c) Explain the need to calculate Nullable sets when calculating First sets. [5]

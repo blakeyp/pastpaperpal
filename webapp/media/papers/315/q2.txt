@@ -1,0 +1,8 @@
+2. (a) Describe and contrast the following concepts: top-down parsing, recursive de-
+scent parsing, and LL(1) parsing.
+[11]
+(b) Construct an LL parse table for the following grammar, and explain the steps
+you have taken:
+S -> A B C A -> a A | c
+B -> b | ! C -> c
+[14]

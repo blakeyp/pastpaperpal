@@ -1,92 +1,90 @@
-{% extends "base.html" %}
+{% extends "page_base.html" %}
 
-{% block title %}Module{% endblock %}
+{% block title %}Module Page{% endblock %}
 
 {% block content %}
 
 {% load static %}
 
-<style>
+<style type="text/css">
 
-#local_nav {
-	margin-bottom: 25px;
-}
+	#local_nav {
+		margin-bottom: 25px;
+	}
 
-.tile {
-	float: left;
-	width:175px;
-	height:150px;
-	text-align: center;
-	background-color: #f5f5f5;
-	border-radius: 5px;
-	margin: 10px;
-	margin-left: 5px;
-}
+	.tile {
+		float: left;
+		width:175px;
+		height:150px;
+		text-align: center;
+		background-color: #f5f5f5;
+		border-radius: 5px;
+		margin: 10px;
+		margin-left: 5px;
+	}
 
-.tile h2 {
-	margin-top: 10px;
-	margin-bottom: 20px;
-}
+	.tile h2 {
+		margin-top: 10px;
+		margin-bottom: 20px;
+	}
 
-.tile h2 small {
-	font-size: 60%;
-	color: #525252;
-}
+	.tile h2 small {
+		font-size: 60%;
+		color: #525252;
+	}
 
-.tile #icon-wrapper {
-	width: 40px;
-	position: relative;
-	margin: auto;
-}
+	.tile #icon-wrapper {
+		width: 40px;
+		position: relative;
+		margin: auto;
+	}
 
-.tile #icon-overlay {
-	position: absolute;
-	top: 9px;
-	left: 3px;
-	font-size: 35px;
-}
+	.tile #icon-overlay {
+		position: absolute;
+		top: 9px;
+		left: 3px;
+		font-size: 35px;
+	}
 
-.paper-progress {
-	margin-left: 5px;
-	margin-bottom: 13px;
-	box-shadow: none;
-	width: 265px;
-	height: 100%;
-	position: relative;
-	text-align: center;
-/*	float: left;
-	margin-right: 10px;*/
-}
+	.paper-progress {
+		margin-left: 5px;
+		margin-bottom: 13px;
+		box-shadow: none;
+		width: 270px;
+		height: 100%;
+		position: relative;
+		text-align: center;
+	}
 
-.paper-progress .progress-bar {
-	background-color: #14b393;
-	opacity: 0.2;
-	position: absolute;
-}
+	.paper-progress .progress-bar {
+		background-color: #14b393;
+		opacity: 0.2;
+		position: absolute;
+	}
 
-.paper-btn {
-	padding: 13px 15px;
-}
+	.paper-btn {
+		padding: 13px 15px;
+	}
 
-.progress:hover, .paper-btn:hover {
-	background-color: #ececec;
-}
+	.progress:hover, .paper-btn:hover {
+		background-color: #ececec;
+	}
 
-.paper-a {
-	color: inherit;
-}
+	.paper-a {
+		color: inherit;
+	}
 
-.paper-a:hover {
-	color: inherit;
-	text-decoration: none;
-}
+	.paper-a:hover {
+		color: inherit;
+		text-decoration: none;
+	}
 
-h4 {
-  border-bottom: 1px solid #dddddd;
-  padding-bottom: 7px;
-  padding-left: 3px;
-  margin-top: 15px;
-}
+	h4 {
+		border-bottom: 1px solid #dddddd;
+		padding-bottom: 7px;
+		padding-left: 3px;
+		margin-top: 15px;
+	}
 
 </style>
 
@@ -116,7 +114,7 @@ h4 {
 	<span style="font-size:30px;" class="glyphicon glyphicon-time"></span>
 	
 	{% if not time_mins %}
-	<p style="margin-top:-3px; font-size:28px;">{{time_hrs}} hours</p>
+	<p style="margin-top:-3px; font-size:28px;">{{time_hrs}} {% if time_hrs == 1 %} hour {% else %} hours {% endif %}</p>
 	{% else %}
 	<p style="margin-top:-3px; font-size:28px;">{{time_hrs}}h {{time_mins}}</p>
 	{% endif %}
@@ -148,7 +146,7 @@ h4 {
 			<p style="font-size:45px;">{{rubric.total_qs}}</p>
 		</div>
 		<div style="margin-top:16px; float:left;">
-			<span style="color:#1c8d76; font-size:25px;" class="glyphicon glyphicon-info-sign pop-over" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" title="Original Instructions"  data-content='{% if rubric.choice_text %} "{{rubric.choice_text}}." {% else %} not found {% endif %}'></span>
+			<span style="color:#1c8d76; font-size:25px;" class="glyphicon glyphicon-info-sign pop-over" data-container="body" data-toggle="popover" data-placement="right" data-trigger="hover" title="Original Instructions"  data-content='{% if rubric.choice_text %} "{{rubric.choice_text}}." {% else %} <not found> {% endif %}'></span>
 		</div>
 	</div>
 
@@ -208,29 +206,6 @@ h4 {
 </div>
 
 </div>
-
-<!-- modal for upload? - needs ajax
-<div class="modal fade" id="upload-modal">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-        <h4 class="modal-title">Upload a new paper</h4>
-      </div>
-      <div class="modal-body">
-        <form method="post" enctype="multipart/form-data" id="upload_form">
-					{% csrf_token %}
-					
-					<button type="button" class="btn btn-default btn-lg" id="upload"><span class="glyphicon glyphicon-upload"></span> Upload a new paper</button>
-
-					<div style="height:0px; width:0px; overflow:hidden;">{{ form.file }}</div>
-
-					<h4><small>PDF format please</small></h4>
-				</form>
-      </div>
-    </div>
-  </div>
-</div> -->
 
 <script>
 	

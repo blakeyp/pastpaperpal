@@ -1,0 +1,9 @@
+CS3250
+THE UNIVERSITY OF WARWICK
+Third Year Examinations: Summer 2014
+Compiler Design
+Time allowed: 3 hours.
+Read carefully the instructions on the answer book and make sure that the particulars required
+are entered on the cover of each answer book. Start the answer for each question on a new page.
+Calculators are neither allowed nor necessary.
+Answer FOUR questions.

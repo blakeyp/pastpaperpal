@@ -1,0 +1,8 @@
+6. (a) For each of the optimisations below, explain what it is and what kind of information
+needs to be extracted from the program to be optimised:
+i. constant propagation; [5]
+ii. common sub-expression elimination; [5]
+iii. dead-code elimination. [5]
+(b) Given the following flow graph:
+Calculate live variables at each statement. Explain how you have obtained this infor-
+mation. [10]

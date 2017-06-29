@@ -1,0 +1,19 @@
+2. (a) Given the example set in Table 2, answer the following questions and show your
+calculations.
+i) What is the entropy of the training set, H(S)? [4]
+ii) What is the information gain of each of the three attributes? [12]
+iii) Which attribute would ID3 choose as the root node? Explain your choice. [2]
+Gender Age Group Blood Pressure Class Variable
+F A Low Yes
+M A High Yes
+M C High No
+F B Low No
+F B High Yes
+F A Low No
+M B High No
+M C High Yes
+F C Low No
+M A High Yes
+Table 2: A toy dataset with 10 observations (rows), 3 attributes (Gender, Age, Blood Pressure)
+and one target class (Class Variable)
+(b) Explain how the Gaussian Mixture Model algorithm works. [7]

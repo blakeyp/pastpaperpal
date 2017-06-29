@@ -1,0 +1,14 @@
+4. (a) The use of abstract machine code is a popular alternative to three-address code as a
+class of intermediate representations, as exemplified by the current popularity of the
+JVM. Compare and contrast these two approaches to intermediate code representa-
+tion, and explain the benefits of each. [8]
+(b) Explain how the Sethi-Ullman algorithm to minimize the number of registers used
+works. Consider the statement a := b * c - 2 * d * (e + 1). Translate this
+statement into generalized assembly code using the algorithm. Assume we have two
+general-purpose registers available. [8]
+(c) Typically booleans and integers are considered distinct types, but some languages
+allow integers to be used as booleans, with 0 being equivalent to false and any non-
+zero value being equivalent to true, while still allowing variables to be declared as
+booleans. Provide syntex-directed definitions for type checking in such a language.
+You may make assumptions about any precise restrictions and also assume any func-
+tions needed to access symbol table. [9]

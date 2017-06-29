@@ -1,0 +1,11 @@
+3. (a) Construct an LR(0) state machine for the following grammar:
+Z -> E $
+E -> T T -> i
+E -> E + T T -> ( E )
+[14]
+(b) Most programming languages support several forms of parentheses (curly, round,
+and square brackets, for example). Considering that many common program-
+ming errors have to do with balancing parentheses, explain how compilers could
+make it easier to debug programs in terms of parentheses balancing errors. Con-
+sider both top-down and bottom-up parsers.
+[11]

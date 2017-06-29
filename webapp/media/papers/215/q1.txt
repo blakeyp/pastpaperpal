@@ -1,0 +1,25 @@
+1. Primitive Data Types
+(a) Describe what is meant by variable declaration and assignment with ref-
+erence to Java’s primitive data types. Give valid examples of variable
+declaration and valid examples of variable assignment. [4]
+(b) Provide answers to the questions given below.
+i. Is String one of Java’s eight primitive data types? If it is not, state
+why this is the case.
+ii. Is it possible to convert a numeric value to another numeric type?
+What are the benefits of doing so, and should the programmer be
+aware of any potential pitfalls?
+iii. When a variable is declared, what initial value does it contain?
+[6]
+(c) i. Write a short program that, given an 8-bit binary number (stored
+in an array), converts this number to an unsigned, positive, base-10
+integer value. Given the input 00001111 your code should return 15;
+given the input 10101010 your code should return the value 170.
+ii. Modify your code so that it also outputs the unsigned, positive, base-
+10 integer value represented by flipping the bits. In the case of the
+input 00001111, as well as outputting 15, your code should also out-
+put 240 (i.e. the value of 11110000).
+iii. Describe how you would modify your code so that the most significant
+bit (in the input) was to act as a sign bit; that is, the left-most bit
+determines whether the number is positive (when it is 0) or negative
+(when it is 1).
+[10]

@@ -1,0 +1,17 @@
+4. (a) Explain and illustrate two different methods to translate Boolean expressions
+into intermediate code in 3-address form, and compare them in terms of effi-
+ciency and speed.
+[11]
+(b) Explain what is an activation record. Describe the steps that need to be per-
+formed and code that needs to be generated when translating function decla-
+rations and function calls. Illustrate with the following function written in a
+language with static binding, paying special attention to non-local variables:
+function main () {
+int a, b ;
+read (a) ; read (b);
+print (f (a)) }
+function f (x) {
+int y = a + x/2 ;
+if y < b then return (y)
+else return (f (y)) }
+[14]

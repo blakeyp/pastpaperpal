@@ -1,0 +1,23 @@
+3. (a) Explain the concept of Leave-One-Out-Cross-Validation (LOOCV). When would
+you use LOOCV? [4]
+(b) Describe Multi-dimensional Scaling (MDS) and provide a mathematical and intuitive
+description of Stress. Explain the difference between Metric and Non-Metric MDS.
+[6]
+(c) Give the mathematical description of the Manhattan distance between two vectors xi
+and xj . What is the relation of the L1 norm to the Manhattan distance? [4]
+(d) For a specific probabilistic model the probability for an unseen observation x∗ ∈ RD
+to belong to class k is given by:
+∗ | p(x
+∗|t∗ = k,X, t)P (t∗ = k)
+P (t = k X, t,x∗) = ∑K
+j=1 p(x
+∗|t∗ = j,X, t)P (t∗ = j)
+i) Is this a generative or a discriminative model? Why? [2]
+ii) Re-write the likelihood of this model under the Naive Bayes assumption. [2]
+iii) What should P (t∗ = 1) be equal to if we have a binary classification problem and
+90% of the training observations belong to class 0? [2]
+(e) In the context of Bayesian Line∫ar Regression (BLR) the predictive density of interest
+is given by p(t∗|x∗,X, t) = p(t∗|x∗,w)p(w|X, t)dw. Apply Bayes rule in the
+posterior density and describe each resulting term within the context of BLR. What
+probability density function we typically use for i) the likelihood, and ii) the prior?
+What type of pdf is the resulting posterior density? [5]

@@ -1,0 +1,10 @@
+1. (a) Describe the main phases of traditional compilers, and summarise the kinds of
+errors in input programs that must be dealt with in each phase. [6]
+(b) Consider the following grammar:
+Rexpr → Rterm ′+′ Rterm | Rterm ′−′ Rterm
+Rterm → Rterm Rfact | Rfact
+Rfact → Rfact ′∗′ | Rprim
+Rprim → ′a′ | ′b′
+i. Explain why this grammar is or is not suitable for top-down parsing. [6]
+ii. Left-factor this grammar. [6]
+iii. Eliminate left-recursion from the resulting grammar. [7]

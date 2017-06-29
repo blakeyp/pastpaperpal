@@ -1,0 +1,8 @@
+2. (a) Distinguish between combinatorial and sequential logic. [3]
+(b) A 1-bit full-adder performs addition on two bits and a previous carry bit.
+i. Show the truth table and logic circuit for a 1-bit half adder. [4]
+ii. Show how an N-bit full adder can be designed based on N 1-bit full-adders. Your
+answer should include the logic circuit for a 1-bit full adder. [8]
+(c) D-type flip-flops are commonly used in circuit design.
+i. Draw and explain the truth table for a D-type flip flop. [3]
+ii. Show how D-type flip flops can be used in the design of an N-bit counter. [7]
